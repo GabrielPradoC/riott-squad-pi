@@ -4,7 +4,7 @@
     "description": "Node API Boilerplate",
     "main": "dist/server.js",
     "scripts": {
-        "prepare": " cd .. && husky install ",
+        "prepare": "cd .. && husky install ",
         "test": "jest --verbose --passWithNoTests",
         "build": "npm run lint && npm run test && tsc --build --clean",
         "lint": "eslint ./src/ --ext .ts",
