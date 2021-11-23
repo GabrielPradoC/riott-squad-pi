@@ -2,7 +2,7 @@
   "name": "riott-web",
   "version": "0.0.0",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install",
     "ng": "ng",
     "start": "ng serve --host=0.0.0.0",
     "build": "ng build",
