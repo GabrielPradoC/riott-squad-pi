@@ -94,10 +94,18 @@ export class UserController extends BaseController {
      *             type: object
      *             example:
      *               name: userName
+     *               email: email@email.com
+     *               password: password123
      *             required:
      *               - name
+     *               - email
+     *               - password
      *             properties:
      *               name:
+     *                 type: string
+     *               email:
+     *                 type: string
+     *               password:
      *                 type: string
      *     responses:
      *       $ref: '#/components/responses/baseCreate'
@@ -107,8 +115,11 @@ export class UserController extends BaseController {
     @Middlewares(UserValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
         const newUser: DeepPartial<User> = {
-            name: req.body.name
+            name: req.body.name,
+            email: req.body.email,
+            passwordHash: ' ' // mudar isso
         };
+        // TODO hashear a senha
 
         await new UserRepository().insert(newUser);
 
