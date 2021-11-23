@@ -2,11 +2,17 @@ import { Entity, ObjectID, ObjectIdColumn, Column, BeforeInsert, BeforeUpdate, B
 
 @Entity()
 export class User extends BaseEntity {
-    @ObjectIdColumn() // Alterar para @PrimaryGeneratedColumn em caso de banco diferente do MongoDB
+    @ObjectIdColumn()
     public id: ObjectID;
 
     @Column({ unique: true })
     public name: string;
+
+    @Column({ unique: true })
+    public email: string;
+
+    @Column()
+    public passwordHash: string;
 
     @Column()
     public createdAt: Date;
