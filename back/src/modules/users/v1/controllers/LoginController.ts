@@ -1,24 +1,18 @@
 // Modules
-import { DeepPartial } from 'typeorm';
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
 // Library
 import { BaseController } from '../../../../library';
 
 // Decorators
-import { Controller, Delete, Get, Middlewares, Post, PublicRoute, Put } from '../../../../decorators';
+import { Controller, Middlewares, Post, PublicRoute } from '../../../../decorators';
 
 // Models
 import { EnumEndpoints } from '../../../../models';
 
 // Routes
 import { RouteResponse } from '../../../../routes';
-
-// Entities
-import { User } from '../../../../library/database/entity';
-
-// Repositories
-import { UserRepository } from '../../../../library/database/repository';
 
 // Validators
 import { UserValidator } from '../middlewares/UserValidator';
@@ -42,7 +36,7 @@ export class LoginController extends BaseController {
      *             type: object
      *             example:
      *               email: email@email.com
-     *               password: senha123
+     *               password: password123
      *             required:
      *               - email
      *               - password
@@ -52,15 +46,15 @@ export class LoginController extends BaseController {
      *               password:
      *                 type: string
      *     responses:
-     *       $ref: '#/components/responses/baseResponse'
+     // *       $ref: '#/components/responses/baseResponse'
      */
     @Post()
     @PublicRoute()
-    @Middlewares(UserValidator.post())
+    @Middlewares(UserValidator.login())
     public async login(req: Request, res: Response): Promise<void> {
-        // TODO: buscar o user pelo req.body.email
-        // TODO: hashear e comparar req.body.password com o hash da senha
+        const hash: string = req.body.userRef.passwordHash;
+        const check: boolean = await bcrypt.compare(req.body.password, hash);
         // TODO: criar uma token com o id do user.
-        RouteResponse.success({ data: 'ainda não implementado' }, res);
+        RouteResponse.success(check, res);
     }
 }
