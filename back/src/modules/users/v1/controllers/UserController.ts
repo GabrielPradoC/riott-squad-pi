@@ -27,6 +27,9 @@ import { UserRepository } from '../../../../library/database/repository';
 // Validators
 import { UserValidator } from '../middlewares/UserValidator';
 
+// Middlewares
+import { authMiddleware } from '../../../authentication/middlewares/passport';
+
 @Controller(EnumEndpoints.USER_V1)
 export class UserController extends BaseController {
     /**
@@ -119,7 +122,7 @@ export class UserController extends BaseController {
     @Middlewares(UserValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
         // a logica de hashear a senha provavelmente deve ser feita em outro lugar
-        const passwordHash = await bcrypt.hash(req.body.password, SALT_ROUNDS);
+        const passwordHash: string = await bcrypt.hash(req.body.password, SALT_ROUNDS);
 
         const newUser: DeepPartial<User> = {
             name: req.body.name,
@@ -195,7 +198,7 @@ export class UserController extends BaseController {
      */
     @Delete('/:id')
     @PublicRoute()
-    @Middlewares(UserValidator.onlyId())
+    @Middlewares(UserValidator.onlyId(), authMiddleware)
     public async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
 

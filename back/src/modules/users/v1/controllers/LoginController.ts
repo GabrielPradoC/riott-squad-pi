@@ -1,6 +1,7 @@
 // Modules
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 // Library
 import { BaseController } from '../../../../library';
@@ -16,6 +17,9 @@ import { RouteResponse } from '../../../../routes';
 
 // Validators
 import { UserValidator } from '../middlewares/UserValidator';
+
+// Configs
+import { jwtSecret } from '../../../../config/auth';
 
 @Controller(EnumEndpoints.LOGIN)
 export class LoginController extends BaseController {
@@ -54,7 +58,12 @@ export class LoginController extends BaseController {
     public async login(req: Request, res: Response): Promise<void> {
         const hash: string = req.body.userRef.passwordHash;
         const check: boolean = await bcrypt.compare(req.body.password, hash);
-        // TODO: criar uma token com o id do user.
-        RouteResponse.success(check, res);
+
+        if (check) {
+            const token: string = jwt.sign({ id: req.body.userRef.id }, jwtSecret, { expiresIn: '24h' });
+            RouteResponse.success(token, res);
+        } else {
+            RouteResponse.unauthorizedError(res, 'Senha errada');
+        }
     }
 }
