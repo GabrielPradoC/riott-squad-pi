@@ -50,7 +50,7 @@ export class LoginController extends BaseController {
      *               password:
      *                 type: string
      *     responses:
-     // *       $ref: '#/components/responses/baseResponse'
+     *       $ref: '#/components/responses/baseResponse'
      */
     @Post()
     @PublicRoute()
