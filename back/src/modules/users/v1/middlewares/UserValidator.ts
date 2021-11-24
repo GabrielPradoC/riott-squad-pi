@@ -1,9 +1,12 @@
 // Libraries
 import { RequestHandler } from 'express';
-import { Schema } from 'express-validator';
+import { Schema, Meta } from 'express-validator';
 
 // Repositories
 import { UserRepository } from '../../../../library/database/repository/UserRepository';
+
+// Utils
+import { StringUtils } from '../../../../utils';
 
 // Validators
 import { BaseValidator } from '../../../../library/BaseValidator';
@@ -54,6 +57,33 @@ export class UserValidator extends BaseValidator {
         }
     };
 
+    private static logInModel: Schema = {
+        email: {
+            in: 'body',
+            isString: true,
+            isEmail: true,
+            errorMessage: 'Email inválido',
+            custom: {
+                options: async (value: string, { req }: Meta) => {
+                    const userRepository: UserRepository = new UserRepository();
+                    const data = await userRepository.findByEmail(value);
+
+                    // Usa o nome do repositório para criar o nome de referência. Ex: UserRepository => userRef
+                    const refName: string = StringUtils.firstLowerCase(userRepository.constructor.name.replace('Repository', ''));
+
+                    req.body[`${refName}Ref`] = data;
+
+                    return data ? Promise.resolve() : Promise.reject();
+                }
+            }
+        },
+        password: {
+            in: 'body',
+            isString: true,
+            errorMessage: 'Email inválido'
+        }
+    };
+
     /**
      * post
      *
@@ -97,5 +127,9 @@ export class UserValidator extends BaseValidator {
         return BaseValidator.validationList({
             id: UserValidator.model.id
         });
+    }
+
+    public static login(): RequestHandler[] {
+        return BaseValidator.validationList(UserValidator.logInModel);
     }
 }
