@@ -1,0 +1,30 @@
+<link href="login.component.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+<div id="div1-login">
+    <h1>
+        Seu time em harmonia.
+    </h1>
+</div>
+
+<div id="div2-login">
+    <h2>
+        RIOTT
+    </h2>
+
+    <p>
+        Controle as tarefas e mesada dos seus filhos para manter a casa em harmonia.
+    </p>
+
+    <form onsubmit="loginUsuario()">
+        <input type="string" id="email" placeholder="E-mail" required><br>
+    
+        <input type="string" id="password" placeholder="Senha" required><br>
+    
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+
+<script src="login.component.ts"></script>
