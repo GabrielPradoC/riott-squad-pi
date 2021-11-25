@@ -1,9 +1,10 @@
-import { Entity, ObjectID, ObjectIdColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity } from 'typeorm';
+import { Entity, ObjectID, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity } from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
-    @ObjectIdColumn()
-    public id: ObjectID;
+
+    @PrimaryGeneratedColumn() // Alterar para @PrimaryGeneratedColumn em caso de banco diferente do MongoDB
+    public id: number;
 
     @Column({ unique: true })
     public name: string;
