@@ -1,11 +1,10 @@
-version: '3'
-
+version: "3"
 services:
     node:
         container_name: riott-api
-        build: .
+        build: ./back
         volumes:
-            - .:/app
+            - ./back:/app
             - /app/node_modules
         environment:
             - NODE_ENV=development # Define o host, controla a exibição de logs e execução de migrations
@@ -32,10 +31,18 @@ services:
             - riott-connect
         ports:
             - 3306:3306
+    angular:
+        container_name: riott-angular
+        build: ./front
+        ports:
+            - "4200:4200"
+        volumes:
+            - ./front:/usr/src/app
+            - /usr/src/app/node_modules
 volumes:
     riott-node-data:
     riott-mysql-data:
-
+    riott-web-data:
 networks:
     riott-connect:
         driver: bridge
