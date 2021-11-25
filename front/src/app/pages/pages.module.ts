@@ -3,6 +3,7 @@ import { ThemeModule } from "../@theme/theme.module";
 import { PagesRoutingModule } from "./pages-routing.module";
 import { PagesComponent } from "./pages.component";
 import { ExampleComponent } from './example/example.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
 	imports: [
@@ -12,6 +13,7 @@ import { ExampleComponent } from './example/example.component';
 	declarations: [
 		PagesComponent,
 		ExampleComponent,
+		LoginComponent
 	],
 	providers: []
 })
