@@ -1,6 +1,6 @@
-body {
+#div-login {
     display: flex;
-    margin: 0px;
+    flex-direction: row;
 }
 
 #div1-login {
@@ -8,7 +8,7 @@ body {
     align-items: flex-end;
     width: 62%;
     height: 100vh;
-    background-image: url(/usr/src/assets/img-login.png);
+    background-image: url(../../../assets/img-login.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -62,22 +62,41 @@ form {
     width: 100%;
 }
 
+.input {
+    position:relative;
+}
+
 input {
     padding: 20px 20px 16px;
     position: relative;
     width: 100%;
     height: 55px;
     border: 1px solid #7C8D93;
-    box-sizing: border-box;
     border-radius: 4px;
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-input::placeholder {
+input[type="password"] {
+    color: #4F4F4F;
+}
+
+label {
+    position: absolute;
+    left: 20px;
+    top: 33px;
+    transition: 0.2s;
+    background: #FFFFFF;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     color: #B5C5CA;
+    border: 2px solid #FFFFFF;
+}
+
+input:focus + label, input:not(:placeholder-shown) + label {
+    transform: translateY(-28px);
+    font-size: 14px;
+    color: #7C8D93;
 }
 
 button {
@@ -87,7 +106,7 @@ button {
     position: relative;
     width: 100%;
     height: 51px;
-    background: #B5C5CA;
+    background-color: #B5C5CA;
     border: 1px solid #B5C5CA;
     border-radius: 4px;
     margin-top: 10px;
@@ -95,4 +114,9 @@ button {
     font-size: 16px;
     font-weight: 500;
     color: #FFFFFF;
+}
+
+button:hover {
+    background-color: #006D77;
+    border-color: #006D77;
 }
