@@ -3,8 +3,8 @@ import { DeepPartial } from 'typeorm';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-// config
-import { SALT_ROUNDS } from '../../../../config/bcrypt';
+// Constants
+import { EnumConstants } from '../../../../models/EnumConstants';
 
 // Library
 import { BaseController } from '../../../../library';
@@ -121,8 +121,7 @@ export class UserController extends BaseController {
     @PublicRoute()
     @Middlewares(UserValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
-        // a logica de hashear a senha provavelmente deve ser feita em outro lugar
-        const passwordHash: string = await bcrypt.hash(req.body.password, SALT_ROUNDS);
+        const passwordHash: string = await bcrypt.hash(req.body.password, EnumConstants.SALT_ROUNDS);
 
         const newUser: DeepPartial<User> = {
             name: req.body.name,
