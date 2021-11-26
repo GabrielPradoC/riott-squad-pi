@@ -6,6 +6,7 @@ import fileMiddleware from 'express-multipart-file-parser';
 import helmet from 'helmet';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
+import passport from 'passport';
 import { ConnectionOptions } from 'typeorm';
 
 // Routes
@@ -71,6 +72,7 @@ export class App {
         this.app.use(cors({ origin: true })); // Automaticamente habilita cross-origin requests
         this.app.use(compression()); // Compressão GZIP
         this.app.use(fileMiddleware); // Trata arquivos enviados para rota e adiciona no express.req
+        this.app.use(passport.initialize()); // Inicia o passport
 
         // Middlewares externos
         if (middlewares) {
