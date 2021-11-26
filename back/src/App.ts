@@ -7,7 +7,6 @@ import helmet from 'helmet';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import passport from 'passport';
-import './modules/authentication/middlewares/passport';
 import { ConnectionOptions } from 'typeorm';
 
 // Routes

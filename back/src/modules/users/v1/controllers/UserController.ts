@@ -28,7 +28,7 @@ import { UserRepository } from '../../../../library/database/repository';
 import { UserValidator } from '../middlewares/UserValidator';
 
 // Middlewares
-import { authMiddleware } from '../../../authentication/middlewares/passport';
+import { authMiddleware } from '../../../authentication/v1';
 
 @Controller(EnumEndpoints.USER_V1)
 export class UserController extends BaseController {
@@ -198,7 +198,7 @@ export class UserController extends BaseController {
      */
     @Delete('/:id')
     @PublicRoute()
-    @Middlewares(UserValidator.onlyId(), authMiddleware)
+    @Middlewares(UserValidator.onlyId(), authMiddleware())
     public async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
 

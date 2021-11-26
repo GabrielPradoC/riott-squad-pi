@@ -1,13 +1,14 @@
 import passport from 'passport';
 import { Strategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
+import { RequestHandler } from 'express';
 
-import { jwtSession, jwtSecret } from '../../../config/auth';
+import { jwtSession, jwtSecret } from '../../../../config/auth';
 
 // Repositories
-import { UserRepository } from '../../../library/database/repository/UserRepository';
+import { UserRepository } from '../../../../library/database/repository/UserRepository';
 
 // Entities
-import { User } from '../../../library/database/entity/User';
+import { User } from '../../../../library/database/entity/User';
 
 passport.use(
     new Strategy(
@@ -22,10 +23,12 @@ passport.use(
             if (user) {
                 done(null, user);
             } else {
-                done('usuário não encontrado');
+                done(null, false, { message: 'usuário não encontrado' });
             }
         }
     )
 );
 
-export const authMiddleware = passport.authenticate('jwt', jwtSession);
+export const authMiddleware = (): RequestHandler => {
+    return passport.authenticate('jwt', jwtSession);
+};

@@ -16,7 +16,7 @@ import { EnumEndpoints } from '../../../../models';
 import { RouteResponse } from '../../../../routes';
 
 // Validators
-import { UserValidator } from '../middlewares/UserValidator';
+import { UserValidator } from '../../../users/v1/middlewares/UserValidator';
 
 // Configs
 import { jwtSecret } from '../../../../config/auth';
@@ -25,7 +25,7 @@ import { jwtSecret } from '../../../../config/auth';
 export class LoginController extends BaseController {
     /**
      * @swagger
-     * /login:
+     * /v1/login:
      *   post:
      *     summary: rota de autenticação
      *     tags: [Users]
