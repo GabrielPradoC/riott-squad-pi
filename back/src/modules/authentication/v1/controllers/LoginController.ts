@@ -61,7 +61,9 @@ export class LoginController extends BaseController {
 
         if (check) {
             const token: string = jwt.sign({ id: req.body.userRef.id }, jwtSecret, { expiresIn: '24h' });
-            RouteResponse.success(token, res);
+            const userId: number = req.body.userRef.id;
+
+            RouteResponse.success({ token, userId }, res);
         } else {
             RouteResponse.unauthorizedError(res, 'Senha errada');
         }
