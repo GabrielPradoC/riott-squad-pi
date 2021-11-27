@@ -1,53 +1,38 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  public form: FormGroup;
 
-  /**
-   * Pega o email e senha do formulário e cria o body para a requisição
-   */
-  loginUsuario() {
-      event.preventDefault();
-      let url: string = "api/login";
-      let email: string = document.getElementById("email").accessKey;
-      let password: string = document.getElementById("password").accessKey;
-      let body = {
-          "email": email,
-          "password": password
-      }
-
-      console.log(password);
-      console.log(email);
-
-      this.fazPost(url, body);
-      //aqui guardar o retorno da requisição no localstore
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      email: ['', Validators.compose([
+        Validators.email,
+        Validators.required
+      ])],
+      password: ['', Validators.compose([
+        Validators.minLength(8),
+        Validators.maxLength(100),
+        Validators.required
+      ])]
+    });
   }
 
   /**
-   * Abre uma requisição do tipo POST e envia os dados
-   * @param url - caminho especificado da requisição
-   * @param body - dados a serem enviados
-   * @returns resposta da requisição
+   * Obtém o email e senha do formulário
    */
-  fazPost(url, body) {
-    console.log("Body = ", body);
+   login() {
+    const email: string = this.form.controls['email'].value;
+    const password: string = this.form.controls['password'].value;
 
-    let request: XMLHttpRequest = new XMLHttpRequest();
-    request.open("POST", url, true);
-    request.setRequestHeader("Content-type", "application/json");
-    request.send(JSON.stringify(body));
+    console.log(email);
+    console.log(password);
 
-    request.onload = function() {
-        console.log(this.responseText)
-        //mostra a resposta quando voltar
-        //chamar a pag listas aqui
-    }
-
-    return request.responseText;
+    //chamar service para fazer login
   }
-
 }

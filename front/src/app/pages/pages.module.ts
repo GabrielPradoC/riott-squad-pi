@@ -4,11 +4,15 @@ import { PagesRoutingModule } from "./pages-routing.module";
 import { PagesComponent } from "./pages.component";
 import { ExampleComponent } from './example/example.component';
 import { LoginComponent } from './login/login.component';
+import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
 	imports: [
         PagesRoutingModule,
-        ThemeModule
+        ThemeModule,
+				CommonModule,
+				ReactiveFormsModule
 	],
 	declarations: [
 		PagesComponent,
