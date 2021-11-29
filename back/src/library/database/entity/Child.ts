@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity, OneToMany, ManyToOne } from 'typeorm';
 import { ChildTaskList } from './ChildTaskList';
-import { Parent } from './Parent';
+import { User } from './User';
 
 @Entity()
 export class Child extends BaseEntity {
@@ -10,8 +10,8 @@ export class Child extends BaseEntity {
     @Column()
     public value: number;
 
-    @ManyToOne(() => Parent, parent => parent.children)
-    public parent: Parent;
+    @ManyToOne(() => User, user => user.children)
+    public parent: User;
 
     @Column()
     public name: string;

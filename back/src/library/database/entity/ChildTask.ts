@@ -7,7 +7,7 @@ export class ChildTask extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @ManyToOne(() => Task, task => task.ChildTask, {
+    @ManyToOne(() => Task, task => task.childTask, {
         eager: true
     })
     public task: Task;

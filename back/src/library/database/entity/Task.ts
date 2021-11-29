@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity, OneToMany, ManyToOne } from 'typeorm';
 import { ChildTask } from './ChildTask';
-import { Parent } from './Parent';
+import { User } from './User';
 
 @Entity()
 export class Task extends BaseEntity {
@@ -10,11 +10,11 @@ export class Task extends BaseEntity {
     @Column()
     public title: string;
 
-    @ManyToOne(() => Parent, parent => parent.createdTasks)
-    public parent: Parent;
+    @ManyToOne(() => User, user => user.createdTasks)
+    public parent: User;
 
     @OneToMany(() => ChildTask, childTask => childTask.task)
-    public ChildTask: ChildTask[];
+    public childTask: ChildTask[];
 
     @Column()
     public createdAt: Date;
