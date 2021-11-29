@@ -16,7 +16,7 @@ export class ChildTask extends BaseEntity {
     public value: number;
 
     @ManyToOne(() => ChildTaskList, childTaskList => childTaskList.ChildTask)
-    public ChildTaskList: ChildTaskList;
+    public childTaskList: ChildTaskList;
 
     @Column()
     public isMissed: boolean;

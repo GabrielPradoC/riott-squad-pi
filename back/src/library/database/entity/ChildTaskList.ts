@@ -22,7 +22,7 @@ export class ChildTaskList extends BaseEntity {
     @Column()
     public isFinished: boolean;
 
-    @OneToMany(() => ChildTask, childTask => childTask.ChildTaskList, {
+    @OneToMany(() => ChildTask, childTask => childTask.childTaskList, {
         eager: true
     })
     public ChildTask: ChildTask[];
