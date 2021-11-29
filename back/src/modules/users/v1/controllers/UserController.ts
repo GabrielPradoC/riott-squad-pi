@@ -88,7 +88,7 @@ export class UserController extends BaseController {
      * @swagger
      * /v1/user/{userId}/members:
      *   get:
-     *     summary: Retorna todos os membros pertencentas a um usuário
+     *     summary: Retorna todos os membros pertencentes a um usuário
      *     tags: [Users, Members]
      *     consumes:
      *       - application/json
