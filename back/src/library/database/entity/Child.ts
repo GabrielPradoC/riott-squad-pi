@@ -7,9 +7,6 @@ export class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
-    public value: number;
-
     @ManyToOne(() => User, user => user.children)
     public parent: User;
 
