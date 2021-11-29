@@ -1,5 +1,4 @@
 import { ConnectionOptions } from 'typeorm';
-import { MongoConnectionOptions } from 'typeorm/driver/mongodb/MongoConnectionOptions';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 // Opções genéricas
@@ -23,16 +22,7 @@ const mysqlOptions: MysqlConnectionOptions = {
     logging: false // Habilitar para visualizar as queries do banco
 };
 
-// Opções para conexão com MongoDB
-const mongoOptions: MongoConnectionOptions = {
-    type: 'mongodb',
-    url: process.env.MONGO_CONNECTION_URL,
-    authSource: 'admin',
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-};
-
 export const dbConfig = {
     ...baseOptions,
-    ...mongoOptions
+    ...mysqlOptions
 } as ConnectionOptions;
