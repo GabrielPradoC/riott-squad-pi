@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity, OneToMany } from 'typeorm';
+import { Child } from './Child';
+import { Task } from './Task';
 
 @Entity()
 export class User extends BaseEntity {
@@ -13,6 +15,16 @@ export class User extends BaseEntity {
 
     @Column()
     public passwordHash: string;
+
+    @OneToMany(() => Task, task => task.parent, {
+        eager: true
+    })
+    public createdTasks: Task[];
+
+    @OneToMany(() => Child, child => child.parent, {
+        eager: true
+    })
+    public children: Child[];
 
     @Column()
     public createdAt: Date;
