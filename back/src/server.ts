@@ -8,10 +8,11 @@ import { swaggerConfig } from './config/swagger';
 // Endpoints
 import { UserController } from './modules/users/v1';
 import { LoginController } from './modules/authentication/v1';
+import { ChildController } from './modules/members/v1';
 
 const app: App = new App({
     port: Number(process.env.PORT || 8080),
-    controllers: [UserController, LoginController],
+    controllers: [UserController, LoginController, ChildController],
     middlewares: [Logger.middleware],
     logger: new Logger(),
     swaggerOptions: process.env.NODE_ENV === 'development' ? swaggerConfig : undefined,
