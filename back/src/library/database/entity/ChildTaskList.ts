@@ -25,7 +25,7 @@ export class ChildTaskList extends BaseEntity {
     @OneToMany(() => ChildTask, childTask => childTask.childTaskList, {
         eager: true
     })
-    public ChildTask: ChildTask[];
+    public childTask: ChildTask[];
 
     @ManyToOne(() => Child, child => child.childTaskList)
     public child: Child;
