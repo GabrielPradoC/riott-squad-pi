@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent {
   public form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
       email: ['', Validators.compose([
         Validators.email,
@@ -23,16 +24,10 @@ export class LoginComponent {
     });
   }
 
-  /**
-   * Obtém o email e senha do formulário
-   */
-   login() {
+  login(): void {
     const email: string = this.form.controls['email'].value;
     const password: string = this.form.controls['password'].value;
 
-    console.log(email);
-    console.log(password);
-
-    //chamar service para fazer login
+    this.router.navigate(['/pages/members']);
   }
 }

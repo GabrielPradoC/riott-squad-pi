@@ -30,7 +30,7 @@
                 <label for="password">Senha</label>
             </div>
         
-            <button [disabled]="form.invalid" (click)="login">Entrar</button>
+            <app-my-button [disabled]="form.invalid" customClass="green login-page" text="Entrar" (click)="login()" ></app-my-button>
         </form>
     </div>
 </div>
