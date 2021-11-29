@@ -8,6 +8,12 @@ export class User extends BaseEntity {
     @Column({ unique: true })
     public name: string;
 
+    @Column({ unique: true })
+    public email: string;
+
+    @Column()
+    public passwordHash: string;
+
     @Column()
     public createdAt: Date;
 

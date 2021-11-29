@@ -1,6 +1,10 @@
 // Modules
 import { DeepPartial } from 'typeorm';
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
+
+// Constants
+import { EnumConstants } from '../../../../models/EnumConstants';
 
 // Library
 import { BaseController } from '../../../../library';
@@ -22,6 +26,9 @@ import { UserRepository } from '../../../../library/database/repository';
 
 // Validators
 import { UserValidator } from '../middlewares/UserValidator';
+
+// Middlewares
+import { authMiddleware } from '../../../authentication/v1';
 
 @Controller(EnumEndpoints.USER_V1)
 export class UserController extends BaseController {
@@ -94,10 +101,18 @@ export class UserController extends BaseController {
      *             type: object
      *             example:
      *               name: userName
+     *               email: email@email.com
+     *               password: password123
      *             required:
      *               - name
+     *               - email
+     *               - password
      *             properties:
      *               name:
+     *                 type: string
+     *               email:
+     *                 type: string
+     *               password:
      *                 type: string
      *     responses:
      *       $ref: '#/components/responses/baseCreate'
@@ -106,8 +121,12 @@ export class UserController extends BaseController {
     @PublicRoute()
     @Middlewares(UserValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
+        const passwordHash: string = await bcrypt.hash(req.body.password, EnumConstants.SALT_ROUNDS);
+
         const newUser: DeepPartial<User> = {
-            name: req.body.name
+            name: req.body.name,
+            email: req.body.email,
+            passwordHash
         };
 
         await new UserRepository().insert(newUser);
@@ -178,7 +197,7 @@ export class UserController extends BaseController {
      */
     @Delete('/:id')
     @PublicRoute()
-    @Middlewares(UserValidator.onlyId())
+    @Middlewares(UserValidator.onlyId(), authMiddleware())
     public async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
 
