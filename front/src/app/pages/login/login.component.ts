@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import{ LoginService } from "../../@core/services/login.service"
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,20 @@ export class LoginComponent {
   login(): void {
     const email: string = this.form.controls['email'].value;
     const password: string = this.form.controls['password'].value;
+    const mensagem: string = LoginService.prototype.loginUsuario(email, password);
 
-    this.router.navigate(['/pages/members']);
+    /* TESTE LOGIN (CRIA USUÁRIO COM OS DADOS DO INPUT AO CLICAR EM ENTRAR)
+    console.log(LoginService.prototype.abreRequisicao("POST", "http://localhost:4444/v1/user", {
+      "name": "aaaa",
+      "email": email,
+      "password": password
+    }));
+    */
+
+    if(mensagem === "ok") {
+      this.router.navigate(['/pages/members']);
+    } else {
+      alert(mensagem);
+    }
   }
 }
