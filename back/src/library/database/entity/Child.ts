@@ -19,8 +19,8 @@ export class Child extends BaseEntity {
     @Column()
     public birthday: Date;
 
-    @Column()
-    public photo: string;
+    @Column('mediumblob')
+    public photo: Blob;
 
     @OneToMany(() => ChildTaskList, childTaskList => childTaskList.child)
     public childTaskList: ChildTaskList[];

@@ -36,9 +36,24 @@ export class ChildValidator extends BaseValidator {
             errorMessage: 'Membro não encontrado'
         },
         allowance: { in: 'body', isFloat: { options: { min: 0 } }, errorMessage: 'Valor da mesada invalido' },
-        // TODO fazer um custom validtor para verficar que a criança tem menos de 18 anos.
-        // TODO talvez fazer um validator para padronizar o formato de data.
+        // TODO fazer um validator para padronizar o formato de data.
         birthday: { in: 'body', isDate: true, errorMessage: 'Aniversário Invalido' },
+        photo: {
+            in: 'body',
+            custom: {
+                options: async (_value: string, { req }: Meta) => {
+                    let check = false;
+
+                    if (req.files && req.files[0]) {
+                        check = true;
+                        req.body.photoRef = req.files[0].buffer;
+                    }
+
+                    return check ? Promise.resolve() : Promise.reject();
+                }
+            },
+            errorMessage: 'Foto inválida'
+        },
         parent: {
             in: 'body',
             isInt: true,
@@ -103,7 +118,8 @@ export class ChildValidator extends BaseValidator {
             minor: ChildValidator.model.minor,
             allowance: ChildValidator.model.allowance,
             parent: ChildValidator.model.parent,
-            duplicate: ChildValidator.model.duplicate
+            duplicate: ChildValidator.model.duplicate,
+            photo: ChildValidator.model.photo
         });
     }
 

@@ -85,44 +85,52 @@ export class ChildController extends BaseController {
      *     summary: Cadastra um membro
      *     tags: [Members]
      *     consumes:
-     *       - application/json
+     *       - multipart/form-data
      *     produces:
      *       - application/json
      *     requestBody:
      *       content:
-     *         application/json:
+     *         multipart/form-data:
      *           schema:
      *             type: object
      *             example:
-     *               name: TODO
-     *               email: TODO
-     *               password: TODO
+     *               name: 'João'
+     *               allowance: 100.00
+     *               birthday: '10/10/2000'
+     *               parent: 1
+     *               photo: 'photo.jpg'
      *             required:
      *               - name
-     *               - email
-     *               - password
+     *               - allowance
+     *               - birthday
+     *               - parent
+     *               - photo
      *             properties:
      *               name:
      *                 type: string
-     *               email:
-     *                 type: string
-     *               password:
-     *                 type: string
+     *               parent:
+     *                 type: number
+     *               birthday:
+     *                 type: date
+     *               allowance:
+     *                 type: number
+     *               photo:
+     *                 type: file
      *     responses:
      *       $ref: '#/components/responses/baseCreate'
      */
     @Post()
     @Middlewares(ChildValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
-        const { name, birthday, allowance } = req.body;
+        const { name, birthday, allowance, photoRef } = req.body;
 
         const newChild: DeepPartial<Child> = {
             name,
             birthday,
             allowance,
+            photo: photoRef,
             parent: req.body.userRef,
-            childTaskList: [],
-            photo: 'TODO resolver isso'
+            childTaskList: []
         };
 
         await new ChildRepository().insert(newChild);
@@ -181,6 +189,7 @@ export class ChildController extends BaseController {
         child.name = req.body.name;
         child.birthday = req.body.birthday;
         child.allowance = req.body.allowance;
+        child.photo = req.body.photoRef;
 
         await new ChildRepository().update(child);
 
