@@ -113,7 +113,7 @@ export class ChildController extends BaseController {
      *               birthday:
      *                 type: date
      *               allowance:
-     *                 type: number
+     *                 type: float
      *               photo:
      *                 type: file
      *     responses:
@@ -128,7 +128,7 @@ export class ChildController extends BaseController {
             name,
             birthday,
             allowance,
-            photo: photoRef,
+            photo: photoRef.toString('base64'),
             parent: req.body.userRef,
             childTaskList: []
         };
@@ -145,7 +145,7 @@ export class ChildController extends BaseController {
      *     summary: Altera um membro
      *     tags: [Members]
      *     consumes:
-     *       - application/json
+     *       - multipart/form-data
      *     produces:
      *       - application/json
      *     parameters:
@@ -156,7 +156,7 @@ export class ChildController extends BaseController {
      *         required: true
      *     requestBody:
      *       content:
-     *         application/json:
+     *         multipart/form-data:
      *           schema:
      *             type: object
      *             example:

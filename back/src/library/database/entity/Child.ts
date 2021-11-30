@@ -13,14 +13,14 @@ export class Child extends BaseEntity {
     @Column()
     public name: string;
 
-    @Column()
+    @Column('decimal', { precision: 10, scale: 2 })
     public allowance: number;
 
     @Column()
     public birthday: Date;
 
-    @Column('mediumblob')
-    public photo: Blob;
+    @Column('mediumtext')
+    public photo: string;
 
     @OneToMany(() => ChildTaskList, childTaskList => childTaskList.child)
     public childTaskList: ChildTaskList[];
