@@ -15,6 +15,9 @@ import { StringUtils } from '../../../../utils';
 // Entities
 import { Child, User } from '../../../../library/database/entity';
 
+// Constants
+import { DateConstants } from '../../../../models/EnumConstants';
+
 /**
  * ChildValidator
  *
@@ -54,6 +57,21 @@ export class ChildValidator extends BaseValidator {
             },
             errorMessage: 'Id do responsavel invalido'
         },
+        minor: {
+            errorMessage: 'O membro deve ter menos de 18 anos',
+            custom: {
+                options: async (_: string, { req }) => {
+                    let check = false;
+
+                    const currentDate: number = Date.now();
+                    const birthday: number = new Date(req.body.birthday).getTime();
+                    const age: number = currentDate - birthday;
+
+                    check = age < DateConstants.EIGHTEEN_YEARS_IN_MILISECONDS;
+                    return check ? Promise.resolve() : Promise.reject();
+                }
+            }
+        },
         duplicate: {
             errorMessage: 'Membro já existe',
             custom: {
@@ -82,6 +100,7 @@ export class ChildValidator extends BaseValidator {
         return ChildValidator.validationList({
             name: ChildValidator.model.name,
             birthday: ChildValidator.model.birthday,
+            minor: ChildValidator.model.minor,
             allowance: ChildValidator.model.allowance,
             parent: ChildValidator.model.parent,
             duplicate: ChildValidator.model.duplicate
