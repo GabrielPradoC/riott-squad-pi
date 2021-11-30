@@ -57,4 +57,30 @@ export class TaskRepository extends BaseRepository {
     public delete(id: string): Promise<DeleteResult> {
         return this.getConnection().getRepository(Task).delete(id);
     }
+
+    /**
+     * findById
+     *
+     * Busca uma task pelo Id
+     *
+     * @param id - Id da task
+     *
+     * @returns Task buscada
+     */
+    public findById(id: number): Promise<Task | undefined> {
+        return this.getConnection().getRepository(Task).findOne({ id });
+    }
+
+    /**
+     * findByParentId
+     *
+     * Busca um grupo de tasks pelo id do parente ligado a elas
+     *
+     * @param parent - Id do parente
+     *
+     * @returns Array com as tasks
+     */
+    public findByParentId(parent: number): Promise<Array<Task> | undefined> {
+        return this.getConnection().getRepository(Task).find({ where: { parent } });
+    }
 }
