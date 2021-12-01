@@ -3,5 +3,5 @@ export enum EnumEndpoints {
     LOGIN_V1 = '/v1/login',
     MEMBER_V1 = '/v1/member',
     TASK_V1 = '/v1/task',
-    LIST_v1 = '/v1/list'
+    LIST_V1 = '/v1/list'
 }

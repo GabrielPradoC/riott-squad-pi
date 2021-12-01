@@ -8,7 +8,7 @@ export class Task extends BaseEntity {
     public id: number;
 
     @Column()
-    public title: string;
+    public description: string;
 
     @ManyToOne(() => User, user => user.createdTasks)
     public parent: User;

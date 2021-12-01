@@ -8,11 +8,11 @@ import { ChildTask } from '../entity';
 import { BaseRepository } from './BaseRepository';
 
 /**
- * TaskRepository
+ * ChildTaskRepository
  *
  * Repositório para tabela de tasks
  */
-export class TaskRepository extends BaseRepository {
+export class ChildTaskRepository extends BaseRepository {
     constructor() {
         super();
         this.entity = ChildTask;
