@@ -56,7 +56,7 @@ export class TaskController extends BaseController {
      * @swagger
      * /v1/task/{taskId}:
      *   get:
-     *     summary: Retorna informações de um membro
+     *     summary: Retorna informações de uma tarefa
      *     tags: [Tasks]
      *     consumes:
      *       - application/json
@@ -64,7 +64,7 @@ export class TaskController extends BaseController {
      *       - application/json
      *     parameters:
      *       - in: path
-     *         name: taksId
+     *         name: taskId
      *         schema:
      *           type: string
      *         required: true
@@ -81,7 +81,7 @@ export class TaskController extends BaseController {
      * @swagger
      * /v1/task:
      *   post:
-     *     summary: Cadastra um membro
+     *     summary: cadastra uma tarefa
      *     tags: [Tasks]
      *     consumes:
      *       - application/json
@@ -93,28 +93,16 @@ export class TaskController extends BaseController {
      *           schema:
      *             type: object
      *             example:
-     *               name: 'varrer a casa'
-     *               allowance: 100.00
-     *               birthday: '10/10/2000'
+     *               description: 'varrer a casa'
      *               parent: 1
-     *               photo: 'photo.jpg'
      *             required:
-     *               - name
-     *               - allowance
-     *               - birthday
-     *               - parent
+     *               - description
      *               - photo
      *             properties:
-     *               name:
+     *               description:
      *                 type: string
      *               parent:
      *                 type: number
-     *               birthday:
-     *                 type: date
-     *               allowance:
-     *                 type: float
-     *               photo:
-     *                 type: file
      *     responses:
      *       $ref: '#/components/responses/baseCreate'
      */
@@ -137,10 +125,10 @@ export class TaskController extends BaseController {
      * @swagger
      * /v1/task/{taskId}:
      *   put:
-     *     summary: Altera um membro
+     *     summary: Altera uma tarefa
      *     tags: [Tasks]
      *     consumes:
-     *       - multipart/form-data
+     *       - application/json
      *     produces:
      *       - application/json
      *     parameters:
@@ -151,26 +139,18 @@ export class TaskController extends BaseController {
      *         required: true
      *     requestBody:
      *       content:
-     *         multipart/form-data:
+     *         application/json
      *           schema:
      *             type: object
      *             example:
-     *               name: nome do membro
-     *               birthday: 2000/01/01
-     *               allowance: 100.00
+     *               description: nova descrição
      *               parent: 1
      *             required:
-     *               - id
-     *               - name
-     *               - allowance
+     *               - description
      *               - parent
      *             properties:
-     *               name:
+     *               description:
      *                 type: string
-     *               birthday:
-     *                 type: string
-     *               allowance:
-     *                 type: float
      *               parent:
      *                 type: int
      *     responses:
@@ -192,7 +172,7 @@ export class TaskController extends BaseController {
      * @swagger
      * /v1/task/{taskId}:
      *   delete:
-     *     summary: Apaga um membro definitivamente
+     *     summary: Apaga uma tarefa
      *     tags: [Tasks]
      *     consumes:
      *       - application/json
@@ -200,7 +180,7 @@ export class TaskController extends BaseController {
      *       - application/json
      *     parameters:
      *       - in: path
-     *         name: memberId
+     *         name: taskId
      *         schema:
      *           type: string
      *         required: true
