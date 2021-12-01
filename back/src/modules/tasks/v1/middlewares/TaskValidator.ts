@@ -13,7 +13,7 @@ import { BaseValidator } from '../../../../library/BaseValidator';
 import { StringUtils } from '../../../../utils';
 
 // Entities
-import { Task, User } from '../../../../library/database/entity';
+import { User } from '../../../../library/database/entity';
 
 /**
  * TaskValidator
