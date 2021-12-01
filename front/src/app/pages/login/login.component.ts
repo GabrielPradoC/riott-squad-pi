@@ -28,10 +28,10 @@ export class LoginComponent {
   login(): void {
     const email: string = this.form.controls['email'].value;
     const password: string = this.form.controls['password'].value;
-    const mensagem: string = LoginService.prototype.loginUsuario(email, password);
+    const mensagem: string = LoginService.loginUsuario(email, password);
 
     /* TESTE LOGIN (CRIA USUÁRIO COM OS DADOS DO INPUT AO CLICAR EM ENTRAR)
-    console.log(LoginService.prototype.abreRequisicao("POST", "http://localhost:4444/v1/user", {
+    console.log(LoginService.abreRequisicao("POST", "http://localhost:4444/v1/user", {
       "name": "aaaa",
       "email": email,
       "password": password
@@ -39,7 +39,7 @@ export class LoginComponent {
     */
 
     if(mensagem === "ok") {
-      this.router.navigate(['/pages/members']);
+      this.router.navigate(['/pages/lists']);
     } else {
       alert(mensagem);
     }
