@@ -2,6 +2,16 @@ import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, Bas
 import { Task } from './Task';
 import { TaskList } from './TaskList';
 
+/**
+ * ChildTask.
+ *
+ * @summary essa classe representa uma tarefa que pertence a uma TaskList.
+ *
+ * @remarks essa entidade tem uma referência a uma Task original e pertence a uma TaskList
+ * @remarks as instancias dessa classe não devem ser criadas diretamente. as rotas de TaskLIst devem gerenciar as instancias dessa classe.
+ *
+ * @extends {BaseEntity}
+ */
 @Entity()
 export class ChildTask extends BaseEntity {
     @PrimaryGeneratedColumn()

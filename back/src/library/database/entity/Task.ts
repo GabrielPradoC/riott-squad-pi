@@ -2,6 +2,14 @@ import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, Bas
 import { ChildTask } from './ChildTask';
 import { User } from './User';
 
+/**
+ * Task.
+ *
+ * @summary Representa uma tarefa criada por um usuário.
+ * @remarks essa não é a entidade que faz parte de uma lista de ativades. Uma lista de ativades contém ChildTasks
+ *
+ * @extends {BaseEntity}
+ */
 @Entity()
 export class Task extends BaseEntity {
     @PrimaryGeneratedColumn()

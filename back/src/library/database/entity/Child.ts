@@ -2,6 +2,14 @@ import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, Bas
 import { TaskList } from './TaskList';
 import { User } from './User';
 
+/**
+ * Child.
+ *
+ * @summary representa um membro
+ *
+ *
+ * @extends {BaseEntity}
+ */
 @Entity()
 export class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
