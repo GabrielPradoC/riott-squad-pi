@@ -10,7 +10,7 @@ import { UserRepository } from '../../../../library/database/repository/UserRepo
 import { BaseValidator } from '../../../../library/BaseValidator';
 
 // Utils
-import { StringUtils } from '../../../../utils';
+import { StringUtils, FileUtils } from '../../../../utils';
 
 // Entities
 import { Child, User } from '../../../../library/database/entity';
@@ -45,8 +45,11 @@ export class ChildValidator extends BaseValidator {
                     let check = false;
 
                     if (req.files && req.files[0]) {
-                        check = true;
-                        req.body.photoRef = req.files[0].buffer;
+                        const { buffer } = req.files[0];
+
+                        check = FileUtils.isPNG(buffer) || FileUtils.isJPG(buffer);
+
+                        req.body.photoRef = buffer.toString('base64');
                     }
 
                     return check ? Promise.resolve() : Promise.reject();

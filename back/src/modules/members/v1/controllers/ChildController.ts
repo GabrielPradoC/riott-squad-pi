@@ -128,7 +128,7 @@ export class ChildController extends BaseController {
             name,
             birthday,
             allowance,
-            photo: photoRef.toString('base64'),
+            photo: photoRef,
             parent: req.body.userRef,
             childTaskList: []
         };
