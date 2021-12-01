@@ -7,22 +7,19 @@ export class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
-    public value: number;
-
     @ManyToOne(() => User, user => user.children)
     public parent: User;
 
     @Column()
     public name: string;
 
-    @Column()
+    @Column('decimal', { precision: 10, scale: 2 })
     public allowance: number;
 
     @Column()
     public birthday: Date;
 
-    @Column()
+    @Column('mediumtext')
     public photo: string;
 
     @OneToMany(() => ChildTaskList, childTaskList => childTaskList.child)
