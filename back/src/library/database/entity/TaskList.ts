@@ -3,7 +3,7 @@ import { Child } from './Child';
 import { ChildTask } from './ChildTask';
 
 @Entity()
-export class ChildTaskList extends BaseEntity {
+export class TaskList extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
@@ -25,7 +25,7 @@ export class ChildTaskList extends BaseEntity {
     @OneToMany(() => ChildTask, childTask => childTask.childTaskList, {
         eager: true
     })
-    public childTask: ChildTask[];
+    public tasks: ChildTask[];
 
     @ManyToOne(() => Child, child => child.childTaskList)
     public child: Child;

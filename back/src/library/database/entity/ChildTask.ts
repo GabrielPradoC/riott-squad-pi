@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity, ManyToOne } from 'typeorm';
 import { Task } from './Task';
-import { ChildTaskList } from './ChildTaskList';
+import { TaskList } from './TaskList';
 
 @Entity()
 export class ChildTask extends BaseEntity {
@@ -15,8 +15,8 @@ export class ChildTask extends BaseEntity {
     @Column()
     public value: number;
 
-    @ManyToOne(() => ChildTaskList, childTaskList => childTaskList.childTask)
-    public childTaskList: ChildTaskList;
+    @ManyToOne(() => TaskList, childTaskList => childTaskList.tasks)
+    public childTaskList: TaskList;
 
     @Column()
     public isMissed: boolean;
