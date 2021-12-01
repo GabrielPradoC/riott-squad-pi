@@ -50,7 +50,13 @@ export class ChildController extends BaseController {
     public async get(req: Request, res: Response): Promise<void> {
         const [rows, count] = await new ChildRepository().list<Child>(ChildController.listParams(req));
 
-        RouteResponse.success({ rows, count }, res);
+        // Não é uma boa idea enviar as imagens aqui.
+        const sanitizedRows = rows.map(row => ({
+            ...row,
+            photo: undefined
+        }));
+
+        RouteResponse.success({ rows: sanitizedRows, count }, res);
     }
 
     /**
