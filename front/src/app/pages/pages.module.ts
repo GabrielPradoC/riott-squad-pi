@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MembersComponent } from "./members/members.component";
 import { MyButtonComponent } from "../@theme/components/my-button/my-button.component";
 import { ListsComponent } from "./lists/lists.component";
+import { HeaderComponent } from "../@theme/components/header/header.component";
 
 @NgModule({
 	imports: [
@@ -21,7 +22,8 @@ import { ListsComponent } from "./lists/lists.component";
 		LoginComponent,
 		MembersComponent,
 		MyButtonComponent,
-		ListsComponent
+		ListsComponent,
+		HeaderComponent
 	],
 	providers: []
 })

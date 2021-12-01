@@ -1,0 +1,15 @@
+#header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 11vh;
+  border-bottom: 1px solid #DEE8EB;
+}
+
+h1 {
+  position: relative;
+  color: #006D77;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 24px 56px;
+}
