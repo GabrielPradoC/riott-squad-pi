@@ -33,7 +33,7 @@ export class TaskController extends BaseController {
      * /v1/task:
      *   get:
      *     summary: Lista todas as tarefas
-     *     description: Esse endpoint lista todas as terefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
+     *     description: Esse endpoint lista todas as tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
      *     consumes:
      *       - application/json
