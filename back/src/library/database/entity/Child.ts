@@ -1,7 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity, OneToMany, ManyToOne } from 'typeorm';
-import { ChildTaskList } from './ChildTaskList';
+import { TaskList } from './TaskList';
 import { User } from './User';
 
+/**
+ * Child.
+ *
+ * @summary representa um membro
+ *
+ *
+ * @extends {BaseEntity}
+ */
 @Entity()
 export class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -22,8 +30,8 @@ export class Child extends BaseEntity {
     @Column('mediumtext')
     public photo: string;
 
-    @OneToMany(() => ChildTaskList, childTaskList => childTaskList.child)
-    public childTaskList: ChildTaskList[];
+    @OneToMany(() => TaskList, childTaskList => childTaskList.child)
+    public childTaskList: TaskList[];
 
     @Column()
     public createdAt: Date;

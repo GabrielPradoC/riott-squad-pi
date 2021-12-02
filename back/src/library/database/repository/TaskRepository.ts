@@ -83,4 +83,17 @@ export class TaskRepository extends BaseRepository {
     public findByParentId(parent: number): Promise<Array<Task> | undefined> {
         return this.getConnection().getRepository(Task).find({ where: { parent } });
     }
+
+    /**
+     * findByName
+     *
+     * Busca uma criança pelo nome
+     *
+     * @param name - Nome da tarefa
+     *
+     * @returns tarefa buscada
+     */
+    public findByName(name: string): Promise<Task | undefined> {
+        return this.getConnection().getRepository(Task).findOne({ name });
+    }
 }
