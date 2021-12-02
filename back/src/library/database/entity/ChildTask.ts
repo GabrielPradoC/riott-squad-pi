@@ -20,7 +20,7 @@ export class ChildTask extends BaseEntity {
     @ManyToOne(() => Task, task => task.childTask, {
         eager: true
     })
-    public task: Task;
+    public content: Task;
 
     @Column('decimal', { default: 0.0, precision: 10, scale: 2 })
     public value: number;

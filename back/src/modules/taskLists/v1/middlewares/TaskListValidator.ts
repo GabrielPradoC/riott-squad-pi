@@ -1,6 +1,6 @@
 // Libraries
 import { RequestHandler } from 'express';
-import { Schema, Meta } from 'express-validator';
+import { Schema } from 'express-validator';
 
 // Repositories
 import { TaskListRepository } from '../../../../library/database/repository/TaskListRepository';
@@ -9,9 +9,6 @@ import { TaskRepository } from '../../../../library/database/repository/TaskRepo
 
 // Validators
 import { BaseValidator } from '../../../../library/BaseValidator';
-
-// Utils
-import { StringUtils } from '../../../../utils';
 
 // Entities
 import { Child, Task } from '../../../../library/database/entity';
@@ -48,13 +45,9 @@ export class TaskListValidator extends BaseValidator {
             in: 'body',
             isInt: true,
             custom: {
-                options: async (value: string, { req }: Meta) => {
+                options: async (value: string) => {
                     const repository: ChildRepository = new ChildRepository();
                     const child: Child | undefined = await repository.findOne(value);
-
-                    const refName: string = StringUtils.firstLowerCase(repository.constructor.name.replace('Repository', ''));
-
-                    req.body[`${refName}Ref`] = child;
 
                     return child ? Promise.resolve() : Promise.reject();
                 }
@@ -68,13 +61,9 @@ export class TaskListValidator extends BaseValidator {
         'tasks.*.task': {
             isInt: true,
             custom: {
-                options: async (value: string, { req }: Meta) => {
+                options: async (value: string) => {
                     const repository: TaskRepository = new TaskRepository();
                     const task: Task | undefined = await repository.findOne(value);
-
-                    const refName: string = StringUtils.firstLowerCase(repository.constructor.name.replace('Repository', ''));
-
-                    req.body[`${refName}Ref`] = task;
 
                     return task ? Promise.resolve() : Promise.reject();
                 }

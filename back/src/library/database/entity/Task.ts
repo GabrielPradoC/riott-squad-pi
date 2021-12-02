@@ -21,7 +21,7 @@ export class Task extends BaseEntity {
     @ManyToOne(() => User, user => user.createdTasks)
     public parent: User;
 
-    @OneToMany(() => ChildTask, childTask => childTask.task)
+    @OneToMany(() => ChildTask, childTask => childTask.content)
     public childTask: ChildTask[];
 
     @Column()

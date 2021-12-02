@@ -130,7 +130,7 @@ export class TaskListController extends BaseController {
         // popular o campo de tarefas
         newTaskList.tasks = tasks.map((task: any) => {
             const newChildTask: ChildTask = new ChildTask();
-            newChildTask.task = task.task;
+            newChildTask.content = task.task;
             newChildTask.value = task.value;
             newChildTask.childTaskList = newTaskList;
 
