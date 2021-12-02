@@ -6,15 +6,13 @@ import { Injectable } from "@angular/core";
 export class LoginService {
     static url: string = "http://localhost:4444/";
 
-    constructor(){ }
-
     /**
      * Realiza a autenticação do usuário
      * @param email - email inserido pelo usuário
      * @param password - password inserido pelo usuário
      * @returns string indicando sucesso ou erro de autenticação
      */
-    loginUsuario(email: string, password: string) : string {
+    static loginUsuario(email: string, password: string) : string {
         event.preventDefault();
 
         let resposta: any;
@@ -26,16 +24,15 @@ export class LoginService {
             "password": password
         };
 
-        resposta = this.abreRequisicao(tipo, urlLogin, body);
+        resposta = LoginService.abreRequisicao(tipo, urlLogin, body);
 
         if(resposta.status === true) {
             mensagem = "ok";
             localStorage.setItem("token", resposta.data.token);
             //sessionStorage.setItem("token", resposta.data.token);
         } else {
-            mensagem = resposta.error;
+            mensagem = resposta.error[0].msg;
         }
-
         return mensagem;
     }
 
@@ -46,7 +43,7 @@ export class LoginService {
      * @param body - dados a serem enviados
      * @returns - retorno da requisição
      */
-    abreRequisicao(tipo: string, url: string, body: any) :  string {
+    static abreRequisicao(tipo: string, url: string, body: any) :  string {
         let request: XMLHttpRequest = new XMLHttpRequest();
 
         request.open(tipo, url, false);
