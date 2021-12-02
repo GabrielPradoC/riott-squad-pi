@@ -22,6 +22,9 @@ import { TaskListRepository } from '../../../../library/database/repository';
 // Validators
 import { TaskListValidator } from '../middlewares/TaskListValidator';
 
+// Enums
+import { EnumTaskListState } from '../../../../models/EnumTaskListState';
+
 @Controller(EnumEndpoints.LIST_V1)
 export class TaskListController extends BaseController {
     /**
@@ -175,6 +178,7 @@ export class TaskListController extends BaseController {
      * /v1/task/{listId}:
      *   patch:
      *     summary: Altera uma lista de tarefas
+     *     description: Esse endpoint ***não*** deve ser usado para marcar uma tarefa como missed. Também é importante notar que é se o campo state não for ONHOLD. a unica mudança que é aceito no campo state
      *     tags: [Lists]
      *     consumes:
      *       - application/json
@@ -194,6 +198,9 @@ export class TaskListController extends BaseController {
      *             example:
      *               name: novo nome
      *               state: "STARTED | FINISHED | ONHOLD"
+     *               tasks: [{task: 1, value: 30.00}, {task: 2, value: 100.00}]
+     *               dateStart: '10/10/2000'
+     *               dateEnd : '10/11/2021'
      *             properties:
      *               name:
      *                 type: string
@@ -209,6 +216,19 @@ export class TaskListController extends BaseController {
 
         taskList.name = req.body.name || taskList.name;
         taskList.state = req.body.state || taskList.state;
+        taskList.dateStart = req.body.dateStart || taskList.dateStart;
+        taskList.dateEnd = req.body.dateEnd || taskList.dateEnd;
+
+        if (req.body.tasks) {
+            taskList.tasks = req.body.tasks.map((task: any) => {
+                const newChildTask: ChildTask = new ChildTask();
+                newChildTask.content = task.task;
+                newChildTask.value = task.value;
+                newChildTask.childTaskList = taskList;
+
+                return newChildTask;
+            });
+        }
 
         await new TaskListRepository().update(taskList);
 

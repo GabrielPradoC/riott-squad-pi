@@ -1,6 +1,6 @@
 // Libraries
 import { RequestHandler } from 'express';
-import { Schema } from 'express-validator';
+import { Schema, Meta } from 'express-validator';
 
 // Repositories
 import { TaskListRepository } from '../../../../library/database/repository/TaskListRepository';
@@ -130,7 +130,28 @@ export class TaskListValidator extends BaseValidator {
                 },
                 optional: true,
                 errorMessage: 'Nome invalido'
-            }
+            },
+            dateStart: TaskListValidator.model.dateStart,
+            dateEnd: TaskListValidator.model.dateEnd,
+            notStarted: {
+                custom: {
+                    options: async (_value: string, { req }: Meta) => {
+                        const { state } = req.body.taskListRef;
+
+                        if (state !== EnumTaskListState.ONHOLD) {
+                            // Se o estado não for onhold a uníca mudança valida é modificar o estado.
+                            if (req.body.name || req.body.tasks || req.body.dateStart || req.body.dateEnd) {
+                                return Promise.reject();
+                            }
+                        }
+                        return Promise.resolve();
+                    }
+                },
+                errorMessage: 'A lista só pode ser modificada quando seu estado é ONHOLD'
+            },
+            tasks: { ...TaskListValidator.model.tasks, optional: true },
+            'tasks.*.task': TaskListValidator.model['tasks.*.task'],
+            'tasks.*.value': TaskListValidator.model['tasks.*.value']
         });
     }
 
