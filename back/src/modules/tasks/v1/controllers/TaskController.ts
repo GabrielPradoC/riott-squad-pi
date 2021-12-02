@@ -139,7 +139,7 @@ export class TaskController extends BaseController {
      *         required: true
      *     requestBody:
      *       content:
-     *         application/json
+     *         application/json:
      *           schema:
      *             type: object
      *             example:
