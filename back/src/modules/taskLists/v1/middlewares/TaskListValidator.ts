@@ -13,6 +13,9 @@ import { BaseValidator } from '../../../../library/BaseValidator';
 // Entities
 import { Child, Task } from '../../../../library/database/entity';
 
+// Enums
+import { EnumTaskListState } from '../../../../models/EnumTaskListState';
+
 /**
  * TaskListValidator
  *
@@ -39,8 +42,8 @@ export class TaskListValidator extends BaseValidator {
             ...BaseValidator.validators.id(new TaskListRepository()),
             errorMessage: 'Lista não encontrada'
         },
-        dateStart: { in: 'body', isDate: true, errorMessage: 'Data de inicio invalida' },
-        dateEnd: { in: 'body', isDate: true, errorMessage: 'Data de fim invalida' },
+        dateStart: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Data de inicio invalida' },
+        dateEnd: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Data de fim invalida' },
         member: {
             in: 'body',
             isInt: true,
@@ -94,16 +97,40 @@ export class TaskListValidator extends BaseValidator {
     }
 
     /**
-     * put
+     * patch
      *
      * @summary retorna basicamente todos os validadores de model, menos o duplicate.
      *
      * @returns Lista de validadores
      */
-    public static put(): RequestHandler[] {
+    public static patch(): RequestHandler[] {
         return TaskListValidator.validationList({
             id: TaskListValidator.model.id,
-            ...TaskListValidator.model
+            state: {
+                in: 'body',
+                isString: true,
+                optional: true,
+                custom: {
+                    options: (value: string) => {
+                        if (value in EnumTaskListState) {
+                            return Promise.resolve();
+                        }
+                        return Promise.reject();
+                    }
+                },
+                errorMessage: 'Estado invalido (deve ser um de: STARTED | FINISHED | ONHOLD)'
+            },
+            name: {
+                in: 'body',
+                isString: true,
+                isLength: {
+                    options: {
+                        min: 3
+                    }
+                },
+                optional: true,
+                errorMessage: 'Nome invalido'
+            }
         });
     }
 

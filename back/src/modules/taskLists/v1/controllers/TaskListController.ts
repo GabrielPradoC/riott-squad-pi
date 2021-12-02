@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import { BaseController } from '../../../../library';
 
 // Decorators
-import { Controller, Delete, Get, Middlewares, Post, Put } from '../../../../decorators';
+import { Controller, Delete, Get, Middlewares, Post, Patch } from '../../../../decorators';
 
 // Models
 import { EnumEndpoints } from '../../../../models';
@@ -169,5 +169,50 @@ export class TaskListController extends BaseController {
         await new TaskListRepository().delete(id);
 
         RouteResponse.success({ id }, res);
+    }
+
+    /**
+     * @swagger
+     * /v1/task/{listId}:
+     *   patch:
+     *     summary: Altera uma lista de tarefas
+     *     tags: [Lists]
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: listId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     requestBody:
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             example:
+     *               name: novo nome
+     *               state: "STARTED | FINISHED | ONHOLD"
+     *             properties:
+     *               name:
+     *                 type: string
+     *               state:
+     *                 string: string
+     *     responses:
+     *       $ref: '#/components/responses/baseEmpty'
+     */
+    @Patch('/:id')
+    @Middlewares(TaskListValidator.patch())
+    public async update(req: Request, res: Response): Promise<void> {
+        const taskList: TaskList = req.body.taskListRef;
+
+        taskList.name = req.body.name || taskList.name;
+        taskList.state = req.body.state || taskList.state;
+
+        await new TaskListRepository().update(taskList);
+
+        RouteResponse.successEmpty(res);
     }
 }

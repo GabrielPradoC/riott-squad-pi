@@ -86,6 +86,31 @@ export class ChildController extends BaseController {
 
     /**
      * @swagger
+     * /v1/member/{memberId}/lists:
+     *   get:
+     *     summary: Retorna as listas pertencentes a um membro.
+     *     tags: [Members, Lists]
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: memberId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/lists')
+    @Middlewares(ChildValidator.onlyId())
+    public async getLists(req: Request, res: Response): Promise<void> {
+        RouteResponse.success(req.body.childRef.taskLists, res);
+    }
+
+    /**
+     * @swagger
      * /v1/member:
      *   post:
      *     summary: Cadastra um membro
@@ -102,7 +127,7 @@ export class ChildController extends BaseController {
      *             example:
      *               name: 'João'
      *               allowance: 100.00
-     *               birthday: '10/10/2000'
+     *               birthday: '10/10/2005'
      *               parent: 1
      *               photo: 'photo.jpg'
      *             required:
@@ -167,7 +192,7 @@ export class ChildController extends BaseController {
      *             type: object
      *             example:
      *               name: nome do membro
-     *               birthday: 2000/01/01
+     *               birthday: 10/10/2006
      *               allowance: 100.00
      *               parent: 1
      *             required:
