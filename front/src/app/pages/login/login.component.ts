@@ -1,53 +1,47 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import{ LoginService } from "../../@core/services/login.service"
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  public form: FormGroup;
 
-  /**
-   * Pega o email e senha do formulário e cria o body para a requisição
-   */
-  loginUsuario() {
-      event.preventDefault();
-      let url: string = "api/login";
-      let email: string = document.getElementById("email").accessKey;
-      let password: string = document.getElementById("password").accessKey;
-      let body = {
-          "email": email,
-          "password": password
-      }
-
-      console.log(password);
-      console.log(email);
-
-      this.fazPost(url, body);
-      //aqui guardar o retorno da requisição no localstore
+  constructor(private fb: FormBuilder, private router: Router) {
+    this.form = this.fb.group({
+      email: ['', Validators.compose([
+        Validators.email,
+        Validators.required
+      ])],
+      password: ['', Validators.compose([
+        Validators.minLength(8),
+        Validators.maxLength(100),
+        Validators.required
+      ])]
+    });
   }
 
-  /**
-   * Abre uma requisição do tipo POST e envia os dados
-   * @param url - caminho especificado da requisição
-   * @param body - dados a serem enviados
-   * @returns resposta da requisição
-   */
-  fazPost(url, body) {
-    console.log("Body = ", body);
+  login(): void {
+    const email: string = this.form.controls['email'].value;
+    const password: string = this.form.controls['password'].value;
+    const mensagem: string = LoginService.loginUsuario(email, password);
 
-    let request: XMLHttpRequest = new XMLHttpRequest();
-    request.open("POST", url, true);
-    request.setRequestHeader("Content-type", "application/json");
-    request.send(JSON.stringify(body));
+    /* TESTE LOGIN (CRIA USUÁRIO COM OS DADOS DO INPUT AO CLICAR EM ENTRAR)
+    console.log(LoginService.abreRequisicao("POST", "http://localhost:4444/v1/user", {
+      "name": "aaaa",
+      "email": email,
+      "password": password
+    }));
+    */
 
-    request.onload = function() {
-        console.log(this.responseText)
-        //mostra a resposta quando voltar
-        //chamar a pag listas aqui
+    if(mensagem === "ok") {
+      this.router.navigate(['/pages/lists']);
+    } else {
+      alert(mensagem);
     }
-
-    return request.responseText;
   }
-
 }

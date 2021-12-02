@@ -1,0 +1,50 @@
+#header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-between; 
+  height: 11vh;
+  border-bottom: 1px solid #DEE8EB;
+}
+
+h1 {
+  position: relative;
+  color: #006D77;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 24px 56px;
+}
+
+#menu {
+  display: flex;
+  flex-direction: row;
+  margin-right: 56px;
+}
+
+a {
+  position: relative;
+  font-size: 16px;
+  text-align: center;
+  color: #7C8D93;
+  text-decoration: none;
+  margin-left: 23px;
+}
+
+a:hover, .ativo {
+  font-weight: bold;
+  color: #006D77;
+}
+
+.ativo .underline{
+  height: 4px;
+  background-color: #E29578;
+  border-radius: 30px;
+}
+
+div {
+  margin-top: 8px;
+}
+
+#sair {
+  color: #E29578;
+}

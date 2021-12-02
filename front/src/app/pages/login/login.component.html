@@ -1,38 +1,36 @@
-<link href="login.component.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-<div id="div-login">
-    <div id="div1-login">
-        <h1>
-            Seu time em harmonia.
-        </h1>
+<div id="container">
+    <div id="img">
+        <h1 class="phrase">Seu time em harmonia.</h1>
     </div>
 
-    <div id="div2-login">
-        <h2>
-            RIOTT
-        </h2>
+    <div id="form">
+        <h1 class="title">RIOTT</h1>
 
-        <p>
-            Controle as tarefas e mesada dos seus filhos para manter a casa em harmonia.
-        </p>
+        <p class="description">Controle as tarefas e mesada dos seus filhos para manter a casa em harmonia.</p>
 
-        <form onsubmit="loginUsuario()">
-            <div class="input">
-                <input type="string" id="email" placeholder=" " required>
+        <form [formGroup]="form">
+            <div class="field">
+                <input
+                    type="string"
+                    id="email"
+                    placeholder=" "
+                    formControlName="email"
+                >
                 <label for="email">E-mail</label>
             </div>
-            <div class="input">
-                <input type="password" id="password" placeholder=" " required>
+            <div class="field">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder=" "
+                    minlength="8"
+                    maxlength="100"
+                    formControlName="password"
+                >
                 <label for="password">Senha</label>
             </div>
         
-            <button type="submit">Entrar</button>
+            <app-my-button [disabled]="form.invalid" customClass="green login-page" text="Entrar" (click)="login()" ></app-my-button>
         </form>
     </div>
-
-
 </div>
-<script src="login.component.ts"></script>

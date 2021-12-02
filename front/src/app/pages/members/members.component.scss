@@ -1,0 +1,112 @@
+.container {
+  margin: 1.5rem 3.6rem 0 3.6rem;
+}
+
+.initial {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .title-members {
+    color: #3b4244;
+  }
+}
+
+.members {
+  margin-top: 1.4rem;
+  padding-right: 1.8rem;
+  overflow-y: auto;
+
+  height: 83vh;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+
+  .member {
+    display: flex;
+    justify-content: space-between;
+
+    border: 1px solid #dee8eb;
+    border-radius: 0.3rem;
+
+    padding: 1.5rem 2rem;
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 5rem;
+
+      .member-personal-information {
+        display: flex;
+        gap: 10rem;
+
+        div:first-child {
+          display: flex;
+          align-items: center;
+          gap: 4rem;
+
+          img {
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+          }
+
+          .member-name {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+
+            label {
+              color: #7c8d93;
+            }
+          }
+        }
+
+        .member-birth-date {
+          display: flex;
+          flex-direction: column;
+          gap: 0.7rem;
+
+          label {
+            color: #7c8d93;
+          }
+        }
+      }
+      
+      .allowance {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+
+        label {
+          color: #7c8d93;
+        }
+      }
+    }
+
+    .member-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  // scrollbar
+
+  &::-webkit-scrollbar-track {
+    background-color: #dee8eb;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0.6rem;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: #b5c5ca;
+    border-radius: 10px;
+  }
+  
+}

@@ -1,18 +1,21 @@
-import { ExampleComponent } from './example/example.component';
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { PagesComponent } from "./pages.component";
+import { LoginComponent } from './login/login.component';
+import { MembersComponent } from "./members/members.component";
+import { ListsComponent } from "./lists/lists.component";
 
 const routes: Routes = [
 	{
-		path: '',
-		component: PagesComponent,
-        children: [
-			{
-				path: 'example',
-				component: ExampleComponent,
-			},
-        ],
+		path: 'login',
+		component: LoginComponent,
+	},
+	{
+		path: 'lists',
+		component: ListsComponent,
+	},
+	{
+		path: 'members',
+		component: MembersComponent,
 	},
 ];
 
