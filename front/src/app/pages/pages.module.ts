@@ -9,6 +9,8 @@ import { MembersComponent } from "./members/members.component";
 import { MyButtonComponent } from "../@theme/components/my-button/my-button.component";
 import { ListsComponent } from "./lists/lists.component";
 import { HeaderComponent } from "../@theme/components/header/header.component";
+import { HistoryComponent } from "./history/history.component";
+import { TasksComponent } from "./tasks/tasks.component";
 
 @NgModule({
 	imports: [
@@ -23,7 +25,9 @@ import { HeaderComponent } from "../@theme/components/header/header.component";
 		MembersComponent,
 		MyButtonComponent,
 		ListsComponent,
-		HeaderComponent
+		HeaderComponent,
+		HistoryComponent,
+		TasksComponent
 	],
 	providers: []
 })
