@@ -4,4 +4,3 @@ export { UserRepository } from './UserRepository';
 export { ChildRepository } from './ChildRepository';
 export { ChildTaskRepository } from './ChildTaskRepository';
 export { TaskRepository } from './TaskRepository';
-
