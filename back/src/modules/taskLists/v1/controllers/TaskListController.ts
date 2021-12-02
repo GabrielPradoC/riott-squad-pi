@@ -93,13 +93,13 @@ export class TaskListController extends BaseController {
      *               name: 'LISTA 1'
      *               dateStart: '10/10/2000'
      *               dateEnd: '10/11/2000'
-     *               child: 1
+     *               member: 1
      *               tasks: [{task: 1, value: 30.00}, {task: 2, value: 100.00}]
      *             required:
      *               - name
      *               - dateStart
      *               - dateEnd
-     *               - child
+     *               - member
      *               - tasks
      *             properties:
      *               name:
@@ -108,7 +108,7 @@ export class TaskListController extends BaseController {
      *                 type: date
      *               dateEnd:
      *                 type: date
-     *               child:
+     *               member:
      *                 type: integer
      *               tasks:
      *                 type: array
@@ -118,14 +118,14 @@ export class TaskListController extends BaseController {
     @Post()
     @Middlewares(TaskListValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
-        const { name, dateStart, dateEnd, child, tasks } = req.body;
+        const { name, dateStart, dateEnd, member, tasks } = req.body;
 
         // criar a lista de atividades
         const newTaskList: TaskList = new TaskList();
         newTaskList.name = name;
         newTaskList.dateStart = dateStart;
         newTaskList.dateEnd = dateEnd;
-        newTaskList.child = child;
+        newTaskList.member = member;
 
         // popular o campo de tarefas
         newTaskList.tasks = tasks.map((task: any) => {

@@ -38,7 +38,7 @@ export class TaskList extends BaseEntity {
     public tasks: ChildTask[];
 
     @ManyToOne(() => Child, child => child.taskLists)
-    public child: Child;
+    public member: Child;
 
     @Column()
     public createdAt: Date;

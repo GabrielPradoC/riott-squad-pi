@@ -39,9 +39,9 @@ export class TaskListValidator extends BaseValidator {
             ...BaseValidator.validators.id(new TaskListRepository()),
             errorMessage: 'Lista não encontrada'
         },
-        dateStart: { in: 'body', isDate: true, errorMessage: 'Aniversário Invalido' },
-        dateEnd: { in: 'body', isDate: true, errorMessage: 'Aniversário Invalido' },
-        child: {
+        dateStart: { in: 'body', isDate: true, errorMessage: 'Data de inicio invalida' },
+        dateEnd: { in: 'body', isDate: true, errorMessage: 'Data de fim invalida' },
+        member: {
             in: 'body',
             isInt: true,
             custom: {
@@ -52,7 +52,7 @@ export class TaskListValidator extends BaseValidator {
                     return child ? Promise.resolve() : Promise.reject();
                 }
             },
-            errorMessage: 'Id do responsavel invalido'
+            errorMessage: 'Id do membro invalido'
         },
         tasks: {
             in: 'body',
@@ -86,7 +86,7 @@ export class TaskListValidator extends BaseValidator {
             name: TaskListValidator.model.name,
             dateStart: TaskListValidator.model.dateStart,
             dateEnd: TaskListValidator.model.dateEnd,
-            child: TaskListValidator.model.child,
+            member: TaskListValidator.model.member,
             tasks: TaskListValidator.model.tasks,
             'tasks.*.task': TaskListValidator.model['tasks.*.task'],
             'tasks.*.value': TaskListValidator.model['tasks.*.value']
