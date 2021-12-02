@@ -113,6 +113,33 @@ export class UserController extends BaseController {
 
     /**
      * @swagger
+     * /v1/user/{userId}/tasks:
+     *   get:
+     *     summary: Retorna todas as tarefas pertencentes a um usuário
+     *     tags: [Users, Tasks]
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: userId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/tasks')
+    @PublicRoute()
+    @Middlewares(UserValidator.onlyId())
+    public async getTasks(req: Request, res: Response): Promise<void> {
+        const { createdTasks } = req.body.userRef;
+        RouteResponse.success({ createdTasks }, res);
+    }
+
+    /**
+     * @swagger
      * /v1/user:
      *   post:
      *     summary: Cadastra um usuário
