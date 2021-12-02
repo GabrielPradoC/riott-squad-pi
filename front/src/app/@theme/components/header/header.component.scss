@@ -30,12 +30,12 @@ a {
   margin-right: 23px;
 }
 
-a:hover, .ativo {
+a:hover, a.active {
   font-weight: bold;
   color: #006D77;
 }
 
-.ativo .underline{
+a.active .underline{
   height: 4px;
   background-color: #E29578;
   border-radius: 30px;

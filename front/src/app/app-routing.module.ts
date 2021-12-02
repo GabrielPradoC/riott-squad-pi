@@ -6,7 +6,7 @@ const routes: Routes = [
 		path: 'pages',
 		loadChildren: (): Promise<NgModuleFactory<any> | Type<any> | any> => import('./pages/pages.module').then(module => module.PagesModule),
 	},
-    { path: '**', redirectTo: 'pages' },
+    
 ];
 
 @NgModule({
