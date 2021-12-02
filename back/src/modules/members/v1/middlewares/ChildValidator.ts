@@ -27,7 +27,7 @@ export class ChildValidator extends BaseValidator {
     /**
      * model
      *
-     * Schema para validação no controller de usuários
+     * Schema para validação no controller de membros
      */
     private static model: Schema = {
         name: BaseValidator.validators.name,

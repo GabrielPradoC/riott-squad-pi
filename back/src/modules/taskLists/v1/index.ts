@@ -1,2 +1,2 @@
-export { TaskValidator } from './middlewares/TaskValidator';
-export { TaskController } from './controllers/TaskController';
+export { TaskListValidator } from './middlewares/TaskListValidator';
+export { TaskListController } from './controllers/TaskListController';

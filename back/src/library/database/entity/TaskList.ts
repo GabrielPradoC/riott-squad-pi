@@ -32,11 +32,12 @@ export class TaskList extends BaseEntity {
     public state: EnumTaskListState;
 
     @OneToMany(() => ChildTask, childTask => childTask.childTaskList, {
-        eager: true
+        eager: true,
+        cascade: true
     })
     public tasks: ChildTask[];
 
-    @ManyToOne(() => Child, child => child.childTaskList)
+    @ManyToOne(() => Child, child => child.taskLists)
     public child: Child;
 
     @Column()

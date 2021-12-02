@@ -18,6 +18,10 @@ export class TaskListRepository extends BaseRepository {
         this.entity = TaskList;
     }
 
+    public save(taskList: TaskList): Promise<TaskList> {
+        return this.getConnection().getRepository(TaskList).save(taskList);
+    }
+
     /**
      * insert
      *
