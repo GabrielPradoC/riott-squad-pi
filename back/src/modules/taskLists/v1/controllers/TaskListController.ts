@@ -17,10 +17,11 @@ import { RouteResponse } from '../../../../routes';
 import { TaskList, ChildTask } from '../../../../library/database/entity';
 
 // Repositories
-import { TaskListRepository } from '../../../../library/database/repository';
+import { TaskListRepository, ChildTaskRepository } from '../../../../library/database/repository';
 
 // Validators
 import { TaskListValidator } from '../middlewares/TaskListValidator';
+import { ChildTaskValidator } from '../middlewares/ChildTaskValidator';
 
 @Controller(EnumEndpoints.LIST_V1)
 export class TaskListController extends BaseController {
@@ -180,7 +181,7 @@ export class TaskListController extends BaseController {
 
     /**
      * @swagger
-     * /v1/task/{listId}:
+     * /v1/list/{listId}:
      *   patch:
      *     summary: Altera uma lista de tarefas
      *     description: Esse endpoint ***não*** deve ser usado para marcar uma tarefa como missed. Também é importante notar que é se o campo state não for ONHOLD. a unica mudança que é aceito no campo state
@@ -238,6 +239,52 @@ export class TaskListController extends BaseController {
         }
 
         await new TaskListRepository().update(taskList);
+
+        RouteResponse.successEmpty(res);
+    }
+
+    /**
+     * @swagger
+     * /v1/list/task/{taskId}:
+     *   patch:
+     *     summary: Marca uma tarefa como missed(ou desmarca)
+     *     description: Esse endpoint ***deve*** ser usado para marcar uma tarefa como missed. é importante passar o id da tarefa que existe na lista. não da tarefa generica, que existe no User
+     *     tags: [Lists]
+     *     security:
+     *       - BearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: taskId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     requestBody:
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             example:
+     *               isMissed : true
+     *             properties:
+     *               name:
+     *                 type: string
+     *               state:
+     *                 string: string
+     *     responses:
+     *       $ref: '#/components/responses/baseEmpty'
+     */
+    @Patch('/task/:id')
+    @Middlewares(ChildTaskValidator.patch())
+    public async updateTask(req: Request, res: Response): Promise<void> {
+        const { childTaskRef, isMissed } = req.body;
+
+        childTaskRef.isMissed = isMissed;
+
+        await new ChildTaskRepository().update(childTaskRef);
 
         RouteResponse.successEmpty(res);
     }

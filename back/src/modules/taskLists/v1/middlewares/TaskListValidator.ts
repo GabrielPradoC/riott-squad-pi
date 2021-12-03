@@ -25,7 +25,7 @@ export class TaskListValidator extends BaseValidator {
     /**
      * model
      *
-     * Schema para validação no controller de usuários
+     * Schema para validação no controller de taskLists
      */
     private static model: Schema = {
         name: {
