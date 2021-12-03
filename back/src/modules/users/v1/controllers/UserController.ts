@@ -86,6 +86,33 @@ export class UserController extends BaseController {
 
     /**
      * @swagger
+     * /v1/user/{userId}/members:
+     *   get:
+     *     summary: Retorna todos os membros pertencentes a um usuário
+     *     tags: [Users, Members]
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: userId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/members')
+    @PublicRoute()
+    @Middlewares(UserValidator.onlyId())
+    public async getChildren(req: Request, res: Response): Promise<void> {
+        const { children } = req.body.userRef;
+        RouteResponse.success({ children }, res);
+    }
+
+    /**
+     * @swagger
      * /v1/user:
      *   post:
      *     summary: Cadastra um usuário
