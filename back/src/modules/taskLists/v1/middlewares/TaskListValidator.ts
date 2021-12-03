@@ -131,8 +131,8 @@ export class TaskListValidator extends BaseValidator {
                 optional: true,
                 errorMessage: 'Nome invalido'
             },
-            dateStart: TaskListValidator.model.dateStart,
-            dateEnd: TaskListValidator.model.dateEnd,
+            dateStart: { ...TaskListValidator.model.dateStart, optional: true },
+            dateEnd: { ...TaskListValidator.model.dateEnd, optional: true },
             notStarted: {
                 custom: {
                     options: async (_value: string, { req }: Meta) => {
