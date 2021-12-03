@@ -38,6 +38,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Lista os usuários
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -64,6 +66,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Retorna informações de um usuário
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -90,6 +94,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Retorna todos os membros pertencentes a um usuário
      *     tags: [Users, Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -117,6 +123,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Retorna todas as tarefas pertencentes a um usuário
      *     tags: [Users, Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -194,6 +202,8 @@ export class UserController extends BaseController {
      *   put:
      *     summary: Altera um usuário
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -236,6 +246,8 @@ export class UserController extends BaseController {
      *   delete:
      *     summary: Apaga um usuário definitivamente
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:

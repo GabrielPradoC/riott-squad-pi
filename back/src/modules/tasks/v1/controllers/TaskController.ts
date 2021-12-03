@@ -35,6 +35,8 @@ export class TaskController extends BaseController {
      *     summary: Lista todas as tarefas
      *     description: Esse endpoint lista todas as tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -60,6 +62,8 @@ export class TaskController extends BaseController {
      *     summary: Retorna informações de uma tarefa
      *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -86,6 +90,8 @@ export class TaskController extends BaseController {
      *     summary: cadastra uma tarefa
      *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -131,6 +137,8 @@ export class TaskController extends BaseController {
      *     summary: Altera uma tarefa
      *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -179,6 +187,8 @@ export class TaskController extends BaseController {
      *     summary: Apaga uma tarefa
      *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:

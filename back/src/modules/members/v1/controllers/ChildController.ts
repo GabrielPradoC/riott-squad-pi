@@ -34,6 +34,8 @@ export class ChildController extends BaseController {
      *   get:
      *     summary: Lista os membros
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -65,6 +67,8 @@ export class ChildController extends BaseController {
      *   get:
      *     summary: Retorna informações de um membro
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -90,6 +94,8 @@ export class ChildController extends BaseController {
      *   get:
      *     summary: Retorna as listas pertencentes a um membro.
      *     tags: [Members, Lists]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -114,6 +120,8 @@ export class ChildController extends BaseController {
      * /v1/member:
      *   post:
      *     summary: Cadastra um membro
+     *     security:
+     *       - BearerAuth: []
      *     tags: [Members]
      *     consumes:
      *       - multipart/form-data
@@ -161,7 +169,7 @@ export class ChildController extends BaseController {
             allowance,
             photo: photoRef,
             parent: req.body.userRef,
-            childTaskList: []
+            taskLists: []
         };
 
         await new ChildRepository().insert(newChild);
@@ -175,6 +183,8 @@ export class ChildController extends BaseController {
      *   put:
      *     summary: Altera um membro
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - multipart/form-data
      *     produces:
@@ -233,6 +243,8 @@ export class ChildController extends BaseController {
      *   delete:
      *     summary: Apaga um membro definitivamente
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:

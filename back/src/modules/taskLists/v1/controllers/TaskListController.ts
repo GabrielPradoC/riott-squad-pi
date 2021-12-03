@@ -22,9 +22,6 @@ import { TaskListRepository } from '../../../../library/database/repository';
 // Validators
 import { TaskListValidator } from '../middlewares/TaskListValidator';
 
-// Enums
-import { EnumTaskListState } from '../../../../models/EnumTaskListState';
-
 @Controller(EnumEndpoints.LIST_V1)
 export class TaskListController extends BaseController {
     /**
@@ -33,6 +30,8 @@ export class TaskListController extends BaseController {
      *   get:
      *     summary: Lista as listas de atividades
      *     tags: [Lists]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -57,6 +56,8 @@ export class TaskListController extends BaseController {
      *   get:
      *     summary: Retorna informações de uma lista de atividades
      *     tags: [Lists]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -82,6 +83,8 @@ export class TaskListController extends BaseController {
      *   post:
      *     summary: Cadastra uma lista de atividaes
      *     tags: [Lists]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -150,6 +153,8 @@ export class TaskListController extends BaseController {
      *   delete:
      *     summary: Apaga uma lista
      *     tags: [Lists]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -180,6 +185,8 @@ export class TaskListController extends BaseController {
      *     summary: Altera uma lista de tarefas
      *     description: Esse endpoint ***não*** deve ser usado para marcar uma tarefa como missed. Também é importante notar que é se o campo state não for ONHOLD. a unica mudança que é aceito no campo state
      *     tags: [Lists]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
