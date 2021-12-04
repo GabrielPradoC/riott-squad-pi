@@ -1,7 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, BaseEntity, ManyToOne } from 'typeorm';
 import { Task } from './Task';
-import { ChildTaskList } from './ChildTaskList';
+import { TaskList } from './TaskList';
 
+/**
+ * ChildTask.
+ *
+ * @summary essa classe representa uma tarefa que pertence a uma TaskList.
+ *
+ * @remarks essa entidade tem uma referência a uma Task original e pertence a uma TaskList
+ * @remarks as instancias dessa classe não devem ser criadas diretamente. as rotas de TaskLIst devem gerenciar as instancias dessa classe.
+ *
+ * @extends {BaseEntity}
+ */
 @Entity()
 export class ChildTask extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -15,8 +25,8 @@ export class ChildTask extends BaseEntity {
     @Column()
     public value: number;
 
-    @ManyToOne(() => ChildTaskList, childTaskList => childTaskList.childTask)
-    public childTaskList: ChildTaskList;
+    @ManyToOne(() => TaskList, childTaskList => childTaskList.tasks)
+    public childTaskList: TaskList;
 
     @Column()
     public isMissed: boolean;

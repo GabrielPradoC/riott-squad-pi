@@ -2,9 +2,18 @@ import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, Bas
 import { Child } from './Child';
 import { Task } from './Task';
 
+/**
+ * User.
+ *
+ * @summary Representa um Usuario.
+ * @remarks as relations dessa entitade são eager.
+ * @see https://orkhan.gitbook.io/typeorm/docs/eager-and-lazy-relations
+ *
+ * @extends {BaseEntity}
+ */
 @Entity()
 export class User extends BaseEntity {
-    @PrimaryGeneratedColumn() // Alterar para @PrimaryGeneratedColumn em caso de banco diferente do MongoDB
+    @PrimaryGeneratedColumn()
     public id: number;
 
     @Column({ unique: true })

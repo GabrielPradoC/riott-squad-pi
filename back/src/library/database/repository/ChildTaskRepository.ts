@@ -10,7 +10,7 @@ import { BaseRepository } from './BaseRepository';
 /**
  * ChildTaskRepository
  *
- * Repositório para tabela de childTasks
+ * Repositório para tabela de tasks
  */
 export class ChildTaskRepository extends BaseRepository {
     constructor() {
@@ -23,13 +23,13 @@ export class ChildTaskRepository extends BaseRepository {
      *
      * Adiciona uma nova task
      *
-     * @param childTask - Dados da task
+     * @param task - Dados da task
      *
      * @returns Task adicionada
      */
-    public insert(childTask: DeepPartial<ChildTask>): Promise<ChildTask> {
-        const taskRepository: Repository<ChildTask> = this.getConnection().getRepository(ChildTask);
-        return taskRepository.save(taskRepository.create(childTask));
+    public insert(task: DeepPartial<ChildTask>): Promise<ChildTask> {
+        const childTaskRepository: Repository<ChildTask> = this.getConnection().getRepository(ChildTask);
+        return childTaskRepository.save(childTaskRepository.create(task));
     }
 
     /**
@@ -37,12 +37,12 @@ export class ChildTaskRepository extends BaseRepository {
      *
      * Altera uma task
      *
-     * @param childTask - Dados da task
+     * @param task - Dados da task
      *
      * @returns Task alterada
      */
-    public update(childTask: ChildTask): Promise<ChildTask> {
-        return this.getConnection().getRepository(ChildTask).save(childTask);
+    public update(task: ChildTask): Promise<ChildTask> {
+        return this.getConnection().getRepository(ChildTask).save(task);
     }
 
     /**
