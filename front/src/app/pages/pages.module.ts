@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { ThemeModule } from "../@theme/theme.module";
 import { PagesRoutingModule } from "./pages-routing.module";
-import { PagesComponent } from "./pages.component";
 import { LoginComponent } from './login/login.component';
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -11,6 +10,7 @@ import { ListsComponent } from "./lists/lists.component";
 import { HeaderComponent } from "../@theme/components/header/header.component";
 import { HistoryComponent } from "./history/history.component";
 import { TasksComponent } from "./tasks/tasks.component";
+import { PagesAuthGuard } from "./pages-auth.guard";
 
 @NgModule({
 	imports: [
@@ -20,7 +20,6 @@ import { TasksComponent } from "./tasks/tasks.component";
 				ReactiveFormsModule
 	],
 	declarations: [
-		PagesComponent,
 		LoginComponent,
 		MembersComponent,
 		MyButtonComponent,
@@ -29,6 +28,6 @@ import { TasksComponent } from "./tasks/tasks.component";
 		HistoryComponent,
 		TasksComponent
 	],
-	providers: []
+	providers: [PagesAuthGuard]
 })
 export class PagesModule { }

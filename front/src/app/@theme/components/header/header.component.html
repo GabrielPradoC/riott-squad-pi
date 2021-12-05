@@ -5,6 +5,6 @@
         <a routerLink="/pages/history" routerLinkActive="active">Histórico<div routerLinkActive="underline"></div></a>
         <a routerLink="/pages/tasks" routerLinkActive="active">Atividades<div routerLinkActive="underline"></div></a>
         <a routerLink="/pages/members" routerLinkActive="active">Membros<div routerLinkActive="underline"></div></a>
-        <a routerLink="/pages/login" id="sair">Sair</a>
+        <a routerLink="/pages/login" (click)="logout()" id="sair">Sair</a>
     </nav>
 </div>
