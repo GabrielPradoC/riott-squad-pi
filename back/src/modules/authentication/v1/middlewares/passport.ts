@@ -29,7 +29,7 @@ passport.use(
             secretOrKey: jwtSecret,
             passReqToCallback: true
         },
-        async (decodedToken: any, done: VerifiedCallback) => {
+        async (_req: Request, decodedToken: any, done: VerifiedCallback) => {
             const userRepository: UserRepository = new UserRepository();
             const user: User | undefined = await userRepository.findOne(decodedToken.id);
             if (user) {
