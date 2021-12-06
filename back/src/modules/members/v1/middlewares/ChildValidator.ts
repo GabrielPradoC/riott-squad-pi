@@ -27,7 +27,7 @@ export class ChildValidator extends BaseValidator {
     /**
      * model
      *
-     * Schema para validação no controller de usuários
+     * Schema para validação no controller de membros
      */
     private static model: Schema = {
         name: BaseValidator.validators.name,
@@ -37,7 +37,7 @@ export class ChildValidator extends BaseValidator {
         },
         allowance: { in: 'body', isFloat: { options: { min: 0 } }, errorMessage: 'Valor da mesada invalido' },
         // TODO fazer um validator para padronizar o formato de data.
-        birthday: { in: 'body', isDate: true, errorMessage: 'Aniversário Invalido' },
+        birthday: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Aniversário Invalido' },
         photo: {
             in: 'body',
             custom: {

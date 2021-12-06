@@ -28,7 +28,7 @@ export class LoginController extends BaseController {
      * /v1/login:
      *   post:
      *     summary: rota de autenticação
-     *     tags: [Users]
+     *     tags: [Auth]
      *     consumes:
      *       - application/json
      *     produces:

@@ -33,7 +33,10 @@ export class TaskController extends BaseController {
      * /v1/task:
      *   get:
      *     summary: Lista todas as tarefas
+     *     description: Esse endpoint lista todas as tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -57,7 +60,10 @@ export class TaskController extends BaseController {
      * /v1/task/{taskId}:
      *   get:
      *     summary: Retorna informações de uma tarefa
+     *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -82,7 +88,10 @@ export class TaskController extends BaseController {
      * /v1/task:
      *   post:
      *     summary: cadastra uma tarefa
+     *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -126,7 +135,10 @@ export class TaskController extends BaseController {
      * /v1/task/{taskId}:
      *   put:
      *     summary: Altera uma tarefa
+     *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -173,7 +185,10 @@ export class TaskController extends BaseController {
      * /v1/task/{taskId}:
      *   delete:
      *     summary: Apaga uma tarefa
+     *     description: Esse endpoint se refere a tarefas cadastradas. Tarefas que pertencem a uma ***lista de tarefas*** são manipuladas no endpoint *list*
      *     tags: [Tasks]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:

@@ -34,6 +34,8 @@ export class ChildController extends BaseController {
      *   get:
      *     summary: Lista os membros
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -65,6 +67,8 @@ export class ChildController extends BaseController {
      *   get:
      *     summary: Retorna informações de um membro
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -86,9 +90,38 @@ export class ChildController extends BaseController {
 
     /**
      * @swagger
+     * /v1/member/{memberId}/lists:
+     *   get:
+     *     summary: Retorna as listas pertencentes a um membro.
+     *     tags: [Members, Lists]
+     *     security:
+     *       - BearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: memberId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/lists')
+    @Middlewares(ChildValidator.onlyId())
+    public async getLists(req: Request, res: Response): Promise<void> {
+        RouteResponse.success(req.body.childRef.taskLists, res);
+    }
+
+    /**
+     * @swagger
      * /v1/member:
      *   post:
      *     summary: Cadastra um membro
+     *     security:
+     *       - BearerAuth: []
      *     tags: [Members]
      *     consumes:
      *       - multipart/form-data
@@ -102,7 +135,7 @@ export class ChildController extends BaseController {
      *             example:
      *               name: 'João'
      *               allowance: 100.00
-     *               birthday: '10/10/2000'
+     *               birthday: '10/10/2005'
      *               parent: 1
      *               photo: 'photo.jpg'
      *             required:
@@ -136,7 +169,7 @@ export class ChildController extends BaseController {
             allowance,
             photo: photoRef,
             parent: req.body.userRef,
-            childTaskList: []
+            taskLists: []
         };
 
         await new ChildRepository().insert(newChild);
@@ -150,6 +183,8 @@ export class ChildController extends BaseController {
      *   put:
      *     summary: Altera um membro
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - multipart/form-data
      *     produces:
@@ -167,7 +202,7 @@ export class ChildController extends BaseController {
      *             type: object
      *             example:
      *               name: nome do membro
-     *               birthday: 2000/01/01
+     *               birthday: 10/10/2006
      *               allowance: 100.00
      *               parent: 1
      *             required:
@@ -208,6 +243,8 @@ export class ChildController extends BaseController {
      *   delete:
      *     summary: Apaga um membro definitivamente
      *     tags: [Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
