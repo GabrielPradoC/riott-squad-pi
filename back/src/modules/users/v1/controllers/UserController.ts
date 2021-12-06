@@ -38,6 +38,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Lista os usuários
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -64,6 +66,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Retorna informações de um usuário
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -82,6 +86,64 @@ export class UserController extends BaseController {
     @Middlewares(UserValidator.onlyId())
     public async getOne(req: Request, res: Response): Promise<void> {
         RouteResponse.success({ ...req.body.userRef }, res);
+    }
+
+    /**
+     * @swagger
+     * /v1/user/{userId}/members:
+     *   get:
+     *     summary: Retorna todos os membros pertencentes a um usuário
+     *     tags: [Users, Members]
+     *     security:
+     *       - BearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: userId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/members')
+    @PublicRoute()
+    @Middlewares(UserValidator.onlyId())
+    public async getChildren(req: Request, res: Response): Promise<void> {
+        const { children } = req.body.userRef;
+        RouteResponse.success({ children }, res);
+    }
+
+    /**
+     * @swagger
+     * /v1/user/{userId}/tasks:
+     *   get:
+     *     summary: Retorna todas as tarefas pertencentes a um usuário
+     *     tags: [Users, Tasks]
+     *     security:
+     *       - BearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: userId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/tasks')
+    @PublicRoute()
+    @Middlewares(UserValidator.onlyId())
+    public async getTasks(req: Request, res: Response): Promise<void> {
+        const { createdTasks } = req.body.userRef;
+        RouteResponse.success({ createdTasks }, res);
     }
 
     /**
@@ -140,6 +202,8 @@ export class UserController extends BaseController {
      *   put:
      *     summary: Altera um usuário
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -182,6 +246,8 @@ export class UserController extends BaseController {
      *   delete:
      *     summary: Apaga um usuário definitivamente
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:

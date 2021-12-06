@@ -21,14 +21,14 @@ import { UserValidator } from '../../../users/v1/middlewares/UserValidator';
 // Configs
 import { jwtSecret } from '../../../../config/auth';
 
-@Controller(EnumEndpoints.LOGIN)
+@Controller(EnumEndpoints.LOGIN_V1)
 export class LoginController extends BaseController {
     /**
      * @swagger
      * /v1/login:
      *   post:
      *     summary: rota de autenticação
-     *     tags: [Users]
+     *     tags: [Auth]
      *     consumes:
      *       - application/json
      *     produces:
