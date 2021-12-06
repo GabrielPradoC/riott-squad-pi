@@ -29,7 +29,6 @@ export class LoginService {
         if(resposta.status === true) {
             mensagem = "ok";
             localStorage.setItem("token", resposta.data.token);
-            //sessionStorage.setItem("token", resposta.data.token);
         } else {
             mensagem = resposta.error[0].msg;
         }

@@ -3,6 +3,9 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from './login/login.component';
 import { MembersComponent } from "./members/members.component";
 import { ListsComponent } from "./lists/lists.component";
+import { HistoryComponent } from "./history/history.component";
+import { TasksComponent } from "./tasks/tasks.component";
+import { PagesAuthGuard } from "./pages-auth.guard";
 
 const routes: Routes = [
 	{
@@ -12,10 +15,22 @@ const routes: Routes = [
 	{
 		path: 'lists',
 		component: ListsComponent,
+		canActivate: [PagesAuthGuard]
 	},
 	{
 		path: 'members',
 		component: MembersComponent,
+		canActivate: [PagesAuthGuard]
+	},
+	{
+		path: 'history',
+		component: HistoryComponent,
+		canActivate: [PagesAuthGuard]
+	},
+	{
+		path: 'tasks',
+		component: TasksComponent,
+		canActivate: [PagesAuthGuard]
 	},
 ];
 

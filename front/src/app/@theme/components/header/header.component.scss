@@ -12,13 +12,13 @@ h1 {
   color: #006D77;
   font-size: 32px;
   font-weight: bold;
-  margin: 24px 56px;
+  margin: 24px 58px;
 }
 
 #menu {
   display: flex;
   flex-direction: row;
-  margin-right: 56px;
+  margin-right: 35px;
 }
 
 a {
@@ -27,22 +27,19 @@ a {
   text-align: center;
   color: #7C8D93;
   text-decoration: none;
-  margin-left: 23px;
+  margin-right: 23px;
 }
 
-a:hover, .ativo {
+a:hover, a.active {
   font-weight: bold;
   color: #006D77;
 }
 
-.ativo .underline{
+a.active .underline{
+  margin-top: 8px;
   height: 4px;
   background-color: #E29578;
   border-radius: 30px;
-}
-
-div {
-  margin-top: 8px;
 }
 
 #sair {

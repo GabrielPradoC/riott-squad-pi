@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -6,12 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  @Input() customLists: string;
-  @Input() customListsLine: string;
-  @Input() customHistory: string;
-  @Input() customHistoryLine: string;
-  @Input() customTasks: string;
-  @Input() customTasksLine: string;
-  @Input() customMembers: string;
-  @Input() customMembersLine: string;
+  logout() {
+    localStorage.clear();
+  }
 }
