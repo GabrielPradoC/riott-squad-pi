@@ -37,7 +37,7 @@ export class TaskList extends BaseEntity {
     })
     public tasks: ChildTask[];
 
-    @ManyToOne(() => Child, child => child.taskLists)
+    @ManyToOne(() => Child, child => child.taskLists, { onDelete: 'CASCADE' })
     public member: Child;
 
     @Column()
