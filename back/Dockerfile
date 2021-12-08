@@ -13,6 +13,9 @@ COPY package.json /app/package.json
 # Install dependencies
 RUN npm install
 
+# Run Migrations
+RUN npm run seed:run
+
 # Listening ports EXPOSE
 EXPOSE 8080
 
