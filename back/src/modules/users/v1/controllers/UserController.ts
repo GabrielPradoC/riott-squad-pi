@@ -149,56 +149,6 @@ export class UserController extends BaseController {
     /**
      * @swagger
      * /v1/user:
-     *   post:
-     *     summary: Cadastra um usuário
-     *     tags: [Users]
-     *     consumes:
-     *       - application/json
-     *     produces:
-     *       - application/json
-     *     requestBody:
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             example:
-     *               name: userName
-     *               email: email@email.com
-     *               password: password123
-     *             required:
-     *               - name
-     *               - email
-     *               - password
-     *             properties:
-     *               name:
-     *                 type: string
-     *               email:
-     *                 type: string
-     *               password:
-     *                 type: string
-     *     responses:
-     *       $ref: '#/components/responses/baseCreate'
-     */
-    @Post()
-    @PublicRoute()
-    @Middlewares(UserValidator.post())
-    public async add(req: Request, res: Response): Promise<void> {
-        const passwordHash: string = await bcrypt.hash(req.body.password, EnumConstants.SALT_ROUNDS);
-
-        const newUser: DeepPartial<User> = {
-            name: req.body.name,
-            email: req.body.email,
-            passwordHash
-        };
-
-        await new UserRepository().insert(newUser);
-
-        RouteResponse.successCreate(res);
-    }
-
-    /**
-     * @swagger
-     * /v1/user:
      *   put:
      *     summary: Altera um usuário
      *     tags: [Users]
