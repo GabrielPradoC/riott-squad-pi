@@ -1,5 +1,5 @@
 export enum EnumTaskListState {
-    STARTED = 'started',
-    ONHOLD = 'onhold',
-    FINISHED = 'finished'
+    STARTED = 'STARTED',
+    ONHOLD = 'ONHOLD',
+    FINISHED = 'FINISHED'
 }
