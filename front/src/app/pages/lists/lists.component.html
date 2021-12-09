@@ -1,88 +1,90 @@
 <app-header></app-header>
 
 <div class="container">
-    <div class="lists">
-        <div class="initial">
-            <h2>Listas:</h2>
-        </div>
-
-        <div class="members">
-            <div class="member selected">
-                <div class="member-photo">
-                    <img src="../../../assets/person.jpg" alt="Member photo">
-                </div>
-                
-                <div class="member-info">
-                    <div class="member-name">
-                        <span>Luísa Sousa</span>
-                    </div>
-
-                    <div class="member-allowance-information">
-                        <div>
-                            <label>Mesada:</label>
-                            <span>R$ 1000,00</span>
-                        </div>
-                        <div>
-                            <label>Decontos:</label>
-                            <span>-R$ 300,00</span>
-                        </div>
-                        <div>
-                            <label>Total:</label>
-                            <span>R$ 700,00</span>
-                        </div>
-                    </div>
-                </div>
+    <div class="list-members">
+        <div class="main">
+            <div class="initial">
+                <h2>Listas:</h2>
             </div>
-
-            <div class="member">
-                <div class="member-photo">
-                    <img src="../../../assets/person.jpg" alt="Member photo">
-                </div>
-                
-                <div class="member-info">
-                    <div class="member-name">
-                        <span>Luísa Sousa</span>
+    
+            <div class="members">
+                <div id="1" class="member selected" (click)="select(1)">
+                    <div class="member-photo">
+                        <img src="../../../assets/person.jpg" alt="Member photo">
                     </div>
-
-                    <div class="member-allowance-information">
-                        <div>
-                            <label>Mesada:</label>
-                            <span>R$ 1000,00</span>
+                    
+                    <div class="member-info">
+                        <div class="member-name">
+                            <span>Luísa Sousa</span>
                         </div>
-                        <div>
-                            <label>Decontos:</label>
-                            <span>-R$ 300,00</span>
-                        </div>
-                        <div>
-                            <label>Total:</label>
-                            <span>R$ 700,00</span>
+    
+                        <div class="member-allowance-information">
+                            <div>
+                                <label>Mesada:</label>
+                                <span>R$ 1000,00</span>
+                            </div>
+                            <div>
+                                <label>Decontos:</label>
+                                <span>-R$ 300,00</span>
+                            </div>
+                            <div>
+                                <label>Total:</label>
+                                <span>R$ 700,00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="member">
-                <div class="member-photo">
-                    <img src="../../../assets/person.jpg" alt="Member photo">
-                </div>
-                
-                <div class="member-info">
-                    <div class="member-name">
-                        <span>Luísa Sousa</span>
+                <div id="2" class="member" (click)="select(2)">
+                    <div class="member-photo">
+                        <img src="../../../assets/person.jpg" alt="Member photo">
                     </div>
+                    
+                    <div class="member-info">
+                        <div class="member-name">
+                            <span>Luísa Sousa</span>
+                        </div>
+    
+                        <div class="member-allowance-information">
+                            <div>
+                                <label>Mesada:</label>
+                                <span>R$ 1000,00</span>
+                            </div>
+                            <div>
+                                <label>Decontos:</label>
+                                <span>-R$ 300,00</span>
+                            </div>
+                            <div>
+                                <label>Total:</label>
+                                <span>R$ 700,00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="member-allowance-information">
-                        <div>
-                            <label>Mesada:</label>
-                            <span>R$ 1000,00</span>
+                <div id="3" class="member" (click)="select(3)">
+                    <div class="member-photo">
+                        <img src="../../../assets/person.jpg" alt="Member photo">
+                    </div>
+                    
+                    <div class="member-info">
+                        <div class="member-name">
+                            <span>Luísa Sousa</span>
                         </div>
-                        <div>
-                            <label>Decontos:</label>
-                            <span>-R$ 300,00</span>
-                        </div>
-                        <div>
-                            <label>Total:</label>
-                            <span>R$ 700,00</span>
+    
+                        <div class="member-allowance-information">
+                            <div>
+                                <label>Mesada:</label>
+                                <span>R$ 1000,00</span>
+                            </div>
+                            <div>
+                                <label>Decontos:</label>
+                                <span>-R$ 300,00</span>
+                            </div>
+                            <div>
+                                <label>Total:</label>
+                                <span>R$ 700,00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
