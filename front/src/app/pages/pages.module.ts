@@ -11,6 +11,7 @@ import { HeaderComponent } from "../@theme/components/header/header.component";
 import { HistoryComponent } from "./history/history.component";
 import { TasksComponent } from "./tasks/tasks.component";
 import { PagesAuthGuard } from "./pages-auth.guard";
+import { ModalComponent } from "../@theme/components/modal/modal.component";
 
 @NgModule({
 	imports: [
@@ -26,7 +27,8 @@ import { PagesAuthGuard } from "./pages-auth.guard";
 		ListsComponent,
 		HeaderComponent,
 		HistoryComponent,
-		TasksComponent
+		TasksComponent,
+		ModalComponent
 	],
 	providers: [PagesAuthGuard]
 })

@@ -20,15 +20,15 @@ export class ChildTask extends BaseEntity {
     @ManyToOne(() => Task, task => task.childTask, {
         eager: true
     })
-    public task: Task;
+    public content: Task;
 
-    @Column()
+    @Column('decimal', { default: 0.0, precision: 10, scale: 2 })
     public value: number;
 
-    @ManyToOne(() => TaskList, childTaskList => childTaskList.tasks)
+    @ManyToOne(() => TaskList, childTaskList => childTaskList.tasks, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     public childTaskList: TaskList;
 
-    @Column()
+    @Column({ default: false })
     public isMissed: boolean;
 
     @Column()

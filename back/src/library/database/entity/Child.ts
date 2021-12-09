@@ -30,8 +30,8 @@ export class Child extends BaseEntity {
     @Column('mediumtext')
     public photo: string;
 
-    @OneToMany(() => TaskList, childTaskList => childTaskList.child)
-    public childTaskList: TaskList[];
+    @OneToMany(() => TaskList, childTaskList => childTaskList.member, { eager: true })
+    public taskLists: TaskList[];
 
     @Column()
     public createdAt: Date;

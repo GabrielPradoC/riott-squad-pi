@@ -9,4 +9,9 @@ export class MembersComponent {
 
   constructor() { }
 
+  sobeElemento() {
+    document.getElementById("filtro").style.display = "block";
+    document.getElementById("cadastrarMembro").style.display = "flex";
+    document.getElementById("cadastrarMembro").setAttribute("class", "modal up");
+  }
 }
