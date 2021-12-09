@@ -39,7 +39,7 @@ export class LoginController extends BaseController {
      *           schema:
      *             type: object
      *             example:
-     *               email: email@email.com
+     *               email: email@example.com
      *               password: password123
      *             required:
      *               - email

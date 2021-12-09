@@ -10,13 +10,16 @@ export const swaggerConfig: swaggerJSDoc.OAS3Options = {
         host: 'localhost:4444',
         components: {
             securitySchemes: {
-                bearerAuth: {
+                BearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
                     in: 'header',
                     bearerFormat: 'JWT'
                 }
             }
+        },
+        security: {
+            BearerAuth: []
         }
     },
     apis: ['src/library/third-party/swagger/**/*.ts', 'src/modules/**/*.ts']
