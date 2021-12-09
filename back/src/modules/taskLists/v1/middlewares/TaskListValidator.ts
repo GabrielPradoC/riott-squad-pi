@@ -43,7 +43,6 @@ export class TaskListValidator extends BaseValidator {
             errorMessage: 'Lista não encontrada'
         },
         dateStart: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Data de inicio invalida' },
-        dateEnd: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Data de fim invalida' },
         member: {
             in: 'body',
             isInt: true,
