@@ -23,9 +23,6 @@ import { TaskRepository } from '../../../../library/database/repository';
 // Validators
 import { TaskValidator } from '../middlewares/TaskValidator';
 
-// Middlewares
-import { authMiddleware } from '../../../authentication/v1';
-
 @Controller(EnumEndpoints.TASK_V1)
 export class TaskController extends BaseController {
     /**
@@ -203,7 +200,7 @@ export class TaskController extends BaseController {
      *       $ref: '#/components/responses/baseResponse'
      */
     @Delete('/:id')
-    @Middlewares(TaskValidator.onlyId(), authMiddleware())
+    @Middlewares(TaskValidator.onlyId())
     public async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
 

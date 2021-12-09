@@ -39,7 +39,7 @@ export class LoginController extends BaseController {
      *           schema:
      *             type: object
      *             example:
-     *               email: email@email.com
+     *               email: email@example.com
      *               password: password123
      *             required:
      *               - email
@@ -56,7 +56,13 @@ export class LoginController extends BaseController {
     @PublicRoute()
     @Middlewares(UserValidator.login())
     public async login(req: Request, res: Response): Promise<void> {
-        const hash: string = req.body.userRef.passwordHash;
+        const { userRef } = req.body;
+
+        if (!userRef) {
+            RouteResponse.unauthorizedError(res, 'Email não encontrado');
+        }
+
+        const hash: string = userRef.passwordHash;
         const check: boolean = await bcrypt.compare(req.body.password, hash);
 
         if (check) {

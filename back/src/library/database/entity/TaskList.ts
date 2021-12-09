@@ -25,7 +25,7 @@ export class TaskList extends BaseEntity {
     @Column()
     public dateStart: Date;
 
-    @Column()
+    @Column({ nullable: true })
     public dateEnd: Date;
 
     @Column({ type: 'enum', enum: EnumTaskListState, default: EnumTaskListState.ONHOLD })
@@ -37,7 +37,7 @@ export class TaskList extends BaseEntity {
     })
     public tasks: ChildTask[];
 
-    @ManyToOne(() => Child, child => child.taskLists)
+    @ManyToOne(() => Child, child => child.taskLists, { onDelete: 'CASCADE' })
     public member: Child;
 
     @Column()

@@ -73,14 +73,14 @@ export class UserValidator extends BaseValidator {
 
                     req.body[`${refName}Ref`] = data;
 
-                    return data ? Promise.resolve() : Promise.reject();
+                    return Promise.resolve();
                 }
             }
         },
         password: {
             in: 'body',
             isString: true,
-            errorMessage: 'Email inválido'
+            errorMessage: 'Senha inválida'
         }
     };
 
