@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./lists.component.scss']
 })
 export class ListsComponent {
-  select(id: string): void {
+  select(id): void {
     const selected = document.getElementsByClassName('selected')[0];
     
     if (selected) {
