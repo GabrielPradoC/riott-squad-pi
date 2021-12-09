@@ -45,7 +45,6 @@ export class TaskListValidator extends BaseValidator {
             ...BaseValidator.validators.id(new TaskListRepository()),
             errorMessage: 'Lista não encontrada'
         },
-        dateStart: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Data de inicio invalida' },
         member: {
             in: 'body',
             isInt: true,
@@ -104,7 +103,6 @@ export class TaskListValidator extends BaseValidator {
     public static post(): RequestHandler[] {
         return TaskListValidator.validationList({
             name: TaskListValidator.model.name,
-            dateStart: TaskListValidator.model.dateStart,
             member: TaskListValidator.model.member,
             tasks: TaskListValidator.model.tasks,
             onlyOneOnHold: TaskListValidator.model.onlyOneOnHold,
@@ -148,7 +146,6 @@ export class TaskListValidator extends BaseValidator {
                 optional: true,
                 errorMessage: 'Nome invalido'
             },
-            dateStart: { ...TaskListValidator.model.dateStart, optional: true },
             NotFinished: {
                 custom: {
                     options: (_value: string, { req }: Meta) => {
@@ -165,12 +162,12 @@ export class TaskListValidator extends BaseValidator {
             notStarted: {
                 custom: {
                     options: async (_value: string, { req }: Meta) => {
-                        const { name, dateStart, tasks, member, state } = req.body;
+                        const { name, tasks, member, state } = req.body;
                         const currentState: EnumTaskListState = req.body.taskListRef.state;
 
                         // se o status da lista for Started, a unica mudança valida é mudar o status para Finished
                         if (currentState === EnumTaskListState.STARTED) {
-                            if (name || dateStart || tasks || member) {
+                            if (name || tasks || member) {
                                 return Promise.reject(Error('A lista não pode ser alterada depois de iniciada'));
                             }
                             if (state === EnumTaskListState.ONHOLD) {
