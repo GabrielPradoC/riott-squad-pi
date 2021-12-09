@@ -15,7 +15,7 @@ export class Child extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @ManyToOne(() => User, user => user.children)
+    @ManyToOne(() => User, user => user.children, { onDelete: 'CASCADE' })
     public parent: User;
 
     @Column()

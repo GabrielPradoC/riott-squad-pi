@@ -18,7 +18,7 @@ export class Task extends BaseEntity {
     @Column()
     public description: string;
 
-    @ManyToOne(() => User, user => user.createdTasks)
+    @ManyToOne(() => User, user => user.createdTasks, { onDelete: 'CASCADE' })
     public parent: User;
 
     @OneToMany(() => ChildTask, childTask => childTask.content)

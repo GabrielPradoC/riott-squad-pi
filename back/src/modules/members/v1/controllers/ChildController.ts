@@ -23,9 +23,6 @@ import { ChildRepository } from '../../../../library/database/repository';
 // Validators
 import { ChildValidator } from '../middlewares/ChildValidator';
 
-// Middlewares
-import { authMiddleware } from '../../../authentication/v1';
-
 @Controller(EnumEndpoints.MEMBER_V1)
 export class ChildController extends BaseController {
     /**
@@ -259,7 +256,7 @@ export class ChildController extends BaseController {
      *       $ref: '#/components/responses/baseResponse'
      */
     @Delete('/:id')
-    @Middlewares(ChildValidator.onlyId(), authMiddleware())
+    @Middlewares(ChildValidator.onlyId())
     public async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
 
