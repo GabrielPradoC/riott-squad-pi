@@ -1,16 +1,11 @@
 // Modules
-import { DeepPartial } from 'typeorm';
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-
-// Constants
-import { EnumConstants } from '../../../../models/EnumConstants';
 
 // Library
 import { BaseController } from '../../../../library';
 
 // Decorators
-import { Controller, Delete, Get, Middlewares, Post, PublicRoute, Put } from '../../../../decorators';
+import { Controller, Delete, Get, Middlewares, Put } from '../../../../decorators';
 
 // Models
 import { EnumEndpoints } from '../../../../models';
