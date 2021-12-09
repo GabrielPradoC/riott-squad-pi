@@ -1,23 +1,31 @@
+#membersPage {
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1;
+}
+
 .container {
-  margin: 1.5rem 3.6rem 0 3.6rem;
+  margin: 0rem 3.6rem 0 3.6rem;
+  height: 89vh;
+  box-sizing: border-box;
 }
 
 .initial {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 11vh;
+}
 
-  > h2 {
-    color: #3b4244;
-  }
+h2 {
+  color: #3b4244;
 }
 
 .members {
-  margin-top: 1.4rem;
   padding-right: 1.8rem;
   overflow-y: auto;
 
-  height: 83vh;
+  height: calc(78vh - 1rem);
   
   display: flex;
   flex-direction: column;

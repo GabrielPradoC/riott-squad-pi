@@ -1,3 +1,13 @@
-<div id="container">
+<div id="tasksPage">
     <app-header></app-header>
+
+    <div id="teste">
+        <app-my-button customClass="green members-page" text="Cadastrar nova atividade" (click)="sobeElemento()" ></app-my-button>
+    </div>
+
+    <app-modal customId="cadastrarAtividade" customTitle="Cadastrar nova atividade">
+        <ng-template #content>
+          <p>Conteúdo personalizado</p>
+        </ng-template>
+    </app-modal>
 </div>
