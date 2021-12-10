@@ -4,6 +4,9 @@ import { Router, Request, Response, NextFunction } from 'express';
 // Models
 import { EnumDecorators, IRouteDef } from '../models';
 
+// middleware
+import { authMiddleware } from '../modules/authentication/v1/middlewares/passport';
+
 export declare type TClass<T = any> = new (...args: any[]) => T;
 
 /**
@@ -29,10 +32,17 @@ export class RoutesController {
             const instance = new Controller();
             const prefix = Reflect.getMetadata(EnumDecorators.CONTROLLER_PREFIX, Controller);
             const routes: IRouteDef[] = Reflect.getMetadata(EnumDecorators.ROUTES, Controller);
+            const publicRoutes: Array<string | symbol> = Reflect.getMetadata(EnumDecorators.PUBLIC_ROUTES, Controller) || [];
             const allMiddlewares: any = Reflect.getMetadata(EnumDecorators.MIDDLEWARE, Controller) || {};
 
             routes.forEach((route: IRouteDef) => {
-                const methodMiddlewares: any[] = allMiddlewares[route.methodName] || [];
+                const routeName: string | symbol = route.methodName;
+                let methodMiddlewares: any[] = allMiddlewares[routeName] || [];
+
+                if (!publicRoutes.includes(routeName)) {
+                    methodMiddlewares = methodMiddlewares.concat(authMiddleware());
+                }
+
                 router[route.requestMethod](prefix + route.path, [...methodMiddlewares, this.runAsyncWrapper(instance[route.methodName])]);
             });
         });

@@ -2,5 +2,5 @@ export { Application } from './Application';
 export { User } from './User';
 export { Task } from './Task';
 export { ChildTask } from './ChildTask';
-export { ChildTaskList } from './ChildTaskList';
+export { TaskList } from './TaskList';
 export { Child } from './Child';

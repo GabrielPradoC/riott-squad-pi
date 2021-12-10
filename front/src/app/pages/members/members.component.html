@@ -1,299 +1,222 @@
-<div class="container">
-  <div class="initial">
-    <h2 class="title-members">Membros:</h2>
-    <app-my-button customClass="green members-page" text="Cadastrar novo membro" ></app-my-button>
-  </div>
+<div id="membersPage">
+  <app-header></app-header>
 
-  <div class="members">
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
-
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
-            </div>
-          </div>
-
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
-          </div>
-        </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
-        </div>
-      </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
+  <div class="container">
+    <div class="initial">
+      <h2>Membros:</h2>
+      <app-my-button customClass="green members-page" text="Cadastrar novo membro" (click)="sobeElemento()" ></app-my-button>
     </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+    <div class="members">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
+
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
+      <div class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="../../../assets/person.jpg" alt="Member photo">
 
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>Luísa Sousa</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>00/00/0000</span>
             </div>
           </div>
 
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>R$ 100,00</span>
           </div>
         </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
-      </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
-
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
-            </div>
-          </div>
-
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
-          </div>
-        </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
-        </div>
-      </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
-      </div>
-    </div>
-    <div class="member">
-      <div class="member-info">
-        <div class="member-personal-information">
-          <div>
-            <img src="../../../assets/person.jpg" alt="Member photo">
-
-            <div class="member-name">
-              <label>Membro:</label>
-              <span>Luísa Sousa</span>
-            </div>
-          </div>
-
-          <div class="member-birth-date">
-            <label>Data de nascimento:</label>
-            <span>00/00/0000</span>
-          </div>
-        </div>
-
-        <div class="allowance">
-          <label>Valor da mesada:</label>
-          <span>R$ 100,00</span>
-        </div>
-      </div>
-      <div class="member-actions">
-        <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-        <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
-        <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
       </div>
     </div>
   </div>
+
+  <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
+    <ng-template #content>
+      <p>Conteúdo personalizado</p>
+    </ng-template>
+  </app-modal>
 </div>

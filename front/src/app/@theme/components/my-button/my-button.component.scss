@@ -33,6 +33,10 @@ button:not(:disabled) {
   padding: 12px 20px;
 }
 
+.lists-page {
+  padding: 12px 20px;
+}
+
 // colors
 
 .green {
@@ -45,6 +49,12 @@ button:not(:disabled) {
 .orange {
   color: #e29578;
   background-color: #fff;
+  border-color: #e29578;
+}
+
+.background-orange {
+  color: #fff;
+  background-color: #e29578;
   border-color: #e29578;
 }
 

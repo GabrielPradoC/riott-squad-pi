@@ -1,0 +1,57 @@
+
+.modal {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    height: 89vh;
+    background-color: white;
+    align-items: center;
+    z-index: 3;
+}
+
+#top {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    width: 100vw;
+  
+    > h2 {
+        height: 28px;
+        margin: 34px 52px;
+    }
+  
+    > button {
+        border: none;
+        background-color: white;
+        cursor: pointer;
+        margin: 36.69px 60.69px;
+        height: 22.63px;
+        width: 22.63px;
+  
+      > img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+}
+  
+@keyframes showElement {
+    from {top: 0px;}
+    to {top: -89vh;}
+}
+
+.up {
+    animation: showElement 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideElement {
+    from {top: -89vh;}
+    to {top: 0}
+}
+
+.down {
+    animation: hideElement 0.3s;
+    animation-fill-mode: forwards;
+}
