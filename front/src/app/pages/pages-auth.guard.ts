@@ -11,7 +11,7 @@ export class PagesAuthGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ) : Observable<boolean> | boolean {
-        if(localStorage.getItem("token")) {
+        if(localStorage.getItem("riott:token")) {
             return true
         } else {
             this.router.navigate(['/pages/login'])

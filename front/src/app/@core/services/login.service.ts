@@ -1,54 +1,48 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from "rxjs";
+import { first } from 'rxjs/operators';  
+import { Auth } from "../common/interfaces/auth.interface";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoginService {
-    static url: string = "http://localhost:4444/";
+    private readonly baseURL: string = "http://localhost:4444/";
+
+    constructor(private http: HttpClient, private router: Router) { }
 
     /**
-     * Realiza a autenticação do usuário
-     * @param email - email inserido pelo usuário
-     * @param password - password inserido pelo usuário
-     * @returns string indicando sucesso ou erro de autenticação
+     * Method that authenticates the user
+     * @param email - User entered email
+     * @param password - Password entered by user
+     * @returns void
      */
-    static loginUsuario(email: string, password: string) : string {
-        event.preventDefault();
+    loginUser(email: string, password: string) {
+        const loginURL: string = this.baseURL + "v1/login";
 
-        let resposta: any;
-        let mensagem: string;
-        let tipo: string = "POST";
-        let urlLogin: string = LoginService.url + "v1/login";
-        let body = {
+        const body = {
             "email": email,
             "password": password
         };
 
-        resposta = LoginService.abreRequisicao(tipo, urlLogin, body);
-
-        if(resposta.status === true) {
-            mensagem = "ok";
-            localStorage.setItem("token", resposta.data.token);
-        } else {
-            mensagem = resposta.error[0].msg;
-        }
-        return mensagem;
+        this.loginRequest(loginURL, body).subscribe(
+            complete => {
+                localStorage.setItem("riott:token", complete.data.token);
+                return this.router.navigate(['/pages/lists']);
+            },
+            error => alert(error.error.error)
+        );
     }
 
     /**
-     * Faz uma requisição síncrona de acordo com os parâmetros recebidos
-     * @param tipo - tipo de requisição
-     * @param url - endereço da requisição
-     * @param body - dados a serem enviados
-     * @returns - retorno da requisição
+     * Method that makes a user authentication request
+     * @param url - request url
+     * @param body - object containing user email and password
+     * @returns - void
      */
-    static abreRequisicao(tipo: string, url: string, body: any) :  string {
-        let request: XMLHttpRequest = new XMLHttpRequest();
-
-        request.open(tipo, url, false);
-        request.setRequestHeader("Content-type", "application/json");
-        request.send(JSON.stringify(body));
-    
-        return JSON.parse(request.responseText);
+    loginRequest(loginURL: string, body: any): Observable<Auth> {
+        return this.http.post<Auth>(loginURL, body).pipe(first());
     }
 }
