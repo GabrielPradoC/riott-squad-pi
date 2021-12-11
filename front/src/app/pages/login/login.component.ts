@@ -11,7 +11,7 @@ import{ LoginService } from "../../@core/services/login.service"
 export class LoginComponent {
   public form: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor( private fb: FormBuilder, private service: LoginService, private router: Router) {
     this.form = this.fb.group({
       email: ['', Validators.compose([
         Validators.email,
@@ -28,20 +28,7 @@ export class LoginComponent {
   login(): void {
     const email: string = this.form.controls['email'].value;
     const password: string = this.form.controls['password'].value;
-    const mensagem: string = LoginService.loginUsuario(email, password);
 
-    /* TESTE LOGIN (CRIA USUÁRIO COM OS DADOS DO INPUT AO CLICAR EM ENTRAR)
-    console.log(LoginService.abreRequisicao("POST", "http://localhost:4444/v1/user", {
-      "name": "aaaa",
-      "email": email,
-      "password": password
-    }));
-    */
-
-    if(mensagem === "ok") {
-      this.router.navigate(['/pages/lists']);
-    } else {
-      alert(mensagem);
-    }
+    this.service.loginUser(email, password);
   }
 }
