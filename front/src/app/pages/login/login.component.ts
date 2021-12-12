@@ -29,6 +29,27 @@ export class LoginComponent {
     const email: string = this.form.controls['email'].value;
     const password: string = this.form.controls['password'].value;
 
-    this.service.loginUser(email, password);
+    this.loginUser(email, password);
   }
+
+  /**
+   * Method that authenticates the user
+   * @param email - User entered email
+   * @param password - Password entered by user
+   * @returns void
+   */
+   loginUser(email: string, password: string) {
+    const body = {
+      email,
+      password
+    };
+
+    this.service.login("v1/login", body).subscribe(
+        complete => {
+            localStorage.setItem("riott:token", complete.data.token);
+            return this.router.navigate(['/pages/lists']);
+        },
+        error => alert(error.error.error)
+    );
+}
 }

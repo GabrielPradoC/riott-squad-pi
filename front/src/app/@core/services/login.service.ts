@@ -11,30 +11,7 @@ import { Router } from "@angular/router";
 export class LoginService {
     private readonly baseURL: string = "http://localhost:4444/";
 
-    constructor(private http: HttpClient, private router: Router) { }
-
-    /**
-     * Method that authenticates the user
-     * @param email - User entered email
-     * @param password - Password entered by user
-     * @returns void
-     */
-    loginUser(email: string, password: string) {
-        const loginURL: string = this.baseURL + "v1/login";
-
-        const body = {
-            "email": email,
-            "password": password
-        };
-
-        this.loginRequest(loginURL, body).subscribe(
-            complete => {
-                localStorage.setItem("riott:token", complete.data.token);
-                return this.router.navigate(['/pages/lists']);
-            },
-            error => alert(error.error.error)
-        );
-    }
+    constructor(private http: HttpClient) { }
 
     /**
      * Method that makes a user authentication request
@@ -42,7 +19,7 @@ export class LoginService {
      * @param body - object containing user email and password
      * @returns - void
      */
-    loginRequest(loginURL: string, body: any): Observable<Auth> {
-        return this.http.post<Auth>(loginURL, body).pipe(first());
+    login(loginURL: string, body: any): Observable<Auth> {
+        return this.http.post<Auth>(this.baseURL + loginURL, body).pipe(first());
     }
 }
