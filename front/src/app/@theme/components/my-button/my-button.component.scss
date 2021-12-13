@@ -6,7 +6,7 @@ button {
   
   color: #FFFFFF;
   background-color: #B5C5CA;
-  border: 2px solid;
+  border: 2px solid #B5C5CA;;
   
   border-radius: 0.4rem;
   font-family: 'Roboto', sans-serif;
@@ -31,6 +31,7 @@ button:not(:disabled) {
 
 .members-page {
   padding: 12px 20px;
+  font-size: 14px;
 }
 
 .lists-page {
@@ -39,10 +40,17 @@ button:not(:disabled) {
 
 // colors
 
+.light-gray {
+  background-color: #DEE8EB;
+  border-color: #DEE8EB;
+  color: #B5C5CA;
+}
+
 .green {
   &:not(:disabled) {
     background-color: #006D77;
     border-color: #006D77;
+    color: #FFFFFF;
   }
 }
 

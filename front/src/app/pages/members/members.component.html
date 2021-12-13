@@ -214,9 +214,80 @@
     </div>
   </div>
 
+
+
+
+
+
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
     <ng-template #content>
-      <p>Conteúdo personalizado</p>
+      <div id="divCadastrarMembro">
+        <p>
+          Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
+        </p>
+
+        <form [formGroup]="form">
+
+          <div class="field">
+            <input
+                type="file"
+                id="foto"
+                formControlName="foto"
+            >
+          
+            <div id="uploadFoto" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+              <img src="../../../assets/file.ico">
+              <p>Arraste ou <label for="foto">clique aqui</label> para fazer o upload da <b>foto do usuário</b></p>
+            </div>
+          </div>
+          
+          <div class="field">
+              <input
+                  type="string"
+                  id="nome"
+                  placeholder=" "
+                  formControlName="nome"
+              >
+              <label for="nome">Nome do membro</label>
+          </div>
+
+          <div class="field">
+              <input
+                  type="date"
+                  id="dataNascimento"
+                  placeholder=" "
+                  formControlName="dataNascimento"
+                  (click)="labelUp()"
+              >
+              <label id="dateLabel" for="dataNascimento">Data de nascimento</label>
+          </div>
+
+          <div class="field">
+            <input
+                type="number"
+                id="valorMesada"
+                placeholder=" "
+                formControlName="valorMesada"
+            >
+            <label for="valorMesada">Valor da mesada</label>
+          </div>
+      
+          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="login()" ></app-my-button>
+        </form>
+        <app-my-button customClass="orange members-page" text="Cancelar"></app-my-button>
+      </div>
+
+      <div id="divSucessMsg">
+        <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!"></app-dialog-box>
+      </div>
+
+      <div id="divErrorMsg">
+        <app-dialog-box customClassError="showElement" text="Algo deu errado"></app-dialog-box>
+      </div>
+
+      <div id="divWarningMsg">
+        <app-dialog-box customClassWarning="showElement" text="Deseja realmente interromper o cadastro?"></app-dialog-box>
+      </div>
     </ng-template>
   </app-modal>
 </div>
