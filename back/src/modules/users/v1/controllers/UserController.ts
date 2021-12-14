@@ -22,6 +22,9 @@ import { UserRepository } from '../../../../library/database/repository';
 // Validators
 import { UserValidator } from '../middlewares/UserValidator';
 
+// Utility
+import { getListResults } from '../../../members/v1/utils/memberUtils';
+
 @Controller(EnumEndpoints.USER_V1)
 export class UserController extends BaseController {
     /**
@@ -103,7 +106,15 @@ export class UserController extends BaseController {
     @Middlewares(UserValidator.onlyId())
     public async getChildren(req: Request, res: Response): Promise<void> {
         const { children } = req.body.userRef;
-        RouteResponse.success({ children }, res);
+        const populatedChildren = children.map((child: any) => {
+            const result = getListResults(child);
+            const newChild = {
+                ...child,
+                currentListResult: result
+            };
+            return newChild;
+        });
+        RouteResponse.success({ children: populatedChildren }, res);
     }
 
     /**
