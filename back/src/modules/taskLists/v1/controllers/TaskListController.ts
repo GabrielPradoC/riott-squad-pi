@@ -100,19 +100,15 @@ export class TaskListController extends BaseController {
      *             type: object
      *             example:
      *               name: 'LISTA 1'
-     *               dateStart: '10/10/2000'
      *               member: 1
      *               tasks: [{task: 1, value: 30.00}, {task: 2, value: 100.00}]
      *             required:
      *               - name
-     *               - dateStart
      *               - member
      *               - tasks
      *             properties:
      *               name:
      *                 type: string
-     *               dateStart:
-     *                 type: date
      *               member:
      *                 type: integer
      *               tasks:
@@ -123,12 +119,11 @@ export class TaskListController extends BaseController {
     @Post()
     @Middlewares(TaskListValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
-        const { name, dateStart, member, tasks } = req.body;
+        const { name, member, tasks } = req.body;
 
         // criar a lista de atividades
         const newTaskList: TaskList = new TaskList();
         newTaskList.name = name;
-        newTaskList.dateStart = dateStart;
         newTaskList.member = member;
 
         // popular o campo de tarefas
@@ -205,7 +200,6 @@ export class TaskListController extends BaseController {
      *               name: novo nome
      *               state: "STARTED | FINISHED | ONHOLD"
      *               tasks: [{task: 1, value: 30.00}, {task: 2, value: 100.00}]
-     *               dateStart: '10/10/2000'
      *             properties:
      *               name:
      *                 type: string
@@ -221,10 +215,12 @@ export class TaskListController extends BaseController {
 
         taskList.name = req.body.name || taskList.name;
         taskList.state = req.body.state || taskList.state;
-        taskList.dateStart = req.body.dateStart || taskList.dateStart;
 
         if (taskList.state === EnumTaskListState.FINISHED) {
             taskList.dateEnd = new Date();
+        }
+        if (taskList.state === EnumTaskListState.STARTED) {
+            taskList.dateStart = new Date();
         }
 
         if (req.body.tasks) {
