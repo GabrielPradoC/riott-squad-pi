@@ -1,54 +1,25 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from "rxjs";
+import { first } from 'rxjs/operators';  
+import { Auth } from "../common/interfaces/auth.interface";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoginService {
-    static url: string = "http://localhost:4444/";
+    private readonly baseURL: string = "http://localhost:4444/";
+
+    constructor(private http: HttpClient) { }
 
     /**
-     * Realiza a autenticação do usuário
-     * @param email - email inserido pelo usuário
-     * @param password - password inserido pelo usuário
-     * @returns string indicando sucesso ou erro de autenticação
+     * Method that makes a user authentication request
+     * @param url - request url
+     * @param body - object containing user email and password
+     * @returns - void
      */
-    static loginUsuario(email: string, password: string) : string {
-        event.preventDefault();
-
-        let resposta: any;
-        let mensagem: string;
-        let tipo: string = "POST";
-        let urlLogin: string = LoginService.url + "v1/login";
-        let body = {
-            "email": email,
-            "password": password
-        };
-
-        resposta = LoginService.abreRequisicao(tipo, urlLogin, body);
-
-        if(resposta.status === true) {
-            mensagem = "ok";
-            localStorage.setItem("token", resposta.data.token);
-        } else {
-            mensagem = resposta.error[0].msg;
-        }
-        return mensagem;
-    }
-
-    /**
-     * Faz uma requisição síncrona de acordo com os parâmetros recebidos
-     * @param tipo - tipo de requisição
-     * @param url - endereço da requisição
-     * @param body - dados a serem enviados
-     * @returns - retorno da requisição
-     */
-    static abreRequisicao(tipo: string, url: string, body: any) :  string {
-        let request: XMLHttpRequest = new XMLHttpRequest();
-
-        request.open(tipo, url, false);
-        request.setRequestHeader("Content-type", "application/json");
-        request.send(JSON.stringify(body));
-    
-        return JSON.parse(request.responseText);
+    login(loginURL: string, body: any): Observable<Auth> {
+        return this.http.post<Auth>(this.baseURL + loginURL, body).pipe(first());
     }
 }

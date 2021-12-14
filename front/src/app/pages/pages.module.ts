@@ -12,6 +12,7 @@ import { HistoryComponent } from "./history/history.component";
 import { TasksComponent } from "./tasks/tasks.component";
 import { PagesAuthGuard } from "./pages-auth.guard";
 import { ModalComponent } from "../@theme/components/modal/modal.component";
+import { dialogBoxComponent } from "../@theme/components/dialog-box/dialog-box.component";
 
 @NgModule({
 	imports: [
@@ -28,7 +29,8 @@ import { ModalComponent } from "../@theme/components/modal/modal.component";
 		HeaderComponent,
 		HistoryComponent,
 		TasksComponent,
-		ModalComponent
+		ModalComponent,
+		dialogBoxComponent
 	],
 	providers: [PagesAuthGuard]
 })

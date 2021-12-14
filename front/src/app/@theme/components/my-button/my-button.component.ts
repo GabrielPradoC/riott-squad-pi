@@ -9,12 +9,22 @@ export class MyButtonComponent {
   @Input() text: string;
   @Input() disabled: string;
   @Input() customClass: string;
-  @Output() click: EventEmitter<any> = new EventEmitter<any>();
+  @Input() customValue: string;
   
   constructor() {
   }
 
-  clickEvent(): void {
-    this.click.emit();
+  check() : void {
+    let value: string = document.activeElement.attributes.getNamedItem("value").value;
+    
+    if(value != '') {
+      this.showModal(value);
+    }
+  }
+
+  showModal(modalId: string) : void {
+    document.getElementById("filtro").style.display = "block";
+    document.getElementById(modalId).style.display = "flex";
+    document.getElementById(modalId).setAttribute("class", "modal up");
   }
 }
