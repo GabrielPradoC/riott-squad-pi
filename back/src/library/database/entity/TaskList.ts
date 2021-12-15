@@ -22,7 +22,7 @@ export class TaskList extends BaseEntity {
     @Column()
     public name: string;
 
-    @Column()
+    @Column({ nullable: true })
     public dateStart: Date;
 
     @Column({ nullable: true })
