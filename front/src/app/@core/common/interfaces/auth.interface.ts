@@ -1,5 +1,5 @@
 export interface Auth {
-  status: Boolean;
+  status: boolean;
   date: Date;
   data: {
     token: string;
