@@ -20,7 +20,7 @@ interface ListResults {
 export const getListResults = (member: Child): ListResults => {
     const activeList: TaskList | undefined = member.taskLists.find((list: TaskList) => list.state === EnumTaskListState.STARTED);
 
-    if (!activeList) return { missedTasksCount: 0, totalDebit: 0, currentAllowance: 0 };
+    if (!activeList) return { missedTasksCount: 0, totalDebit: 0, currentAllowance: member.allowance };
 
     const missedTasks: ChildTask[] = activeList.tasks.filter((task: ChildTask) => task.isMissed);
     const totalDebit: number = missedTasks.reduce((accomulator: number, task: ChildTask) => accomulator + task.value, 0);
