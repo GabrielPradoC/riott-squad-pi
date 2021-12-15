@@ -233,6 +233,7 @@
                 type="file"
                 id="foto"
                 formControlName="foto"
+                (change)="fileChangeEvent($event)"
             >
           
             <div id="uploadFoto" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
@@ -272,7 +273,7 @@
             <label for="valorMesada">Valor da mesada</label>
           </div>
       
-          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="login()" ></app-my-button>
+          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="cadastrarMembro()" ></app-my-button>
         </form>
         <app-my-button customClass="orange members-page" text="Cancelar"></app-my-button>
       </div>

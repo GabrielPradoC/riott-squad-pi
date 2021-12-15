@@ -14,6 +14,11 @@ export class MyButtonComponent {
   constructor() {
   }
 
+  /**
+   * Verifica se foi atribuído um valor ao botão
+   * Se sim, chama a função showModal() com esse valor como parâmetro
+   * Se não, deixa que a funcionalidade do botão seja implementada apenas no componente pai
+   */
   check() : void {
     let value: string = document.activeElement.attributes.getNamedItem("value").value;
     
@@ -22,6 +27,10 @@ export class MyButtonComponent {
     }
   }
 
+  /**
+   * Sobe o modal correspondente ao botão clicado
+   * @param modalId - id do modal
+   */
   showModal(modalId: string) : void {
     document.getElementById("filtro").style.display = "block";
     document.getElementById(modalId).style.display = "flex";
