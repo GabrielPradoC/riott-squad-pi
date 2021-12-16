@@ -82,8 +82,14 @@ export class ChildValidator extends BaseValidator {
                     let check = false;
 
                     const currentDate: number = Date.now();
-                    const birthday: number = new Date(req.body.birthday).getTime();
-                    const age: number = currentDate - birthday;
+                    const [birthDay, birthMonth, birthYear] = req.body.birthday.split('/');
+                    const birthDate: number = new Date([birthMonth, birthDay, birthYear].join('/')).getTime();
+                    const age: number = currentDate - birthDate;
+
+                    console.log(`currentDate: ${currentDate}`);
+                    console.log(`req.body.birthday: ${req.body.birthday}`);
+                    console.log(`birthday: ${birthDate}`);
+                    console.log(`age: ${age}`);
 
                     check = age < DateConstants.EIGHTEEN_YEARS_IN_MILISECONDS;
                     return check ? Promise.resolve() : Promise.reject();
