@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
     styleUrls: ['./tasks.component.scss']
   })
   export class TasksComponent {
+    funcaoBotaoVerde(){
+      document.getElementById("warningMsgExample").style.display = "none";
+      document.getElementById("sucessMsgExample").style.display = "flex";
+    }
   }

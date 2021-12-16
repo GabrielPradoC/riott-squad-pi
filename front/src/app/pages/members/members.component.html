@@ -233,6 +233,7 @@
                 type="file"
                 id="foto"
                 formControlName="foto"
+                (change)="fileChangeEvent($event)"
             >
           
             <div id="uploadFoto" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
@@ -272,21 +273,21 @@
             <label for="valorMesada">Valor da mesada</label>
           </div>
       
-          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="login()" ></app-my-button>
+          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="cadastrarMembro()" ></app-my-button>
         </form>
         <app-my-button customClass="orange members-page" text="Cancelar"></app-my-button>
       </div>
 
       <div id="divSucessMsg">
-        <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!"></app-dialog-box>
+        <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!" textButton="Finalizar"></app-dialog-box>
       </div>
 
       <div id="divErrorMsg">
-        <app-dialog-box customClassError="showElement" text="Algo deu errado"></app-dialog-box>
+        <app-dialog-box customClassError="showElement" text="Algo deu errado" textButton="Tentar novamente"></app-dialog-box>
       </div>
 
       <div id="divWarningMsg">
-        <app-dialog-box customClassWarning="showElement" text="Deseja realmente interromper o cadastro?"></app-dialog-box>
+        <app-dialog-box customClassWarning="showElement" text="Deseja realmente interromper o cadastro?" textButton="Confirmar ação"></app-dialog-box>
       </div>
     </ng-template>
   </app-modal>
