@@ -21,6 +21,20 @@ export class ModalComponent {
     setTimeout(() => {
       document.getElementById("filtro").style.display = "none";
       document.getElementById(modalId).style.display = "none";
+      this.restartModal(modalId);
     }, 300);
+  }
+
+  restartModal(modalId: string) : void {
+    let children: HTMLCollection = document.getElementById(modalId).children;
+    let n: number = 2;
+
+    (<HTMLSelectElement>children.item(1)).style.display = "flex";
+
+    while(children.item(n) != null) {
+      (<HTMLSelectElement>children.item(n)).style.display = "none";
+      n++;
+    }
+    //falta reiniciar inputs e recarregar infos
   }
 }

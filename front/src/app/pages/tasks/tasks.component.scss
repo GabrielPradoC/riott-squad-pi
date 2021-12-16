@@ -7,3 +7,15 @@
 #teste {
     height: 89vh;
 }
+
+
+
+#sucessMsgExample {
+    display: flex;
+    width: 272px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 96px;
+    display: none;
+}

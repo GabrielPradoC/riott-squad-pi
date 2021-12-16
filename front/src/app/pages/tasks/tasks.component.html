@@ -7,7 +7,31 @@
 
     <app-modal customId="cadastrarAtividade" customTitle="Cadastrar nova atividade">
         <ng-template #content>
-          <p>Conteúdo personalizado</p>
+            <div id="warningMsgExample">
+                <app-dialog-box
+                    (callParent)="funcaoBotaoVerde($event)"
+                    customClassWarning="showElement"
+                    text="Deseja realmente finalizar essa lista?"
+                    textButton="Confirmar e finalizar lista"
+                    divPrincipal="warningMsgExample"
+                    divAtual="sucessMsgExample"
+                    closeAll="true">
+                    <ng-template #contentDialogBox>
+                        Conteúdo personalizado aqui
+                    </ng-template>
+                </app-dialog-box>
+            </div>
+
+            <div id="sucessMsgExample">
+                <app-dialog-box
+                    (callParent)="funcaoBotaoVerde($event)"
+                    customClassSucess="showElement"
+                    text="Lista finalizada com sucesso!"
+                    divPrincipal="warningMsgExample"
+                    divAtual="sucessMsgExample"
+                    closeAll="true">
+                </app-dialog-box>
+            </div>
         </ng-template>
     </app-modal>
 </div>
