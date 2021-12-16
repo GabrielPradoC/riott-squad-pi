@@ -28,15 +28,15 @@
               <div class="member-allowance-information">
                 <div>
                   <label>Mesada:</label>
-                  <span>{{ totalAllowance | currency : 'BRL' }}</span>
+                  <span>{{ member.allowance | currency : 'BRL' }}</span>
                 </div>
                 <div>
                   <label>Decontos:</label>
-                  <span>-{{ totalDiscount | currency : 'BRL' }}</span>
+                  <span>-{{ member.currentListResult.totalDebit | currency : 'BRL' }}</span>
                 </div>
                 <div>
                   <label>Total:</label>
-                  <span>{{ totalAllowance - totalDiscount | currency : 'BRL' }}</span>
+                  <span>{{ member.allowance - member.currentListResult.totalDebit | currency : 'BRL' }}</span>
                 </div>
               </div>
             </div>
@@ -51,11 +51,11 @@
 
     <div class="gap"></div>
 
-    <div class="list-activities">
-      <h2 class="title-list">Lista:</h2>
+    <div *ngIf="list" class="list-activities">
+      <h2 *ngIf="list.state === 'STARTED'" class="title-list">Lista:</h2>
 
       <div class="main">
-        <div *ngIf="tasks" class="activities">
+        <div *ngIf="tasks" class="activities" [ngClass]="{'no-list': list.state !== 'STARTED'}">
           <div *ngFor="let task of tasks" class="activity">
             <div class="activity-info">
               <div class="description">
@@ -73,17 +73,30 @@
                 *ngIf="task.isMissed == false"
                 customClass="orange lists-page"
                 text="Marcar falta"
-                (click)="markAsMissed(task.id)">
+                (click)="toggleMissed(task)">
               </app-my-button>
-              <app-my-button *ngIf="!task.isMissed == false" customClass="background-orange lists-page" text="Faltou">
+              <app-my-button
+                *ngIf="!task.isMissed == false"
+                customClass="background-orange lists-page"
+                text="Faltou"
+                (click)="toggleMissed(task)">
               </app-my-button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="list.state !== 'STARTED'" class="no-list-container">
+          <div class="no-list">
+            <div>
+              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
+              <p>Este membro não possui lista configurada</p>
             </div>
           </div>
         </div>
 
         <div class="transparent"></div>
 
-        <div *ngIf="tasks.length > 0" class="finalize">
+        <div *ngIf="tasks && list.state === 'STARTED'" class="finalize">
           <div class="lacks">
             <label>Total de faltas:</label>
             <span><b>{{ lacks }}</b></span>
@@ -94,7 +107,7 @@
           <div class="money">
             <div class="allowance">
               <label>Mesada:</label>
-              <span>{{ totalAllowance | currency : 'BRL' }}</span>
+              <span>{{ allowance | currency : 'BRL' }}</span>
             </div>
 
             <div class="minus"><b>-</b></div>
@@ -108,7 +121,7 @@
 
             <div class="total">
               <label>Total:</label>
-              <span>{{ totalAllowance - totalDiscount | currency : 'BRL' }}</span>
+              <span>{{ allowance - totalDiscount | currency : 'BRL' }}</span>
             </div>
           </div>
         </div>
@@ -119,7 +132,7 @@
   <app-modal customId="manageLists" customTitle="Gerenciar listas">
     <ng-template #content>
       <div class="container-manage-lists">
-        <div class="members">
+        <div *ngIf="members" class="members">
           <div
             *ngFor="let member of members"
             id="{{ member.id }}manage"

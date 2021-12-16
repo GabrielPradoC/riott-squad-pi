@@ -9,4 +9,9 @@ export class Member {
   taskLists: any[];
   totalAllowance: number;
   totalDiscounts: number;
+  currentListResult: {
+    missedTasksCount: number;
+    totalDebit: number;
+    currentAllowance: number;
+  }
 }

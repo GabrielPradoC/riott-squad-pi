@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from "../../@core/services/login.service"
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { LocalStorageService } from 'src/app/@core/services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,11 @@ import { environment } from 'src/environments/environment';
 export class LoginComponent {
   public form: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: LoginService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private service: LoginService,
+    private localStorageService: LocalStorageService,
+    private router: Router) {
     this.form = this.fb.group({
       email: ['', Validators.compose([
         Validators.email,
@@ -51,8 +56,8 @@ export class LoginComponent {
     
     this.service.Create(body, `${environment.API}login`).subscribe(
       complete => {
-        localStorage.setItem("riott:token", complete.data.token);
-        localStorage.setItem("riott:email", email);
+        this.localStorageService.setItem("riott:token", complete.data.token);
+        this.localStorageService.setItem("riott:userId", complete.data.userId.toString());
         return this.router.navigate(['/pages/lists']);
       },
       error => alert(error.error.error)
