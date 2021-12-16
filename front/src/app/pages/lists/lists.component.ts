@@ -1,60 +1,68 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/@core/services/member.service';
-import { UserService } from 'src/app/@core/services/user.service';
 import { ListService } from 'src/app/@core/services/list.service';
 import { environment } from 'src/environments/environment';
 import { Member } from 'src/models/member.model';
 import { List } from 'src/models/list.model';
-import { Task } from 'src/models/task.model';
 import { Lists } from 'src/models/lists.model';
+import { Task } from 'src/models/task.model';
+import { LocalStorageService } from 'src/app/@core/services/local-storage.service';
 
 @Component({
   selector: 'app-lists',
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.scss']
 })
-export class ListsComponent {
+export class ListsComponent implements OnInit {
   public members: Member[];
+  public allowance: number = 0;
   public list: List;
   public listManage: Lists;
   public listManageData: List;
   public tasks: Task[];
   public tasksManage: Task[];
-  public totalAllowance: number = 0;
   public totalDiscount: number = 0;
   public lacks: number = 0;
 
   constructor(
     private memberService: MemberService,
-    private userService: UserService,
-    private listService: ListService) {
+    private listService: ListService,
+    private localStorageService: LocalStorageService) {
+  }
+
+  ngOnInit(): void {
     this.getMembers();
   }
 
   getMembers(): void {
-    const email = localStorage.getItem("riott:email");
-    
-    this.userService.List(`${environment.API}user`).subscribe(
-      complete => {
-        const id = complete.data.rows.find(user => user.email === email).id;
-        this.memberService.List(`${environment.API}user/${id}/members`)
-          .subscribe(members => this.members = members.data.children);
+    const id = this.localStorageService.getItem("riott:userId");
 
-        this.getTaskList(id);
-        this.getTaskListForManage(id);
-      }
-    );
+    this.memberService.List(`${environment.API}user/${id}/members`)
+      .subscribe(members => {
+        this.members = members.data.children;
+
+        //allowance
+        this.allowance = members.data.children[0].allowance;
+      });
+    
+    this.getTaskList(Number(id));
+    this.getTaskListForManage(Number(id));
   }
 
   getTaskList(memberId: number): void {
     this.listService.List(`${environment.API}member/${memberId}/lists`).subscribe(
-      list => {
+      lists => {
         this.list = new List();
         this.tasks = [];
-        this.list = list.data[0];
-        this.tasks = list.data[0].tasks;
+        this.list = lists?.data[0];
         
-        this.calculateTotalAllowanceAndDiscount();
+        if (this.list?.state === "STARTED")
+          this.tasks = lists?.data[0]?.tasks;
+
+        this.calculateTotalAndDiscount();
+
+        //allowance
+        this.allowance = this.members.find(member => member.id === memberId).allowance;
       }
     )
   }
@@ -101,15 +109,12 @@ export class ListsComponent {
       this.getTaskListForManage(id);
   }
 
-  calculateTotalAllowanceAndDiscount(): void {
-    this.totalAllowance = 0;
+  calculateTotalAndDiscount(): void {
     this.totalDiscount = 0;
     this.lacks = 0;
 
-    //total of task list
-    this.tasks.map(t => {
-      this.totalAllowance += Number.parseFloat(t.value)
-
+    //total of missed tasks
+    this.tasks?.map(t => {
       if (t.isMissed === true) {
         this.totalDiscount += Number.parseFloat(t.value)
         this.lacks++;
@@ -117,12 +122,19 @@ export class ListsComponent {
     })
   }
 
-  markAsMissed(id: number): void {
-    const body = {
+  toggleMissed(task: Task): void {
+    let body = {
       isMissed: true
-    };
+    }
 
-    this.listService.markAsMissed(`${environment.API}list/task/${id}`, body).subscribe(
+    if (task.isMissed) {
+      body.isMissed = false;
+    }
+    else {
+      body.isMissed = true;
+    }
+
+    this.listService.markAsMissed(`${environment.API}list/task/${task.id}`, body).subscribe(
       result => this.getMembers()
     );
   }
