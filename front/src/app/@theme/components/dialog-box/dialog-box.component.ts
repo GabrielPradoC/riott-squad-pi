@@ -1,5 +1,5 @@
-import { InvokeFunctionExpr } from '@angular/compiler';
-import { Component, Input } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-dialog-box',
@@ -11,4 +11,27 @@ export class dialogBoxComponent {
   @Input() customClassSucess: string;
   @Input() customClassError: string;
   @Input() customClassWarning: string;
+  @Input() textButton: string;
+  @Input() divPrincipal: string;
+  @Input() divAtual: string;
+  @Input() closeAll: boolean;
+  @Output() callParent = new EventEmitter<any>();
+  @ContentChild('contentDialogBox') contentDialogBox: TemplateRef<any>;
+
+  onClick(){
+    this.callParent.emit(null);
+  }
+
+  cancel() : void {
+    if(this.closeAll) {
+      ModalComponent.prototype.hideModal();
+    } else {
+      this.close();
+    }
+  }
+
+  close() : void {
+    document.getElementById(this.divAtual).style.display = "none";
+    document.getElementById(this.divPrincipal).style.display = "flex";
+  }
 }
