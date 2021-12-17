@@ -16,10 +16,10 @@ import { dialogBoxComponent } from "../@theme/components/dialog-box/dialog-box.c
 
 @NgModule({
 	imports: [
-        PagesRoutingModule,
-        ThemeModule,
-				CommonModule,
-				ReactiveFormsModule
+		PagesRoutingModule,
+		ThemeModule,
+		CommonModule,
+		ReactiveFormsModule
 	],
 	declarations: [
 		LoginComponent,

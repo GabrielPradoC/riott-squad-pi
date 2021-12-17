@@ -11,7 +11,10 @@ import { TaskRepository } from '../../../../library/database/repository/TaskRepo
 import { BaseValidator } from '../../../../library/BaseValidator';
 
 // Entities
-import { Child, Task } from '../../../../library/database/entity';
+import { Child, Task, TaskList } from '../../../../library/database/entity';
+
+// Utils
+import { StringUtils } from '../../../../utils';
 
 // Enums
 import { EnumTaskListState } from '../../../../models/EnumTaskListState';
@@ -42,14 +45,16 @@ export class TaskListValidator extends BaseValidator {
             ...BaseValidator.validators.id(new TaskListRepository()),
             errorMessage: 'Lista não encontrada'
         },
-        dateStart: { in: 'body', isDate: { options: { format: 'DD/MM/YYYY' } }, errorMessage: 'Data de inicio invalida' },
         member: {
             in: 'body',
             isInt: true,
             custom: {
-                options: async (value: string) => {
+                options: async (value: string, { req }: Meta) => {
                     const repository: ChildRepository = new ChildRepository();
                     const child: Child | undefined = await repository.findOne(value);
+
+                    const refName: string = StringUtils.firstLowerCase(repository.constructor.name.replace('Repository', ''));
+                    req.body[`${refName}Ref`] = child;
 
                     return child ? Promise.resolve() : Promise.reject();
                 }
@@ -75,6 +80,18 @@ export class TaskListValidator extends BaseValidator {
         'tasks.*.value': {
             isFloat: { options: { min: 1 } },
             errorMessage: 'Valor da tarefa invalido'
+        },
+        onlyOneOnHold: {
+            custom: {
+                options: async (_value: string, { req }: Meta) => {
+                    const { childRef } = req.body;
+
+                    const unfinishedLists = childRef.taskLists.filter((taskList: TaskList) => taskList.state !== EnumTaskListState.FINISHED);
+                    return unfinishedLists.length === 0
+                        ? Promise.resolve()
+                        : Promise.reject(Error('Esse membro já possui uma lista em espera ou em atividade'));
+                }
+            }
         }
     };
 
@@ -86,9 +103,9 @@ export class TaskListValidator extends BaseValidator {
     public static post(): RequestHandler[] {
         return TaskListValidator.validationList({
             name: TaskListValidator.model.name,
-            dateStart: TaskListValidator.model.dateStart,
             member: TaskListValidator.model.member,
             tasks: TaskListValidator.model.tasks,
+            onlyOneOnHold: TaskListValidator.model.onlyOneOnHold,
             'tasks.*.task': TaskListValidator.model['tasks.*.task'],
             'tasks.*.value': TaskListValidator.model['tasks.*.value']
         });
@@ -129,7 +146,6 @@ export class TaskListValidator extends BaseValidator {
                 optional: true,
                 errorMessage: 'Nome invalido'
             },
-            dateStart: { ...TaskListValidator.model.dateStart, optional: true },
             NotFinished: {
                 custom: {
                     options: (_value: string, { req }: Meta) => {
@@ -146,12 +162,12 @@ export class TaskListValidator extends BaseValidator {
             notStarted: {
                 custom: {
                     options: async (_value: string, { req }: Meta) => {
-                        const { name, dateStart, tasks, member, state } = req.body;
+                        const { name, tasks, member, state } = req.body;
                         const currentState: EnumTaskListState = req.body.taskListRef.state;
 
                         // se o status da lista for Started, a unica mudança valida é mudar o status para Finished
                         if (currentState === EnumTaskListState.STARTED) {
-                            if (name || dateStart || tasks || member) {
+                            if (name || tasks || member) {
                                 return Promise.reject(Error('A lista não pode ser alterada depois de iniciada'));
                             }
                             if (state === EnumTaskListState.ONHOLD) {

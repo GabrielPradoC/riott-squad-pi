@@ -1,309 +1,204 @@
-<app-header></app-header>
+<div id="pageLists">
+  <app-header></app-header>
 
-<div class="container">
+  <div class="container">
     <div class="list-members">
-        <div class="main">
-            <div class="initial">
-                <h2>Listas:</h2>
-            </div>
-    
-            <div class="members">
-                <div id="1" class="member selected" (click)="select(1)">
-                    <div class="member-photo">
-                        <img src="../../../assets/person.jpg" alt="Member photo">
-                    </div>
-                    
-                    <div class="member-info">
-                        <div class="member-name">
-                            <span>Luísa Sousa</span>
-                        </div>
-    
-                        <div class="member-allowance-information">
-                            <div>
-                                <label>Mesada:</label>
-                                <span>R$ 1000,00</span>
-                            </div>
-                            <div>
-                                <label>Decontos:</label>
-                                <span>-R$ 300,00</span>
-                            </div>
-                            <div>
-                                <label>Total:</label>
-                                <span>R$ 700,00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="2" class="member" (click)="select(2)">
-                    <div class="member-photo">
-                        <img src="../../../assets/person.jpg" alt="Member photo">
-                    </div>
-                    
-                    <div class="member-info">
-                        <div class="member-name">
-                            <span>Luísa Sousa</span>
-                        </div>
-    
-                        <div class="member-allowance-information">
-                            <div>
-                                <label>Mesada:</label>
-                                <span>R$ 1000,00</span>
-                            </div>
-                            <div>
-                                <label>Decontos:</label>
-                                <span>-R$ 300,00</span>
-                            </div>
-                            <div>
-                                <label>Total:</label>
-                                <span>R$ 700,00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="3" class="member" (click)="select(3)">
-                    <div class="member-photo">
-                        <img src="../../../assets/person.jpg" alt="Member photo">
-                    </div>
-                    
-                    <div class="member-info">
-                        <div class="member-name">
-                            <span>Luísa Sousa</span>
-                        </div>
-    
-                        <div class="member-allowance-information">
-                            <div>
-                                <label>Mesada:</label>
-                                <span>R$ 1000,00</span>
-                            </div>
-                            <div>
-                                <label>Decontos:</label>
-                                <span>-R$ 300,00</span>
-                            </div>
-                            <div>
-                                <label>Total:</label>
-                                <span>R$ 700,00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="main">
+        <div class="initial">
+          <h2>Listas:</h2>
         </div>
 
-        <app-my-button customClass="light-green lists-page" text="Gerenciar listas" ></app-my-button>
+        <div class="members">
+          <div
+            *ngFor="let member of members"
+            id="{{ member.id }}"
+            class="member"
+            [ngClass]="{'selected': member.id === members[0].id}"
+            (click)="select(member.id)">
+
+            <div class="member-photo">
+              <img src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
+            </div>
+
+            <div class="member-info">
+              <div class="member-name">
+                <span>{{ member.name }}</span>
+              </div>
+
+              <div class="member-allowance-information">
+                <div>
+                  <label>Mesada:</label>
+                  <span>{{ member.allowance | currency : 'BRL' }}</span>
+                </div>
+                <div>
+                  <label>Decontos:</label>
+                  <span>-{{ member.currentListResult.totalDebit | currency : 'BRL' }}</span>
+                </div>
+                <div>
+                  <label>Total:</label>
+                  <span>{{ member.allowance - member.currentListResult.totalDebit | currency : 'BRL' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="button">
+        <app-my-button customClass="light-green lists-page" text="Gerenciar listas" (click)="openModal()"></app-my-button>
+      </div>
     </div>
 
     <div class="gap"></div>
 
-    <div class="list-activities">
-        <h2 class="title-list">Lista:</h2>
+    <div *ngIf="list" class="list-activities">
+      <h2 *ngIf="list.state === 'STARTED'" class="title-list">Lista:</h2>
 
-        <div class="main">
-            <div class="activities">
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 15,00</span>
-                        </div>
-        
-                        <!-- <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button> -->
-                        <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 15,00</span>
-                        </div>
-                        
-                        <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button>
-                        <!-- <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button> -->
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 25,00</span>
-                        </div>
-                        
-                        <!-- <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button> -->
-                        <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 20,00</span>
-                        </div>
-                        
-                        <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button>
-                        <!-- <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button> -->
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 5,00</span>
-                        </div>
-                        
-                        <!-- <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button> -->
-                        <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 30,00</span>
-                        </div>
-                        
-                        <!-- <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button> -->
-                        <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 15,00</span>
-                        </div>
-                        
-                        <!-- <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button> -->
-                        <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 15,00</span>
-                        </div>
-                        
-                        <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button>
-                        <!-- <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button> -->
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 25,00</span>
-                        </div>
-                        
-                        <!-- <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button> -->
-                        <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button>
-                    </div>
-                </div>
-                <div class="activity">
-                    <div class="activity-info">
-                        <div class="description">
-                            <label>Descrição da atividade:</label>
-                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <div class="value">
-                            <label>Valor:</label>
-                            <span>R$ 20,00</span>
-                        </div>
-                        
-                        <app-my-button customClass="orange lists-page" text="Marcar falta"></app-my-button>
-                        <!-- <app-my-button customClass="background-orange lists-page" text="Faltou"></app-my-button> -->
-                    </div>
-                </div>
+      <div class="main">
+        <div *ngIf="tasks" class="activities" [ngClass]="{'no-list': list.state !== 'STARTED'}">
+          <div *ngFor="let task of tasks" class="activity">
+            <div class="activity-info">
+              <div class="description">
+                <label>Descrição da atividade:</label>
+                <span>{{ task.content.description }}</span>
+              </div>
             </div>
+            <div class="action">
+              <div class="value">
+                <label>Valor:</label>
+                <span>{{ task.value | currency : 'BRL' }}</span>
+              </div>
 
-            <div class="transparent"></div>
-    
-            <div class="finalize">
-                <div class="lacks">
-                    <label>Total de faltas:</label>
-                    <span><b>12</b></span>
-                </div>
-        
-                <div class="bar"></div>
-        
-                <div class="money">
-                    <div class="allowance">
-                        <label>Mesada:</label>
-                        <span>R$ 1.000,00</span>
-                    </div>
-    
-                    <div class="minus"><b>-</b></div>
-    
-                    <div class="discount">
-                        <label>Descontos:</label>
-                        <span>R$ 300,00</span>
-                    </div>
-                    
-                    <div class="equals"><b>=</b></div>
-    
-                    <div class="total">
-                        <label>Total:</label>
-                        <span>R$ 700,00</span>
-                    </div>
-                </div>
+              <app-my-button
+                *ngIf="task.isMissed == false"
+                customClass="orange lists-page"
+                text="Marcar falta"
+                (click)="toggleMissed(task)">
+              </app-my-button>
+              <app-my-button
+                *ngIf="!task.isMissed == false"
+                customClass="background-orange lists-page"
+                text="Faltou"
+                (click)="toggleMissed(task)">
+              </app-my-button>
             </div>
+          </div>
         </div>
+
+        <div *ngIf="list.state !== 'STARTED'" class="no-list-container">
+          <div class="no-list">
+            <div>
+              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
+              <p>Este membro não possui lista configurada</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="transparent"></div>
+
+        <div *ngIf="tasks && list.state === 'STARTED'" class="finalize">
+          <div class="lacks">
+            <label>Total de faltas:</label>
+            <span><b>{{ lacks }}</b></span>
+          </div>
+
+          <div class="bar"></div>
+
+          <div class="money">
+            <div class="allowance">
+              <label>Mesada:</label>
+              <span>{{ allowance | currency : 'BRL' }}</span>
+            </div>
+
+            <div class="minus"><b>-</b></div>
+
+            <div class="discount">
+              <label>Descontos:</label>
+              <span>{{ totalDiscount | currency : 'BRL' }}</span>
+            </div>
+
+            <div class="equals"><b>=</b></div>
+
+            <div class="total">
+              <label>Total:</label>
+              <span>{{ allowance - totalDiscount | currency : 'BRL' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <app-modal customId="manageLists" customTitle="Gerenciar listas">
+    <ng-template #content>
+      <div class="container-manage-lists">
+        <div *ngIf="members" class="members">
+          <div
+            *ngFor="let member of members"
+            id="{{ member.id }}manage"
+            class="member"
+            [ngClass]="{'selected-in-manage-list': member.id === members[0].id}"
+            (click)="selectInManageList(member.id)">
+            <div class="member-photo">
+              <img width="40px" src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
+            </div>
+  
+            <div class="member-info">
+              <label>Membro:</label>
+              <span>{{ member.name }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="listManage.data.length > 0" class="list">
+          <div class="list-information">
+            <div class="list-status">
+              <label>Status da lista:</label>
+              <span>{{ listManageData.state }}</span>
+            </div>
+
+            <div  class="list-actions">
+              <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+              <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="light-green members-page" text= "Editar"></app-my-button>
+              <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="green members-page" text= "Iniciar lista"></app-my-button>
+            </div>
+          </div>
+
+          <div class="gap"></div>
+
+          <div class="container-activities">
+            <h2>Atividades:</h2>
+
+            <div *ngIf="tasksManage" class="activities">
+              <div
+                *ngFor="let task of tasksManage"
+                class="activity"
+                id="task.id">
+                <div class="description">
+                  <label>Descrição da atividade:</label>
+                  <span>{{ task.content.description }}</span>
+                </div>
+                <div class="discount-value">
+                  <label>Valor do desconto:</label>
+                  <span>{{ task.value | currency : 'BRL' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div></div>
+        </div>
+  
+        <div *ngIf="listManage.data" class="no-list-container">
+          <div class="no-list">
+            <div>
+              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
+              <p>Este membro não possui lista configurada</p>
+            </div>
+    
+            <app-my-button customClass="green login-page" text="Criar lista" (click)="login()"></app-my-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </app-modal>
 </div>
