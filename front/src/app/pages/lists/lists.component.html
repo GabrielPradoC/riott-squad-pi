@@ -9,12 +9,8 @@
         </div>
 
         <div class="members">
-          <div
-            *ngFor="let member of members"
-            id="{{ member.id }}"
-            class="member"
-            [ngClass]="{'selected': member.id === members[0].id}"
-            (click)="select(member.id)">
+          <div *ngFor="let member of members" id="{{ member.id }}" class="member"
+            [ngClass]="{'selected': member.id === members[0].id}" (click)="select(member)">
 
             <div class="member-photo">
               <img src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
@@ -45,17 +41,18 @@
       </div>
 
       <div id="button">
-        <app-my-button customClass="light-green lists-page" text="Gerenciar listas" (click)="openModal()"></app-my-button>
+        <app-my-button customClass="light-green lists-page" text="Gerenciar listas" (click)="OpenManageListsModal()">
+        </app-my-button>
       </div>
     </div>
 
     <div class="gap"></div>
 
-    <div *ngIf="list" class="list-activities">
-      <h2 *ngIf="list.state === 'STARTED'" class="title-list">Lista:</h2>
+    <div class="list-activities">
+      <h2 *ngIf="list" class="title-list">Lista:</h2>
 
       <div class="main">
-        <div *ngIf="tasks" class="activities" [ngClass]="{'no-list': list.state !== 'STARTED'}">
+        <div *ngIf="tasks" class="activities" [ngClass]="{'no-list': !list}">
           <div *ngFor="let task of tasks" class="activity">
             <div class="activity-info">
               <div class="description">
@@ -69,23 +66,17 @@
                 <span>{{ task.value | currency : 'BRL' }}</span>
               </div>
 
-              <app-my-button
-                *ngIf="task.isMissed == false"
-                customClass="orange lists-page"
-                text="Marcar falta"
+              <app-my-button *ngIf="task.isMissed == false" customClass="orange lists-page" text="Marcar falta"
                 (click)="toggleMissed(task)">
               </app-my-button>
-              <app-my-button
-                *ngIf="!task.isMissed == false"
-                customClass="background-orange lists-page"
-                text="Faltou"
+              <app-my-button *ngIf="!task.isMissed == false" customClass="background-orange lists-page" text="Faltou"
                 (click)="toggleMissed(task)">
               </app-my-button>
             </div>
           </div>
         </div>
 
-        <div *ngIf="list.state !== 'STARTED'" class="no-list-container">
+        <div *ngIf="!list" class="no-list-container">
           <div class="no-list">
             <div>
               <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
@@ -96,7 +87,7 @@
 
         <div class="transparent"></div>
 
-        <div *ngIf="tasks && list.state === 'STARTED'" class="finalize">
+        <div *ngIf="list" class="finalize">
           <div class="lacks">
             <label>Total de faltas:</label>
             <span><b>{{ lacks }}</b></span>
@@ -124,43 +115,116 @@
               <span>{{ allowance - totalDiscount | currency : 'BRL' }}</span>
             </div>
           </div>
+
+          <div class="action">
+            <app-my-button customClass="green lists-page" text="Finalizar lista" (click)="OpenFinalizeListModal()">
+            </app-my-button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal of end list -->
+  <app-modal customId="finalize-list" customTitle="">
+    <ng-template #content>
+      <div id="warningMsgExample">
+        <app-dialog-box (callParent)="finalizeList(list)" customClassWarning="showElement"
+          text="Deseja realmente finalizar essa lista?" textButton="Confirmar e finalizar lista"
+          divPrincipal="warningMsgExample" divAtual="sucessMsgExample" closeAll="true">
+          <ng-template #contentDialogBox>
+            <div class="gap" style="margin-top: 1.7rem;"></div>
+
+            <div class="member">
+              <div class="member-information">
+                <img src="data:image/png;base64,{{ currentMember.photo }}" alt="Member photo" width="40px">
+
+                <div class="member-name">
+                  <label>Membro:</label>
+                  <span>{{ currentMember.name }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="gap"></div>
+
+            <div class="list-information">
+              <div class="lacks">
+                <label>Total de faltas:</label>
+                <span>{{ lacks }}</span>
+              </div>
+              <div class="allowance">
+                <label>Mesada:</label>
+                <span>{{ allowance | currency : 'BRL' }}</span>
+              </div>
+              <div class="discount">
+                <label>Desconto:</label>
+                <span>{{ totalDiscount | currency : 'BRL' }}</span>
+              </div>
+              <div class="total">
+                <label>Total:</label>
+                <span>{{ allowance - totalDiscount | currency : 'BRL' }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgExample">
+        <app-dialog-box (callParent)="funcaoBotaoVerde($event)" customClassSucess="showElement"
+          text="Lista finalizada com sucesso!" divPrincipal="warningMsgExample" divAtual="sucessMsgExample"
+          closeAll="true">
+        </app-dialog-box>
+      </div>
+    </ng-template>
+  </app-modal>
+
   <app-modal customId="manageLists" customTitle="Gerenciar listas">
     <ng-template #content>
       <div class="container-manage-lists">
         <div *ngIf="members" class="members">
-          <div
-            *ngFor="let member of members"
-            id="{{ member.id }}manage"
-            class="member"
+          <div *ngFor="let member of members" id="{{ member.id }}manage" class="member"
             [ngClass]="{'selected-in-manage-list': member.id === members[0].id}"
             (click)="selectInManageList(member.id)">
             <div class="member-photo">
               <img width="40px" src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
             </div>
-  
+
             <div class="member-info">
               <label>Membro:</label>
               <span>{{ member.name }}</span>
             </div>
           </div>
         </div>
-        
-        <div *ngIf="listManage.data.length > 0" class="list">
+
+        <div *ngIf="allTasks" class="list-initial">
+          <h2>Atividades:</h2>
+
+          <div class="container-activities">
+            <div *ngIf="tasksManage" class="activities">
+              <div *ngFor="let task of allTasks" class="activity" id="task.id">
+                <div class="description">
+                  <label>Descrição da atividade:</label>
+                  <span>{{ task.description }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: none;" *ngIf="listManageData" class="list">
           <div class="list-information">
             <div class="list-status">
               <label>Status da lista:</label>
-              <span>{{ listManageData.state }}</span>
+              <span class="{{ listManageData.state }}">{{ statesList[listManageData.state] }}</span>
             </div>
 
-            <div  class="list-actions">
-              <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-              <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="light-green members-page" text= "Editar"></app-my-button>
-              <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="green members-page" text= "Iniciar lista"></app-my-button>
+            <div class="list-actions">
+              <app-my-button customClass="orange members-page" text="Excluir" (click)="removeList(listManageData.id)" ></app-my-button>
+              <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="light-green members-page"
+                text="Editar"></app-my-button>
+              <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="green members-page"
+                text="Iniciar lista"></app-my-button>
             </div>
           </div>
 
@@ -170,10 +234,7 @@
             <h2>Atividades:</h2>
 
             <div *ngIf="tasksManage" class="activities">
-              <div
-                *ngFor="let task of tasksManage"
-                class="activity"
-                id="task.id">
+              <div *ngFor="let task of tasksManage" class="activity" id="task.id">
                 <div class="description">
                   <label>Descrição da atividade:</label>
                   <span>{{ task.content.description }}</span>
@@ -187,14 +248,14 @@
           </div>
           <div></div>
         </div>
-  
-        <div *ngIf="listManage.data" class="no-list-container">
+
+        <div *ngIf="!listManageData" class="no-list-container">
           <div class="no-list">
             <div>
               <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
               <p>Este membro não possui lista configurada</p>
             </div>
-    
+
             <app-my-button customClass="green login-page" text="Criar lista" (click)="login()"></app-my-button>
           </div>
         </div>
