@@ -154,14 +154,14 @@ form {
         color: #3B4244;
       }
 
-      input, div {
+      input, #uploadFoto {
         position: relative;
         width: 100%;
         border-radius: 4px;
         margin-top: 24px;
       }
 
-      div {
+      #uploadFoto {
         display: flex;
         flex-direction: row;
         height: 20px;
@@ -170,10 +170,25 @@ form {
         border: 1px dashed #B5C5CA;
         align-items:center;
       
-        > img {
+        > div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           height: 52px;
           width: 52px;
-          padding: 7px 13px 7px 1px;
+          margin: 7px 13px 7px 1px;
+
+          > img {
+            height: 37.5px;
+            width: 37.5px;
+          }
+
+          .imgUpload {
+            height: 52px;
+            width: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
         }
       
         > p {
