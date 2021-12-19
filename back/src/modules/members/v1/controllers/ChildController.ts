@@ -162,11 +162,11 @@ export class ChildController extends BaseController {
     @Middlewares(ChildValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
         const { name, birthday, allowance, photoRef } = req.body;
-        const formatedBirthday = StringUtils.reverseString(birthday);
+        const [day, month, year] = birthday.split('/');
 
         const newChild: DeepPartial<Child> = {
             name,
-            birthday: formatedBirthday,
+            birthday: [year, month, day].join('/'),
             allowance,
             photo: photoRef,
             parent: req.body.userRef,
