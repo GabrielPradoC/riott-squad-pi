@@ -30,7 +30,8 @@ export class CrudService<List, Model> {
     return this.http.put<Model>(`${apiUrl}/${data['id']}`, data).pipe(take(2));
   }
 
-  Remove(id: number, apiUrl: string) {
-    return this.http.delete(`${apiUrl}/${id}`).pipe(take(2));
+  Remove(apiUrl: string) {
+    return this.http.delete(apiUrl, { headers: this.headers })
+      .pipe(take(2));
   }
 }
