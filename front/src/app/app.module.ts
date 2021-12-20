@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { HistoricComponent } from './historic/historic.component';
 registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HistoricComponent
   ],
   imports: [
     BrowserModule,
