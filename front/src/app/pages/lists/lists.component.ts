@@ -124,16 +124,16 @@ export class ListsComponent implements OnInit {
   }
 
   selectInManageList(id): void {
-    const selected = document.getElementsByClassName('selected-in-manage-list')[0];
+    const selected = document.getElementsByClassName('selected-in-manage-list');
     
-    if (selected) {
-      selected.classList.toggle('selected-in-manage-list');
+    if (selected.length > 0) {
+      selected.item(0).classList.toggle('selected-in-manage-list');
     }
-
+    
     const newSelected: HTMLElement = document.getElementById(id + 'manage');
     newSelected.classList.toggle('selected-in-manage-list');
 
-    if (selected.id != id)
+    if (selected.item(0).id != id)
       this.getTaskListForManage(id);
 
     this.activeUserVersionList();
@@ -145,7 +145,7 @@ export class ListsComponent implements OnInit {
 
     if (initialVersion && userVersion) {
       initialVersion.style.display = "none";
-      userVersion.style.display = "flex";
+      userVersion.style.removeProperty('display');
     }
   }
 
