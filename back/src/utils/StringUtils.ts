@@ -49,4 +49,16 @@ export class StringUtils {
 
         return text;
     }
+
+    /**
+     * reverseString.
+     *
+     * Inverte a ordem dos caracteres de uma string
+     *
+     * @param text - string a ser revertida
+     * @returns
+     */
+    public static reverseString(text: string): string {
+        return text.split('').reverse().join('');
+    }
 }
