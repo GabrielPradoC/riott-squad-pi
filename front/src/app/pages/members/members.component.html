@@ -268,10 +268,11 @@
 
           <div class="field">
             <input
-                type="number"
+                type="string"
                 id="valorMesada"
                 placeholder=" "
                 formControlName="valorMesada"
+                (keypress)="mask()"
             >
             <label for="valorMesada">Valor da mesada</label>
           </div>

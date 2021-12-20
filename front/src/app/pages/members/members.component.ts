@@ -22,7 +22,8 @@ export class MembersComponent {
         Validators.required
       ])],
       valorMesada: ['', Validators.compose([
-        Validators.required
+        Validators.required,
+        Validators.minLength(3)
       ])]
     });
   }
@@ -172,12 +173,24 @@ export class MembersComponent {
     }
   }
 
+  mask(){
+    setTimeout(() => {
+      let inputElement = (<HTMLSelectElement>document.getElementById("valorMesada"));
+      inputElement.value = MembersComponent.prototype.replaceValue(inputElement.value);
+    }, 1);
+  }
+
+  replaceValue(value: string) : string {
+    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
+    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+    return value;
+}
+
   cadastrarMembro() : void {
     const foto = localStorage.getItem("RIOTT:imgTemp");
     const nome: string = this.form.controls['nome'].value;
     const dataNascimento = this.form.controls['dataNascimento'].value;
-    const valorMesada = this.form.controls['valorMesada'].value;
-
+    const valorMesada = parseFloat(this.form.controls['valorMesada'].value.replace(/(\d)(\d\d$)/,"$1.$2"));
 
     console.log(foto);
     console.log(nome);
