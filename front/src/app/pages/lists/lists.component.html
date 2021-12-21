@@ -128,10 +128,9 @@
   <!-- Modal of end list -->
   <app-modal customId="finalize-list" customTitle="">
     <ng-template #content>
-      <div id="warningMsgExample">
+      <div id="warningMsgFinalizeList">
         <app-dialog-box (callParent)="finalizeList(list)" customClassWarning="showElement"
-          text="Deseja realmente finalizar essa lista?" textButton="Confirmar e finalizar lista"
-          divPrincipal="warningMsgExample" divAtual="sucessMsgExample" closeAll="true">
+          text="Deseja realmente finalizar essa lista?" textButton="Confirmar e finalizar lista" closeAll="true">
           <ng-template #contentDialogBox>
             <div class="gap" style="margin-top: 1.7rem;"></div>
 
@@ -170,10 +169,8 @@
         </app-dialog-box>
       </div>
 
-      <div id="sucessMsgExample">
-        <app-dialog-box (callParent)="funcaoBotaoVerde($event)" customClassSucess="showElement"
-          text="Lista finalizada com sucesso!" divPrincipal="warningMsgExample" divAtual="sucessMsgExample"
-          closeAll="true">
+      <div id="sucessMsgFinalizeList">
+        <app-dialog-box customClassSucess="showElement" text="Lista finalizada com sucesso!" closeAll="true">
         </app-dialog-box>
       </div>
     </ng-template>
@@ -256,10 +253,112 @@
               <p>Este membro não possui lista configurada</p>
             </div>
 
-            <app-my-button customClass="green login-page" text="Criar lista" (click)="login()"></app-my-button>
+            <app-my-button customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
           </div>
         </div>
       </div>
+
+      <div id="warningMsgInitList">
+        <app-dialog-box
+            (callParent)="confirmInit($event)"
+            customClassWarning="showElement"
+            text="Deseja realmente iniciar essa lista?"
+            textButton="Confirmar e iniciar a lista"
+            closeAll="false">
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgInitList">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Lista iniciada com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+
+      <div id="errorMsgInitList">
+        <app-dialog-box
+            customClassError="showElement"
+            text="Algo deu errado"
+            closeAll="true"
+            divAtual="errorMsgInitList"
+            divPrincipal="contentInitList">
+        </app-dialog-box>
+      </div>
+
+      <div id="warningMsgDeleteList">
+        <app-dialog-box
+            (callParent)="confirmDelete($event)"
+            customClassWarning="showElement"
+            text="Deseja realmente excluir essa lista?"
+            textButton="Confirmar e excluir a lista"
+            closeAll="false">
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgDeleteList">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Lista excluida com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+
+      <div id="errorMsgDeleteList">
+        <app-dialog-box
+            customClassError="showElement"
+            text="Algo deu errado"
+            closeAll="true"
+            divAtual="errorMsgDeleteList"
+            divPrincipal="contentDeleteList">
+        </app-dialog-box>
+      </div>
     </ng-template>
   </app-modal>
+
+  <div id="divcreateList">
+    <app-modal customId="createList" customTitle="Criar nova lista">
+      <ng-template #content>
+        <div id="contentCreateList">
+          
+        </div>
+
+        <div id="sucessMsgCreateList">
+          <app-dialog-box
+              customClassSucess="showElement"
+              text="Lista criada com sucesso!"
+              closeAll="true">
+          </app-dialog-box>
+        </div>
+
+        <div id="errorMsgCreateList">
+          <app-dialog-box
+              customClassError="showElement"
+              text="Algo deu errado"
+              closeAll="true"
+              divAtual="errorMsgCreateList"
+              divPrincipal="contentCreateList">
+          </app-dialog-box>
+        </div>
+      </ng-template>
+    </app-modal>
+  </div>
+
+  <div id="diveditList">
+    <app-modal customId="editList" customTitle="Editar lista">
+      <ng-template #content>
+        <div id="contentEditList">
+
+        </div>
+
+        <div id="sucessMsgEditList">
+          <app-dialog-box
+              customClassSucess="showElement"
+              text="Lista salva com sucesso!"
+              closeAll="true">
+          </app-dialog-box>
+        </div>
+      </ng-template>
+    </app-modal>
+  </div>
 </div>

@@ -5,10 +5,11 @@
 }
 
 .container {
-  margin: 2rem 3.6rem 0 3.6rem;
+  margin: 2rem 3.6rem 2rem 3.6rem;
 
   display: flex;
   gap: 2.2rem;
+  height: calc(89vh - 4rem);
 
   box-sizing: border-box;
 
@@ -364,7 +365,7 @@
   }
 }
 
-#warningMsgExample {
+#warningMsgFinalizeList {
   align-items: center;
 
   overflow-y: auto;
@@ -458,16 +459,6 @@
       }
     }
   }
-}
-
-#sucessMsgExample {
-  display: flex;
-  width: 272px;
-  height: 100%;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 96px;
-  display: none;
 }
 
 .container-manage-lists {
@@ -718,4 +709,25 @@
       }
     }
   }
+}
+
+#divcreateList, #diveditList {
+  display: none;
+  position: fixed;
+  top: 11vh;
+  height: 89vh;
+  width: 100vw;
+  z-index: 4;
+}
+
+#warningMsgInitList, #sucessMsgInitList, #errorMsgInitList,
+#sucessMsgCreateList, #errorMsgCreateList, #sucessMsgEditList,
+#warningMsgDeleteList, #sucessMsgDeleteList, #errorMsgDeleteList,
+#sucessMsgFinalizeList {
+  width: 272px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 96px;
+  display: none;
 }

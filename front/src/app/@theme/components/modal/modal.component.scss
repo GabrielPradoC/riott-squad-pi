@@ -48,7 +48,7 @@
 }
 
 @keyframes hideElement {
-    from {top: -89vh;}
+    from {top: -89vh}
     to {top: 0}
 }
 
@@ -56,3 +56,15 @@
     animation: hideElement 0.3s;
     animation-fill-mode: forwards;
 }
+
+@keyframes hideElement2 {
+    from {top: 0vh}
+    to {top: 89vh}
+}
+
+.down2 {
+    animation: hideElement2 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.subModal {}
