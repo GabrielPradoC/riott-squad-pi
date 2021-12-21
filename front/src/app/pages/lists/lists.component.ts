@@ -11,6 +11,7 @@ import { listRequestBody } from 'src/app/@core/common/interfaces/listRequestBody
 import { TaskService } from 'src/app/@core/services/task.service';
 import { TaskMinimum } from 'src/models/taskMinimum.model';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-lists',
@@ -18,7 +19,8 @@ import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-
   styleUrls: ['./lists.component.scss']
 })
 export class ListsComponent implements OnInit {
-  public currentMember: Member;
+  public currentMemberFinalize: Member;
+  public currentMemberManage: Member;
   public members: Member[];
   public allowance: number = 0;
   public list: List;
@@ -26,16 +28,28 @@ export class ListsComponent implements OnInit {
   public listManageData: List;
   public allTasks: TaskMinimum[];
   public tasks: Task[];
+  public tasksCreate: Task[];
   public tasksManage: Task[];
   public totalDiscount: number = 0;
   public lacks: number = 0;
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
+  public form: FormGroup;
 
   constructor(
     private memberService: MemberService,
     private listService: ListService,
     private localStorageService: LocalStorageService,
-    private taskService: TaskService) {
+    private taskService: TaskService,
+    private fb: FormBuilder) {
+    this.form = this.fb.group({
+      name: ['', Validators.compose([
+        Validators.email,
+        Validators.required
+      ])],
+      tasks: ['', Validators.compose([
+        Validators.required
+      ])]
+    });
   }
 
   ngOnInit(): void {
@@ -51,7 +65,7 @@ export class ListsComponent implements OnInit {
         this.members = members.data.children;
 
         //get the first member
-        this.currentMember = members.data.children[0];
+        this.currentMemberFinalize = members.data.children[0];
 
         //allowance
         this.allowance = members.data.children[0].allowance;
@@ -130,26 +144,34 @@ export class ListsComponent implements OnInit {
     newSelected.classList.toggle('selected');
 
     //set as the current member
-    this.currentMember = member;
+    this.currentMemberFinalize = member;
 
     if (selected.id != member.id.toString())
       this.getTaskList(member.id);
   }
 
-  selectInManageList(id): void {
+  selectInManageList(member: Member): void {
     const selected = document.getElementsByClassName('selected-in-manage-list');
     
     if (selected.length > 0) {
       selected.item(0).classList.toggle('selected-in-manage-list');
     }
     
-    const newSelected: HTMLElement = document.getElementById(id + 'manage');
+    const newSelected: HTMLElement = document.getElementById(member.id + 'manage');
     newSelected.classList.toggle('selected-in-manage-list');
 
-    if (selected.item(0).id != id)
-      this.getTaskListForManage(id);
+    //set as the current member
+    this.currentMemberManage = member;
+
+    if (selected.item(0).id != member.id.toString())
+      this.getTaskListForManage(member.id);
 
     this.activeUserVersionList();
+  }
+
+  selectInCreateList(id): void {
+    const newSelected: HTMLElement = document.getElementById(id + 'create');
+    newSelected.classList.toggle('selected-in-create-list');
   }
 
   activeUserVersionList() {
@@ -158,7 +180,7 @@ export class ListsComponent implements OnInit {
 
     if (initialVersion && userVersion) {
       initialVersion.style.display = "none";
-      userVersion.style.removeProperty('display');
+      userVersion.style.display = "";
     }
   }
 
@@ -200,7 +222,7 @@ export class ListsComponent implements OnInit {
 
   removeList(id: number) {
     this.listService.Remove(`${environment.API}list/${id}`).subscribe(
-      result => this.getTaskListForManage(this.currentMember.id)
+      result => this.getTaskListForManage(this.currentMemberFinalize.id)
     )
   }
 
