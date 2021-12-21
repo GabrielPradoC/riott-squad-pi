@@ -78,10 +78,12 @@
 
         <div *ngIf="!list" class="no-list-container">
           <div class="no-list">
-            <div>
-              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
-              <p>Este membro não possui lista configurada</p>
+            <div class="warning-image">
+              <img src="../../../assets/warning1.ico" alt="aviso1">
+              <img src="../../../assets/warning2.ico" alt="aviso2">
             </div>
+            
+            <p>Este membro não possui lista configurada</p>
           </div>
         </div>
 
@@ -209,8 +211,8 @@
           </div>
         </div>
 
-        <div style="display: none;" *ngIf="listManageData" class="list">
-          <div class="list-information">
+        <div style="display: none;" class="list">
+          <div *ngIf="listManageData" class="list-information">
             <div class="list-status">
               <label>Status da lista:</label>
               <span class="{{ listManageData.state }}">{{ statesList[listManageData.state] }}</span>
@@ -225,9 +227,9 @@
             </div>
           </div>
 
-          <div class="gap"></div>
+          <div *ngIf="listManageData" class="gap"></div>
 
-          <div class="container-activities">
+          <div *ngIf="listManageData" class="container-activities">
             <h2>Atividades:</h2>
 
             <div *ngIf="tasksManage" class="activities">
@@ -249,11 +251,15 @@
         <div *ngIf="!listManageData" class="no-list-container">
           <div class="no-list">
             <div>
-              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
+              <div class="warning-image">
+                <img src="../../../assets/warning1.ico" alt="aviso1">
+                <img src="../../../assets/warning2.ico" alt="aviso2">
+              </div>
+              
               <p>Este membro não possui lista configurada</p>
             </div>
 
-            <app-my-button customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
+            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
           </div>
         </div>
       </div>

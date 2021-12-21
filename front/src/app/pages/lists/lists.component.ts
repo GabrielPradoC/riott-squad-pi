@@ -158,7 +158,7 @@ export class ListsComponent implements OnInit {
 
     if (initialVersion && userVersion) {
       initialVersion.style.display = "none";
-      userVersion.style.removeProperty('display');
+      userVersion.style.display = "";
     }
   }
 
