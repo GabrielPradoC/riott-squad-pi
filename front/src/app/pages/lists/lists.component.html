@@ -78,10 +78,12 @@
 
         <div *ngIf="!list" class="no-list-container">
           <div class="no-list">
-            <div>
-              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
-              <p>Este membro não possui lista configurada</p>
+            <div class="warning-image">
+              <img src="../../../assets/warning1.ico" alt="aviso1">
+              <img src="../../../assets/warning2.ico" alt="aviso2">
             </div>
+            
+            <p>Este membro não possui lista configurada</p>
           </div>
         </div>
 
@@ -136,11 +138,11 @@
 
             <div class="member">
               <div class="member-information">
-                <img src="data:image/png;base64,{{ currentMember.photo }}" alt="Member photo" width="40px">
+                <img src="data:image/png;base64,{{ currentMemberFinalize.photo }}" alt="Member photo" width="40px">
 
                 <div class="member-name">
                   <label>Membro:</label>
-                  <span>{{ currentMember.name }}</span>
+                  <span>{{ currentMemberFinalize.name }}</span>
                 </div>
               </div>
             </div>
@@ -182,7 +184,7 @@
         <h2>Membros ativos</h2>
         <div *ngIf="members" class="members">
           <div *ngFor="let member of members" id="{{ member.id }}manage" class="member"
-            (click)="selectInManageList(member.id)">
+            (click)="selectInManageList(member)">
             <div class="member-photo">
               <img width="40px" src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
             </div>
@@ -209,8 +211,8 @@
           </div>
         </div>
 
-        <div style="display: none;" *ngIf="listManageData" class="list">
-          <div class="list-information">
+        <div style="display: none;" class="list">
+          <div *ngIf="listManageData" class="list-information">
             <div class="list-status">
               <label>Status da lista:</label>
               <span class="{{ listManageData.state }}">{{ statesList[listManageData.state] }}</span>
@@ -225,9 +227,9 @@
             </div>
           </div>
 
-          <div class="gap"></div>
+          <div *ngIf="listManageData" class="gap"></div>
 
-          <div class="container-activities">
+          <div *ngIf="listManageData" class="container-activities">
             <h2>Atividades:</h2>
 
             <div *ngIf="tasksManage" class="activities">
@@ -249,11 +251,15 @@
         <div *ngIf="!listManageData" class="no-list-container">
           <div class="no-list">
             <div>
-              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
+              <div class="warning-image">
+                <img src="../../../assets/warning1.ico" alt="aviso1">
+                <img src="../../../assets/warning2.ico" alt="aviso2">
+              </div>
+              
               <p>Este membro não possui lista configurada</p>
             </div>
 
-            <app-my-button customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
+            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
           </div>
         </div>
       </div>
@@ -320,7 +326,46 @@
     <app-modal customId="createList" customTitle="Criar nova lista">
       <ng-template #content>
         <div id="contentCreateList">
-          
+          <div>
+            <form [formGroup]="form">
+              <div class="field">
+                <input
+                    type="string"
+                    id="email"
+                    placeholder=" "
+                    formControlName="email"
+                >
+                  <label for="email">Nome da lista <span class="required">*</span></label>
+              </div>
+              
+              <div class="member-container">
+                <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member"
+                  (click)="selectInCreateList(currentMemberManage)">
+                  <div class="member-photo">
+                    <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
+                  </div>
+  
+                  <div class="member-info">
+                    <label>Membro:</label>
+                    <span>{{ currentMemberManage.name }}</span>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="activities-container">
+                <h2>Selecione as atividades e defina seus valores:</h2>
+  
+                <div *ngIf="allTasks" class="activities">
+                  <div *ngFor="let task of allTasks" class="activity" id="task.id">
+                    <div class="description">
+                      <label>Descrição da atividade:</label>
+                      <span>{{ task.description }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
 
         <div id="sucessMsgCreateList">
