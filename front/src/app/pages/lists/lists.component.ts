@@ -29,7 +29,6 @@ export class ListsComponent implements OnInit {
   public tasksManage: Task[];
   public totalDiscount: number = 0;
   public lacks: number = 0;
-
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
 
   constructor(
@@ -99,6 +98,19 @@ export class ListsComponent implements OnInit {
     )
   }
 
+  calculateTotalAndDiscount(): void {
+    this.totalDiscount = 0;
+    this.lacks = 0;
+
+    //total of missed tasks
+    this.tasks?.map(t => {
+      if (t.isMissed === true) {
+        this.totalDiscount += Number.parseFloat(t.value)
+        this.lacks++;
+      }
+    })
+  }
+
   getAllTasks() {
     this.taskService.List(`${environment.API}task`).subscribe(
       tasks => {
@@ -125,16 +137,16 @@ export class ListsComponent implements OnInit {
   }
 
   selectInManageList(id): void {
-    const selected = document.getElementsByClassName('selected-in-manage-list')[0];
+    const selected = document.getElementsByClassName('selected-in-manage-list');
     
-    if (selected) {
-      selected.classList.toggle('selected-in-manage-list');
+    if (selected.length > 0) {
+      selected.item(0).classList.toggle('selected-in-manage-list');
     }
-
+    
     const newSelected: HTMLElement = document.getElementById(id + 'manage');
     newSelected.classList.toggle('selected-in-manage-list');
 
-    if (selected.id != id)
+    if (selected.item(0).id != id)
       this.getTaskListForManage(id);
 
     this.activeUserVersionList();
@@ -146,21 +158,8 @@ export class ListsComponent implements OnInit {
 
     if (initialVersion && userVersion) {
       initialVersion.style.display = "none";
-      userVersion.style.display = "flex";
+      userVersion.style.removeProperty('display');
     }
-  }
-
-  calculateTotalAndDiscount(): void {
-    this.totalDiscount = 0;
-    this.lacks = 0;
-
-    //total of missed tasks
-    this.tasks?.map(t => {
-      if (t.isMissed === true) {
-        this.totalDiscount += Number.parseFloat(t.value)
-        this.lacks++;
-      }
-    })
   }
 
   toggleMissed(task: Task): void {

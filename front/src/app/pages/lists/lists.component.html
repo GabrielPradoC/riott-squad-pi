@@ -125,7 +125,7 @@
     </div>
   </div>
 
-  <!-- Modal of end list -->
+  <!-- Modal of finalize list -->
   <app-modal customId="finalize-list" customTitle="">
     <ng-template #content>
       <div id="warningMsgFinalizeList">
@@ -179,9 +179,9 @@
   <app-modal customId="manageLists" customTitle="Gerenciar listas">
     <ng-template #content>
       <div class="container-manage-lists">
+        <h2>Membros ativos</h2>
         <div *ngIf="members" class="members">
           <div *ngFor="let member of members" id="{{ member.id }}manage" class="member"
-            [ngClass]="{'selected-in-manage-list': member.id === members[0].id}"
             (click)="selectInManageList(member.id)">
             <div class="member-photo">
               <img width="40px" src="data:image/png;base64,{{ member.photo }}" alt="Member photo">

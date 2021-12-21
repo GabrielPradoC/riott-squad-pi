@@ -1,3 +1,129 @@
-<div id="container">
-    <app-header></app-header>
+<div id="pageHistoric">
+  <app-header></app-header>
+
+  <div class="container">
+    <div class="list-members">
+      <div class="initial">
+        <h2>Históricos:</h2>
+      </div>
+
+      <div *ngIf="members" class="members">
+        <div *ngFor="let member of members" id="{{ member.id }}" class="member"
+          [ngClass]="{'selected': member.id === members[0].id}"  (click)="select(member)">
+          <div class="member-photo">
+            <img width="40px" src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
+          </div>
+  
+          <div class="member-info">
+            <label>Membro:</label>
+            <span>{{ member.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-lists">
+      <h2 *ngIf="lists.length > 0">Listas finalizadas:</h2>
+
+      <div class="main">
+        <div *ngIf="lists.length > 0" class="lists" [ngClass]="{'no-list': !list}">
+          <div *ngFor="let list of lists" class="list">
+            <div class="list-name">
+              <label>Nome da lista:</label>
+              <span>{{ list.name }}</span>
+            </div>
+
+            <div class="lacks-and-date">
+              <div class="lacks">
+                <label>Número de faltas:</label>
+                <span>{{ list.AmountTasksMissed }}</span>
+              </div>
+
+              <div class="start-date">
+                <label>Data de início:</label>
+                <span>{{ list.dateStart | date:'shortDate' }}</span>
+              </div>
+
+              <div class="completion-date">
+                <label>Data de finalização:</label>
+                <span>{{ list.dateEnd | date:'shortDate' }}</span>
+              </div>
+
+              <div class="action">  
+                <app-my-button customClass="green members-page" text="Ver detalhes" customValue="listDetails"
+                (click)="OpenListDetailsModal(list)">
+                </app-my-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!lists.length > 0" class="no-lists-container">
+          <div class="no-list">
+            <div class="warning-image">
+              <img src="../../../assets/warning1.ico" alt="aviso1">
+              <img src="../../../assets/warning2.ico" alt="aviso2">
+            </div>
+
+            <p>Este membro não possui lista configurada</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-modal customId="listDetails" customTitle="Detalhe da lista: {{ currentMember && currentList ? currentList.name : '' }}">
+    <ng-template #content>
+      <div *ngIf="currentMember && currentList" class="container-list-details">
+        <div class="member-container">
+          <div class="member">
+            <div class="member-photo">
+              <img width="40px"
+                src="data:image/png;base64,{{ currentMember.photo }}"
+                alt="Member photo">
+            </div>
+
+            <div class="member-info">
+              <label>Membro:</label>
+              <span>{{ currentMember.name }}</span>
+            </div>
+          </div>
+
+          <div class="list-details">
+            <div class="lacks">
+              <label>Número de faltas:</label>
+              <span>{{ currentList.AmountTasksMissed }}</span>
+            </div>
+
+            <div class="start-date">
+              <label>Data de início:</label>
+              <span>{{ currentList.dateStart | date:'shortDate' }}</span>
+            </div>
+
+            <div class="completion-date">
+              <label>Data de finalização:</label>
+              <span>{{ currentList.dateEnd | date:'shortDate' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="activities-container">
+          <h2>Atividades:</h2>
+
+          <div *ngIf="tasks" class="activities">
+            <div *ngFor="let task of tasks" class="activity">
+              <div class="activity-description">
+                <label>Descrição da atividade:</label>
+                <span>{{ task.content.description }}</span>
+              </div>
+              <div class="activity-status">
+                <label>Status da atividade:</label>
+                <span class="{{ task.isMissed == true ? 'missed' : 'done' }}">{{ isMissed[task.isMissed] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </app-modal>
 </div>
