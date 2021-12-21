@@ -204,6 +204,10 @@
                 font-size: 0.95rem;
                 color: #7c8d93;
               }
+
+              > span {
+                color: #3b4244;
+              }
             }
           }
     
@@ -220,6 +224,10 @@
               label {
                 font-size: 0.95rem;
                 color: #7c8d93;
+              }
+
+              > span {
+                color: #3b4244;
               }
             }  
           }
@@ -315,6 +323,7 @@
           .minus {
             font-size: 1.5rem;
             align-self: center;
+            color: #3b4244;
           }
       
           .discount {
@@ -337,6 +346,7 @@
           .equals {
             font-size: 1.5rem;
             align-self: center;
+            color: #3b4244;
           }
       
           .total {
@@ -618,6 +628,10 @@
               font-size: 0.95rem;
               color: #7c8d93;
             }
+
+            > span {
+              color: #3b4244;
+            }
           }
         }
       }
@@ -701,6 +715,10 @@
               font-size: 0.95rem;
               color: #7c8d93;
             }
+
+            > span {
+              color: #3b4244;
+            }
           }
 
           .discount-value {
@@ -712,6 +730,10 @@
             label {
               font-size: 0.95rem;
               color: #7c8d93;
+            }
+
+            > span {
+              color: #3b4244;
             }
           }
         }

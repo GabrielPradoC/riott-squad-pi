@@ -28,7 +28,6 @@ export class ListsComponent implements OnInit {
   public tasksManage: Task[];
   public totalDiscount: number = 0;
   public lacks: number = 0;
-
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
 
   constructor(
@@ -98,6 +97,19 @@ export class ListsComponent implements OnInit {
     )
   }
 
+  calculateTotalAndDiscount(): void {
+    this.totalDiscount = 0;
+    this.lacks = 0;
+
+    //total of missed tasks
+    this.tasks?.map(t => {
+      if (t.isMissed === true) {
+        this.totalDiscount += Number.parseFloat(t.value)
+        this.lacks++;
+      }
+    })
+  }
+
   getAllTasks() {
     this.taskService.List(`${environment.API}task`).subscribe(
       tasks => {
@@ -147,19 +159,6 @@ export class ListsComponent implements OnInit {
       initialVersion.style.display = "none";
       userVersion.style.removeProperty('display');
     }
-  }
-
-  calculateTotalAndDiscount(): void {
-    this.totalDiscount = 0;
-    this.lacks = 0;
-
-    //total of missed tasks
-    this.tasks?.map(t => {
-      if (t.isMissed === true) {
-        this.totalDiscount += Number.parseFloat(t.value)
-        this.lacks++;
-      }
-    })
   }
 
   toggleMissed(task: Task): void {
