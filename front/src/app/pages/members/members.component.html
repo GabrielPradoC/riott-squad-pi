@@ -236,8 +236,10 @@
                 (change)="fileChangeEvent($event)"
             >
           
-            <div id="uploadFoto" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-              <img src="../../../assets/file.ico">
+            <div id="uploadFoto" (drop)="getFileDrop()">
+              <div>
+                <img src="../../../assets/file.ico">
+              </div>
               <p>Arraste ou <label for="foto">clique aqui</label> para fazer o upload da <b>foto do usuário</b></p>
             </div>
           </div>
@@ -259,16 +261,18 @@
                   placeholder=" "
                   formControlName="dataNascimento"
                   (click)="labelUp()"
+                  (blur)="onChange()"
               >
               <label id="dateLabel" for="dataNascimento">Data de nascimento</label>
           </div>
 
           <div class="field">
             <input
-                type="number"
+                type="string"
                 id="valorMesada"
                 placeholder=" "
                 formControlName="valorMesada"
+                (keypress)="mask()"
             >
             <label for="valorMesada">Valor da mesada</label>
           </div>

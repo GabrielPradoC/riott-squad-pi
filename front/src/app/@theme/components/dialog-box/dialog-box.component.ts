@@ -18,6 +18,12 @@ export class dialogBoxComponent {
   @Output() callParent = new EventEmitter<any>();
   @ContentChild('contentDialogBox') contentDialogBox: TemplateRef<any>;
 
+  static showDialogbox(divAtual: string, divDialog: string) {
+    document.getElementById(divAtual).style.display = "none";
+    document.getElementById(divDialog).style.display = "flex";
+    document.getElementById("whiteDiv").style.display = "flex";
+  }
+
   onClick(){
     this.callParent.emit(null);
   }
@@ -33,5 +39,6 @@ export class dialogBoxComponent {
   close() : void {
     document.getElementById(this.divAtual).style.display = "none";
     document.getElementById(this.divPrincipal).style.display = "flex";
+    document.getElementById("whiteDiv").style.display = "none";
   }
 }

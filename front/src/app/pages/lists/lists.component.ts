@@ -10,6 +10,7 @@ import { LocalStorageService } from 'src/app/@core/services/local-storage.servic
 import { listRequestBody } from 'src/app/@core/common/interfaces/listRequestBody.interface';
 import { TaskService } from 'src/app/@core/services/task.service';
 import { TaskMinimum } from 'src/models/taskMinimum.model';
+import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 
 @Component({
   selector: 'app-lists',
@@ -184,7 +185,10 @@ export class ListsComponent implements OnInit {
     };
 
     this.listService.patch(`${environment.API}list/${list.id}`, body).subscribe(
-      result => this.getMembers()
+      result => {
+        dialogBoxComponent.showDialogbox("warningMsgFinalizeList", "sucessMsgFinalizeList");
+        this.getMembers()
+      }
     );
   }
   
@@ -204,5 +208,21 @@ export class ListsComponent implements OnInit {
     document.getElementById("filtro").style.display = "block";
     document.getElementById("finalize-list").style.display = "flex";
     document.getElementById("finalize-list").setAttribute("class", "modal up");
+  }
+
+  showCreateList() {
+    document.getElementById("createList").style.zIndex = "4";
+    document.getElementById("createList").style.position = "initial";
+    document.getElementById("createList").style.display = "flex";
+    document.getElementById("createList").setAttribute("class", "modal subModal");
+    document.getElementById("divcreateList").style.display = "flex";
+  }
+
+  showEditList() {
+    document.getElementById("editList").style.zIndex = "4";
+    document.getElementById("editList").style.position = "initial";
+    document.getElementById("editList").style.display = "flex";
+    document.getElementById("editList").setAttribute("class", "modal subModal");
+    document.getElementById("diveditList").style.display = "flex";
   }
 }
