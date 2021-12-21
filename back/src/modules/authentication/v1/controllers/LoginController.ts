@@ -59,7 +59,7 @@ export class LoginController extends BaseController {
         const { userRef } = req.body;
 
         if (!userRef) {
-            RouteResponse.unauthorizedError(res, 'Email não encontrado');
+            return RouteResponse.unauthorizedError(res, 'Email não encontrado');
         }
 
         const hash: string = userRef.passwordHash;
@@ -69,9 +69,9 @@ export class LoginController extends BaseController {
             const token: string = jwt.sign({ id: req.body.userRef.id }, jwtSecret, { expiresIn: '24h' });
             const userId: number = req.body.userRef.id;
 
-            RouteResponse.success({ token, userId }, res);
-        } else {
-            RouteResponse.unauthorizedError(res, 'Senha errada');
+            return RouteResponse.success({ token, userId }, res);
         }
+
+        return RouteResponse.unauthorizedError(res, 'Senha errada');
     }
 }

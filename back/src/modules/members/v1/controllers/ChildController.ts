@@ -23,6 +23,9 @@ import { ChildRepository } from '../../../../library/database/repository';
 // Validators
 import { ChildValidator } from '../middlewares/ChildValidator';
 
+// Utils
+import { StringUtils } from '../../../../utils';
+
 @Controller(EnumEndpoints.MEMBER_V1)
 export class ChildController extends BaseController {
     /**
@@ -159,10 +162,11 @@ export class ChildController extends BaseController {
     @Middlewares(ChildValidator.post())
     public async add(req: Request, res: Response): Promise<void> {
         const { name, birthday, allowance, photoRef } = req.body;
+        const [day, month, year] = birthday.split('/');
 
         const newChild: DeepPartial<Child> = {
             name,
-            birthday,
+            birthday: [year, month, day].join('/'),
             allowance,
             photo: photoRef,
             parent: req.body.userRef,

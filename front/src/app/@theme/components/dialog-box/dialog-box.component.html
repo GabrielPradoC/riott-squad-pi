@@ -1,0 +1,59 @@
+<div class="dialogBox">
+    <div class="{{ customClassSucess }} || hideElement">
+        <img src="../../../assets/sucess.ico" alt="sucesso">
+    </div>
+
+    <div class="{{ customClassError}} || hideElement">
+        <img src="../../../assets/error.ico" alt="erro">
+    </div>
+
+    <div class="{{ customClassWarning}} || hideElement">
+        <img src="../../../assets/warning1.ico" alt="aviso1">
+        <img src="../../../assets/warning2.ico" alt="aviso2">
+    </div>
+
+    <p>
+        {{ text }}
+        <span class="{{ customClassError }} || hideElement">(Texto explicativo do erro aqui)</span>
+    </p>
+
+    <ng-container [ngTemplateOutlet]="contentDialogBox"></ng-container>
+
+    <div>
+        <app-my-button
+            class="{{ customClassSucess }} || hideElement"
+            (click)="cancel()"
+            customClass="green members-page"
+            text="Finalizar">
+        </app-my-button>
+
+        <app-my-button
+            class="{{ customClassWarning }} || hideElement"
+            (click)="onClick()"
+            customClass="green members-page"
+            text="{{ textButton }}">
+        </app-my-button>
+
+        <app-my-button
+            class="{{ customClassError }} || hideElement"
+            (click)="close()"
+            customClass="green members-page"
+            text="Tentar novamente">
+        </app-my-button>
+    </div>
+
+    <div>
+        <app-my-button
+            (click)="cancel()"
+            class="{{ customClassWarning }} || hideElement"
+            customClass="orange members-page"
+            text="Cancelar">
+        </app-my-button>
+        <app-my-button
+            class="{{ customClassError }} || hideElement"
+            customClass="light-green members-page"
+            text="Voltar ao início"
+            (click)=cancel()>
+        </app-my-button>
+    </div>
+</div>
