@@ -8,5 +8,6 @@ export class List {
   state: string;
   createdAt: Date;
   updatedAt: Date;
+  AmountTasksMissed?: number;
   tasks: Task[];
 }

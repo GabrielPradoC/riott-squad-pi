@@ -10,8 +10,7 @@
 
 
 
-#sucessMsgExample {
-    display: flex;
+#sucessMsgExample, #errorMsgExample {
     width: 272px;
     height: 100%;
     flex-direction: column;

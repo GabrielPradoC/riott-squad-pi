@@ -5,10 +5,11 @@
 }
 
 .container {
-  margin: 2rem 3.6rem 0 3.6rem;
+  margin: 2rem 3.6rem 2rem 3.6rem;
 
   display: flex;
   gap: 2.2rem;
+  height: calc(89vh - 4rem);
 
   box-sizing: border-box;
 
@@ -204,6 +205,10 @@
                 font-size: 0.95rem;
                 color: #7c8d93;
               }
+
+              > span {
+                color: #3b4244;
+              }
             }
           }
     
@@ -220,6 +225,10 @@
               label {
                 font-size: 0.95rem;
                 color: #7c8d93;
+              }
+
+              > span {
+                color: #3b4244;
               }
             }  
           }
@@ -315,6 +324,7 @@
           .minus {
             font-size: 1.5rem;
             align-self: center;
+            color: #3b4244;
           }
       
           .discount {
@@ -337,6 +347,7 @@
           .equals {
             font-size: 1.5rem;
             align-self: center;
+            color: #3b4244;
           }
       
           .total {
@@ -364,7 +375,7 @@
   }
 }
 
-#warningMsgExample {
+#warningMsgFinalizeList {
   padding: 1rem 38rem;
   align-items: center;
 
@@ -459,16 +470,6 @@
       }
     }
   }
-}
-
-#sucessMsgExample {
-  display: flex;
-  width: 272px;
-  height: 100%;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 96px;
-  display: none;
 }
 
 .container-manage-lists {
@@ -618,6 +619,10 @@
               font-size: 0.95rem;
               color: #7c8d93;
             }
+
+            > span {
+              color: #3b4244;
+            }
           }
         }
       }
@@ -701,6 +706,10 @@
               font-size: 0.95rem;
               color: #7c8d93;
             }
+
+            > span {
+              color: #3b4244;
+            }
           }
 
           .discount-value {
@@ -712,6 +721,10 @@
             label {
               font-size: 0.95rem;
               color: #7c8d93;
+            }
+
+            > span {
+              color: #3b4244;
             }
           }
         }
@@ -747,4 +760,25 @@
       }
     }
   }
+}
+
+#divcreateList, #diveditList {
+  display: none;
+  position: fixed;
+  top: 11vh;
+  height: 89vh;
+  width: 100vw;
+  z-index: 4;
+}
+
+#warningMsgInitList, #sucessMsgInitList, #errorMsgInitList,
+#sucessMsgCreateList, #errorMsgCreateList, #sucessMsgEditList,
+#warningMsgDeleteList, #sucessMsgDeleteList, #errorMsgDeleteList,
+#sucessMsgFinalizeList {
+  width: 272px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 96px;
+  display: none;
 }

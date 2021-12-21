@@ -12,8 +12,8 @@ export class CrudService<List, Model> {
       .pipe(take(2));
   }
   
-  LoadByID(id: number, apiUrl: string) {
-    return this.http.get<Model>(`${apiUrl}/${id}`).pipe(take(2));
+  LoadByID(apiUrl: string, id: number) {
+    return this.http.get<List>(`${apiUrl}/${id}`).pipe(take(2));
   }
 
   /**

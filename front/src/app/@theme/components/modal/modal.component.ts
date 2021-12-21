@@ -15,14 +15,22 @@ export class ModalComponent {
    */
   hideModal() {
     let modalId: string = document.getElementsByClassName("modal up").item(0).attributes.getNamedItem("id").value;
-
     document.getElementById(modalId).setAttribute("class", "modal down");
+
+    if(document.getElementsByClassName("modal subModal").length > 0) {
+      document.getElementById(modalId).style.display = "none";
+      modalId = document.getElementsByClassName("modal subModal").item(0).attributes.getNamedItem("id").value;
+      document.getElementById(modalId).setAttribute("class", "modal down2");
+      document.getElementById("div"+modalId).style.display = "none";
+    }
 
     setTimeout(() => {
       document.getElementById("filtro").style.display = "none";
       document.getElementById(modalId).style.display = "none";
       this.restartModal(modalId);
-    }, 300);
+    }, 200);
+    
+    document.getElementById("whiteDiv").style.display = "none";
   }
 
   restartModal(modalId: string) : void {

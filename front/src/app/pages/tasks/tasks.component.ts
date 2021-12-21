@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 
 @Component({
     selector: 'app-tasks',
@@ -7,7 +8,6 @@ import { Component } from '@angular/core';
   })
   export class TasksComponent {
     funcaoBotaoVerde(){
-      document.getElementById("warningMsgExample").style.display = "none";
-      document.getElementById("sucessMsgExample").style.display = "flex";
+      dialogBoxComponent.showDialogbox("warningMsgExample", "errorMsgExample");
     }
   }
