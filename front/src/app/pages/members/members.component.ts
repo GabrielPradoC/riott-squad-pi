@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MemberService } from 'src/app/@core/services/member.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-members',
@@ -10,7 +12,7 @@ export class MembersComponent {
   private form: FormGroup;
   static fileTemp: File;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private service: MemberService) {
     this.form = this.fb.group({
       foto: ['', Validators.compose([
         Validators.required
@@ -44,7 +46,7 @@ export class MembersComponent {
       if(files.length > 1) {
         alert("É permitido o envio de apenas uma imagem");
       } else {
-        MembersComponent.prototype.setFileTemp(files.item(0));
+        MembersComponent.fileTemp = files.item(0);
       }
     }
   }
@@ -55,10 +57,6 @@ export class MembersComponent {
 
     document.getElementById("dataNascimento").setAttribute("min", (today.getFullYear() - 18) + month + (today.getDate()+1));
     document.getElementById("dataNascimento").setAttribute("max", today.getFullYear() + month + (today.getDate()-1));
-  }
-
-  setFileTemp(file: File) : void {
-    MembersComponent.fileTemp = file;
   }
 
   getFileDrop() {
@@ -94,7 +92,7 @@ export class MembersComponent {
       }
     }
 
-    document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "");
+    document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "default");
     document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("src", "../../../assets/file.ico");
     this.form.controls['foto'].setErrors({ required: true });
     alert(error);
@@ -114,6 +112,7 @@ export class MembersComponent {
     await this.delay(100);
   
     imageTemp = localStorage.getItem("RIOTT:imgTemp");
+    MembersComponent.fileTemp = image;
 
     if(imageTemp) {
       document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "imgUpload");
@@ -187,17 +186,34 @@ export class MembersComponent {
 }
 
   cadastrarMembro() : void {
-    const foto = localStorage.getItem("RIOTT:imgTemp");
-    const nome: string = this.form.controls['nome'].value;
+    const photo = MembersComponent.fileTemp;
+    const name: string = this.form.controls['nome'].value;
     const dataNascimento = this.form.controls['dataNascimento'].value;
-    const valorMesada = parseFloat(this.form.controls['valorMesada'].value.replace(/(\d)(\d\d$)/,"$1.$2"));
+    const allowance: string = this.form.controls['valorMesada'].value.replace(/(\d)(\d\d$)/,"$1.$2");
+    const id = parseInt(localStorage.getItem("riott:userId"));
 
-    console.log(foto);
-    console.log(nome);
-    console.log(dataNascimento);
-    console.log(valorMesada);
+    const year = dataNascimento.substring(0, 4);
+    const month = dataNascimento.substring(5, 7);
+    const day = dataNascimento.substring(8, 10);
+    let birthday = day + "/" + month + "/" + year;
 
+
+    console.log(allowance);
+
+    const body = {
+      name,
+      "parent": "4",
+      birthday,
+      allowance,
+      photo
+    };
+
+    this.service.postFormData(body, `${environment.API}member`).subscribe(
+      complete => {
+console.log("funcionou");
+      },
+      error => console.log(error)
+    );
     
   }
 }
-

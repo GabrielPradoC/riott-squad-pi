@@ -176,11 +176,11 @@ form {
           justify-content: center;
           height: 52px;
           width: 52px;
-          margin: 7px 13px 7px 1px;
 
-          > img {
+          .default {
             height: 37.5px;
             width: 37.5px;
+            margin: 7px 13px 7px 1px;
           }
 
           .imgUpload {
