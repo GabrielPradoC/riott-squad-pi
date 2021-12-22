@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { environment } from 'src/environments/environment';
@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.scss']
 })
-export class MembersComponent {
+export class MembersComponent implements OnInit  {
   private form: FormGroup;
   static fileTemp: File;
 
@@ -173,47 +173,34 @@ export class MembersComponent {
   }
 
   mask(){
-    setTimeout(() => {
-      let inputElement = (<HTMLSelectElement>document.getElementById("valorMesada"));
-      inputElement.value = MembersComponent.prototype.replaceValue(inputElement.value);
-    }, 1);
-  }
+    let value: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value;
 
-  replaceValue(value: string) : string {
     value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
     value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
-    return value;
-}
+
+    (<HTMLSelectElement>document.getElementById("valorMesada")).value = value;
+  }
 
   cadastrarMembro() : void {
     const photo = MembersComponent.fileTemp;
     const name: string = this.form.controls['nome'].value;
-    const dataNascimento = this.form.controls['dataNascimento'].value;
-    const allowance: string = this.form.controls['valorMesada'].value.replace(/(\d)(\d\d$)/,"$1.$2");
-    const id = parseInt(localStorage.getItem("riott:userId"));
+    const birthday: string = this.changeFormatDate(this.form.controls['dataNascimento'].value);
+    const allowance: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value.replace(",", ".");
+    const parent = parseInt(localStorage.getItem("riott:userId"));
 
-    const year = dataNascimento.substring(0, 4);
-    const month = dataNascimento.substring(5, 7);
-    const day = dataNascimento.substring(8, 10);
-    let birthday = day + "/" + month + "/" + year;
-
-
-    console.log(allowance);
-
-    const body = {
-      name,
-      "parent": "4",
-      birthday,
-      allowance,
-      photo
-    };
-
-    this.service.postFormData(body, `${environment.API}member`).subscribe(
+    this.service.postFormData({name, parent, birthday, allowance, photo}, `${environment.API}member`).subscribe(
       complete => {
-console.log("funcionou");
+        console.log("funcionou");
       },
       error => console.log(error)
     );
     
+  }
+
+  changeFormatDate(date: string) : string {
+    const year = date.substring(0, 4);
+    const month = date.substring(5, 7);
+    const day = date.substring(8, 10);
+    return day + "/" + month + "/" + year;
   }
 }
