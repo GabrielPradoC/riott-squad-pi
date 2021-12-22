@@ -13,7 +13,7 @@ import { BaseValidator } from '../../../../library/BaseValidator';
 import { StringUtils, FileUtils } from '../../../../utils';
 
 // Entities
-import { Child, User } from '../../../../library/database/entity';
+import { User } from '../../../../library/database/entity';
 
 // Constants
 import { DateConstants } from '../../../../models/EnumConstants';
@@ -90,23 +90,6 @@ export class ChildValidator extends BaseValidator {
                     return check ? Promise.resolve() : Promise.reject();
                 }
             }
-        },
-        duplicate: {
-            errorMessage: 'Membro já existe',
-            custom: {
-                options: async (_: string, { req }) => {
-                    let check = false;
-
-                    if (req.body.name) {
-                        const childRepository: ChildRepository = new ChildRepository();
-                        const child: Child | undefined = await childRepository.findByName(req.body.name);
-
-                        check = child ? req.body.id === child.id.toString() : true;
-                    }
-
-                    return check ? Promise.resolve() : Promise.reject();
-                }
-            }
         }
     };
 
@@ -122,7 +105,6 @@ export class ChildValidator extends BaseValidator {
             minor: ChildValidator.model.minor,
             allowance: ChildValidator.model.allowance,
             parent: ChildValidator.model.parent,
-            duplicate: ChildValidator.model.duplicate,
             photo: ChildValidator.model.photo
         });
     }
@@ -130,7 +112,7 @@ export class ChildValidator extends BaseValidator {
     /**
      * put
      *
-     * @summary retorna basicamente todos os validadores de model, menos o duplicate.
+     * @summary retorna basicamente todos os validadores de model
      *
      * @returns Lista de validadores
      */
