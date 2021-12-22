@@ -513,6 +513,25 @@
   margin: 0 3.6rem;
   padding: 0 3.4rem;
 
+  height: 75vh;
+  overflow-y: auto;
+
+  // scrollbar
+  &::-webkit-scrollbar-track {
+    background-color: #dee8eb;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #b5c5ca;
+    border-radius: 10px;
+  }
+
   > h2 {
     font-size: 1rem;
     color: #3b4244;
@@ -616,25 +635,6 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-
-        height: 50vh;
-        overflow-y: auto;
-
-        // scrollbar
-        &::-webkit-scrollbar-track {
-          background-color: #dee8eb;
-          border-radius: 10px;
-        }
-
-        &::-webkit-scrollbar {
-          width: 0.6rem;
-          height: 0.6rem;
-        }
-        
-        &::-webkit-scrollbar-thumb {
-          background-color: #b5c5ca;
-          border-radius: 10px;
-        }
 
         .activity {
           flex: 0 48.7585%;

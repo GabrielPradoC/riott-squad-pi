@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        <div *ngIf="!members?.length > 0" class="no-list-container">
+        <div *ngIf="members?.length === 0" class="no-list-container">
           <div class="no-list">
             <div class="warning-image">
               <img src="../../../assets/warning1.ico" alt="aviso1">
@@ -232,12 +232,25 @@
               
               <p>Não há atividades cadastradas. Por isso, aqui está vazio.</p>
             </div>
+          </div>
+        </div>
+
+        <div *ngIf="!listManageData" id="no-list-container-display" class="no-list-container">
+          <div class="no-list">
+            <div>
+              <div class="warning-image">
+                <img src="../../../assets/warning1.ico" alt="aviso1">
+                <img src="../../../assets/warning2.ico" alt="aviso2">
+              </div>
+              
+              <p>Este membro não possui lista configurada</p>
+            </div>
 
             <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
           </div>
         </div>
 
-        <div *ngIf="listManageData" id="list" class="list">
+        <div *ngIf="listManageData" style="display: none;" id="list" class="list">
           <div class="list-information">
             <div class="list-status">
               <label>Status da lista:</label>
@@ -270,22 +283,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div></div>
-        </div>
-
-        <div *ngIf="!listManageData" class="no-list-container">
-          <div class="no-list">
-            <div>
-              <div class="warning-image">
-                <img src="../../../assets/warning1.ico" alt="aviso1">
-                <img src="../../../assets/warning2.ico" alt="aviso2">
-              </div>
-              
-              <p>Este membro não possui lista configurada</p>
-            </div>
-
-            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
           </div>
         </div>
       </div>

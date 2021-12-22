@@ -76,23 +76,16 @@ export class ListsComponent implements OnInit {
         this.members = [];
 
         this.members = members?.data?.children;
-        // if (Array.isArray(this.members)) {
-        //   console.log('deu certo');
-        // }
-        // else {
-        //   console.log('não deu certo');
-        // }
-        //console.log(`members: ${members?.data?.children}, ${members?.data?.children.length}`);
 
         //get the first member
         this.currentMemberFinalize = members?.data?.children[0];
 
         //allowance
         this.allowance = members?.data?.children[0]?.allowance;
+
+        this.getTaskList(members?.data?.children[0].id);
+        this.getTaskListForManage(members?.data?.children[0].id);
       });
-    
-    this.getTaskList(Number(id));
-    this.getTaskListForManage(Number(id));
   }
 
   getTaskList(memberId: number): void {
@@ -124,6 +117,19 @@ export class ListsComponent implements OnInit {
 
         const statesList = ["STARTED", "ONHOLD"];
         this.listManageData = lists?.data?.find(list => statesList.includes(list.state));
+
+        // if (this.listManageData) {
+        //   //show the no-list div
+        //   const list = document.getElementById('no-list-container-display');
+          
+        //   if (list) {
+        //     list.style.display = "";
+        //   }
+        // }
+        // else {
+        //   const list = document.getElementById('no-list-container-display');
+        //   list.style.display = "none"
+        // }
       
         if (statesList.includes(this.listManageData?.state)) {
           this.tasksManage = lists?.data?.find(list => statesList.includes(list.state))?.tasks;
@@ -174,7 +180,7 @@ export class ListsComponent implements OnInit {
       this.getTaskList(member.id);
   }
 
-  selectInManageList(member: Member): void {
+  selectInManageList(member: Member): void {    
     const selected = document.getElementsByClassName('selected-in-manage-list');
     
     if (selected.length > 0) {
@@ -200,9 +206,14 @@ export class ListsComponent implements OnInit {
 
   activeUserVersionList() {
     const initialVersion: HTMLDivElement = document.getElementsByClassName('list-initial').item(0) as HTMLDivElement;
+    const userVersion: HTMLDivElement = document.getElementById('list') as HTMLDivElement;
 
     if (initialVersion) {
       initialVersion.style.display = "none";
+    }
+
+    if (userVersion) {
+      userVersion.style.display = "";
     }
   }
 
