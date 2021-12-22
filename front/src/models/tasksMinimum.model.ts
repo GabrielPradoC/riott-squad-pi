@@ -4,7 +4,6 @@ export class TasksMinimum {
   status: boolean;
   date: Date;
   data: {
-    rows: TaskMinimum[];
-    count: number;
+    createdTasks: TaskMinimum[];
   }
 }

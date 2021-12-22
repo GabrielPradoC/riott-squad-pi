@@ -663,6 +663,74 @@
     }
   }
 
+  .no-list-container {
+    margin: 0 3.6rem 0 3.6rem;
+    display: flex;
+    height: 55vh;
+    align-items: center;
+    justify-content: center;
+
+    &.smaller {
+      .no-list {
+        .warning-image {
+          width: 130px !important;
+        }
+      }
+    }
+  
+    .no-list {
+      max-width: 390px;
+    
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+      
+      align-self: center;
+
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+
+        > p {
+          color:#3b4244;
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+      }
+
+      #button {
+        width: 100%;
+      }
+  
+      .warning-image {
+        width: 100px;
+        height: 78px;
+  
+        background-color: #b5c5ca;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+  
+        border: 1px solid #fff;
+        border-radius: 50%;
+  
+        > img:first-of-type {
+          width: 9px;
+          height: 33px;
+          margin-bottom: 8px;
+        }
+  
+        > img:last-of-type {
+          width: 11px;
+          height: 11px;
+        }
+      }
+    }
+  }
+
   .list {
     margin-top: 2.5rem;
 
@@ -760,66 +828,6 @@
       }
     }
   }
-
-  .no-list-container {
-    margin: 0 3.6rem 0 3.6rem;
-    display: flex;
-    height: 55vh;
-    align-items: center;
-    justify-content: center;
-  
-    .no-list {
-      max-width: 390px;
-    
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      gap: 1rem;
-      
-      align-self: center;
-
-      > div {
-        display: flex;
-        align-items: center;
-        gap: 1.6rem;
-
-        > p {
-          color:#3b4244;
-          font-size: 1.2rem;
-          font-weight: 600;
-        }
-      }
-
-      #button {
-        width: 100%;
-      }
-  
-      .warning-image {
-        width: 100px;
-        height: 78px;
-  
-        background-color: #b5c5ca;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-  
-        border: 1px solid #fff;
-        border-radius: 50%;
-  
-        > img:first-of-type {
-          width: 9px;
-          height: 33px;
-          margin-bottom: 8px;
-        }
-  
-        > img:last-of-type {
-          width: 11px;
-          height: 11px;
-        }
-      }
-    }
-  }
 }
 
 #divcreateList, #diveditList {
@@ -857,7 +865,7 @@
 
     > div {
       .field {
-        position:relative;
+        position: relative;
 
         input {
           padding: 20px 20px 16px;
@@ -966,10 +974,6 @@
             > label {
               font-size: 0.95rem;
               color: #7c8d93;
-    
-              &:hover {
-                cursor: pointer;
-              }
             }
     
             > span {
@@ -1002,9 +1006,25 @@
             border-radius: 0.3rem;
             padding: 1.5rem 2rem;
 
+            > div:nth-child(1) {
+              display: flex;
+              gap: 1.7rem;
+              
+              .checkbox {
+                display: flex;
+                align-items: center;
+                
+                > input {
+                  width: 17px;
+                  height: 17px;
+                }
+              }
+            }
+
             .description {
               display: flex;
               flex-direction: column;
+              justify-content: center;
               gap: 0.5rem;
     
               label {
@@ -1014,6 +1034,46 @@
   
               > span {
                 color: #3b4244;
+              }
+            }
+
+            .field-discount-value {
+              position: relative;
+
+              input {
+                padding: 20px 20px 16px;
+                position: relative;
+                width: 100%;
+                height: 55px;
+                font-size: 1rem;
+                border: 1px solid #7C8D93;
+                border-radius: 4px;
+
+                transition: 0.2s;
+              }
+
+              label {
+                position: absolute;
+                left: 20px;
+                top: 18px;
+                transition: 0.2s;
+                background: #FFFFFF;
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                color: #B5C5CA;
+                border: 2px solid #FFFFFF;
+              }
+
+              input:focus + label, input:not(:placeholder-shown) + label {
+                transform: translateY(-28px);
+                font-size: 14px;
+                color: #7C8D93;
+                border: 0;
+              }
+
+              input:focus {
+                outline: none !important;
+                border: 1px solid #006D77;
               }
             }
           }

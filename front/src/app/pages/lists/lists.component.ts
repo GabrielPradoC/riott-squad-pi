@@ -12,6 +12,18 @@ import { TaskService } from 'src/app/@core/services/task.service';
 import { TaskMinimum } from 'src/models/taskMinimum.model';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+interface ListToCreate {
+  name: string;
+  member: number;
+  tasks: TaskToCreate[];
+}
+
+interface TaskToCreate {
+  task: number;
+  value: number;
+}
 
 @Component({
   selector: 'app-lists',
@@ -34,19 +46,18 @@ export class ListsComponent implements OnInit {
   public lacks: number = 0;
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
   public form: FormGroup;
+  public tasksToCreate: TaskToCreate[];
 
   constructor(
     private memberService: MemberService,
     private listService: ListService,
     private localStorageService: LocalStorageService,
     private taskService: TaskService,
+    private router: Router,
     private fb: FormBuilder) {
     this.form = this.fb.group({
       name: ['', Validators.compose([
         Validators.email,
-        Validators.required
-      ])],
-      tasks: ['', Validators.compose([
         Validators.required
       ])]
     });
@@ -62,13 +73,22 @@ export class ListsComponent implements OnInit {
 
     this.memberService.List(`${environment.API}user/${id}/members`)
       .subscribe(members => {
-        this.members = members.data.children;
+        this.members = [];
+
+        this.members = members?.data?.children;
+        // if (Array.isArray(this.members)) {
+        //   console.log('deu certo');
+        // }
+        // else {
+        //   console.log('não deu certo');
+        // }
+        //console.log(`members: ${members?.data?.children}, ${members?.data?.children.length}`);
 
         //get the first member
-        this.currentMemberFinalize = members.data.children[0];
+        this.currentMemberFinalize = members?.data?.children[0];
 
         //allowance
-        this.allowance = members.data.children[0].allowance;
+        this.allowance = members?.data?.children[0]?.allowance;
       });
     
     this.getTaskList(Number(id));
@@ -88,7 +108,7 @@ export class ListsComponent implements OnInit {
         this.calculateTotalAndDiscount();
 
         //allowance
-        this.allowance = this.members.find(member => member.id === memberId).allowance;
+        this.allowance = this.members?.find(member => member.id === memberId)?.allowance;
       }
     )
   }
@@ -103,10 +123,10 @@ export class ListsComponent implements OnInit {
         this.listManage = lists;
 
         const statesList = ["STARTED", "ONHOLD"];
-        this.listManageData = lists?.data.find(list => statesList.includes(list.state));
+        this.listManageData = lists?.data?.find(list => statesList.includes(list.state));
       
         if (statesList.includes(this.listManageData?.state)) {
-          this.tasksManage = lists?.data.find(list => statesList.includes(list.state)).tasks;
+          this.tasksManage = lists?.data?.find(list => statesList.includes(list.state))?.tasks;
         }
       }
     )
@@ -126,11 +146,15 @@ export class ListsComponent implements OnInit {
   }
 
   getAllTasks() {
-    this.taskService.List(`${environment.API}task`).subscribe(
+    const userId = this.localStorageService.getItem("riott:userId");
+
+    this.taskService.List(`${environment.API}user/${userId}/tasks`).subscribe(
       tasks => {
-        this.allTasks = tasks.data.rows;
+        this.allTasks = tasks?.data?.createdTasks;
       }
     )
+
+    this.tasksToCreate = [];
   }
 
   select(member: Member): void {
@@ -176,11 +200,9 @@ export class ListsComponent implements OnInit {
 
   activeUserVersionList() {
     const initialVersion: HTMLDivElement = document.getElementsByClassName('list-initial').item(0) as HTMLDivElement;
-    const userVersion: HTMLDivElement = document.getElementsByClassName('list').item(0) as HTMLDivElement;
 
-    if (initialVersion && userVersion) {
+    if (initialVersion) {
       initialVersion.style.display = "none";
-      userVersion.style.display = "";
     }
   }
 
@@ -222,8 +244,60 @@ export class ListsComponent implements OnInit {
 
   removeList(id: number) {
     this.listService.Remove(`${environment.API}list/${id}`).subscribe(
-      result => this.getTaskListForManage(this.currentMemberFinalize.id)
+      result => this.getTaskListForManage(this.currentMemberManage.id)
     )
+  }
+
+  //Create list modal
+  createList(): void {
+    const name = this.form.controls['name'].value;
+    
+    this.getTasksValues(this.tasksToCreate);
+    
+    const list: ListToCreate = {
+      name,
+      member: this.currentMemberManage.id,
+      tasks: this.tasksToCreate
+    };
+
+    const validation = this.tasksToCreate.every(task => task.value !== null);
+    
+    if (validation) {
+      this.listService.Create(`${environment.API}list`, list).subscribe();
+    }
+    else {
+      alert('Alguma atividade está sem o valor de desconto. Para prosseguir, preencha o campo!');
+    }
+  }
+
+  onCheckChange(event, id: number) {
+    if(event.target.checked){
+      const task: TaskToCreate = {
+        task: id,
+        value: 0
+      }
+
+      this.tasksToCreate.push(task);
+    }
+    else {
+      const selected = this.tasksToCreate.find((task: TaskToCreate) => task.task == id);
+
+      if (selected) {
+        const index = this.tasksToCreate.findIndex(task => task.task == selected.task);
+        
+        this.tasksToCreate.splice(index, 1);
+      }
+    }
+  }
+
+  getTasksValues(tasks: TaskToCreate[]): void {
+    tasks.map((task: TaskToCreate) => {
+      const value: HTMLInputElement = document.getElementById(`${task.task}task-create-modal`) as HTMLInputElement;
+
+      if (Number(value.value)) {
+        task.value = Number(value.value);
+      }
+    })
   }
 
   OpenFinalizeListModal(): void {

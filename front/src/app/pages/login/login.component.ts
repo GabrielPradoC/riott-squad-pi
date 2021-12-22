@@ -54,7 +54,7 @@ export class LoginComponent {
       password
     };
     
-    this.service.Create(body, `${environment.API}login`).subscribe(
+    this.service.Create(`${environment.API}login`, body).subscribe(
       complete => {
         this.localStorageService.setItem("riott:token", complete.data.token);
         this.localStorageService.setItem("riott:userId", complete.data.userId.toString());
