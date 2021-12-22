@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Data } from '@angular/router';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { environment } from 'src/environments/environment';
+import { Member } from 'src/models/member.model';
 
 @Component({
   selector: 'app-members',
@@ -12,6 +14,7 @@ import { environment } from 'src/environments/environment';
 export class MembersComponent implements OnInit  {
   private form: FormGroup;
   static fileTemp: File;
+  public members: Member[];
 
   constructor(private fb: FormBuilder, private service: MemberService) {
     this.form = this.fb.group({
@@ -32,10 +35,20 @@ export class MembersComponent implements OnInit  {
   }
 
   ngOnInit() {
+    this.getMembers();
     window.onload = function () {
       MembersComponent.initAttributesDrop();
       MembersComponent.initAttributesDate();
     }
+  }
+
+  getMembers() {
+    const id = localStorage.getItem("riott:userId");
+    this.service.List(`${environment.API}user/${id}/members`)
+      .subscribe(complete => {
+        this.members = complete.data.children;
+      },
+      error => console.log(error));
   }
 
   static initAttributesDrop() : void {
@@ -198,13 +211,11 @@ export class MembersComponent implements OnInit  {
   }
 
   changeFormatDate(date: string) : string {
-    const year = date.substring(0, 4);
-    const month = date.substring(5, 7);
-    const day = date.substring(8, 10);
-    return day + "/" + month + "/" + year;
+    const newDate: Date = new Date(date);
+    return newDate.toLocaleDateString();
   }
 
   cancelarCadastro() {
-    dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember")
+    dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember");
   }
 }
