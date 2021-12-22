@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MemberService } from 'src/app/@core/services/member.service';
+import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -190,11 +191,10 @@ export class MembersComponent implements OnInit  {
 
     this.service.postFormData({name, parent, birthday, allowance, photo}, `${environment.API}member`).subscribe(
       complete => {
-        console.log("funcionou");
+        dialogBoxComponent.showDialogbox("divCadastrarMembro", "sucessMsgCreateMember")
       },
-      error => console.log(error)
+      error => dialogBoxComponent.showDialogbox("divCadastrarMembro", "errorMsgCreateMember")
     );
-    
   }
 
   changeFormatDate(date: string) : string {
@@ -202,5 +202,9 @@ export class MembersComponent implements OnInit  {
     const month = date.substring(5, 7);
     const day = date.substring(8, 10);
     return day + "/" + month + "/" + year;
+  }
+
+  cancelarCadastro() {
+    dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember")
   }
 }

@@ -118,7 +118,8 @@ h2 {
   }
 }
 
-#divCadastrarMembro, #divSucessMsg, #divErrorMsg, #divWarningMsg {
+#divCadastrarMembro, #sucessMsgCreateMember, #errorMsgCreateMember, #warningMsgCreateMember,
+#divSucessMsg, #divErrorMsg, #divWarningMsg {
   width: 272px;
   height: 100%;
   display: none;
