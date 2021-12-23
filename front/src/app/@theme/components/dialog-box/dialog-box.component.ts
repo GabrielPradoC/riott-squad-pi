@@ -25,18 +25,22 @@ export class dialogBoxComponent {
   }
 
   onClick(){
-    this.callParent.emit(null);
-  }
-
-  cancel() : void {
-    if(this.closeAll) {
+    if(this.callParent.observers.length === 0) {
       ModalComponent.prototype.hideModal();
     } else {
-      this.close();
+      this.callParent.emit(null);
     }
   }
 
-  close() : void {
+  cancel() : void {
+    if(this.closeAll.toString() === "true") {
+      ModalComponent.prototype.hideModal();
+    } else {
+      this.back();
+    }
+  }
+
+  back() : void {
     document.getElementById(this.divAtual).style.display = "none";
     document.getElementById(this.divPrincipal).style.display = "flex";
     document.getElementById("whiteDiv").style.display = "none";

@@ -36,7 +36,7 @@
 
         <app-my-button
             class="{{ customClassError }} || hideElement"
-            (click)="close()"
+            (click)="back()"
             customClass="green members-page"
             text="Tentar novamente">
         </app-my-button>
@@ -53,7 +53,7 @@
             class="{{ customClassError }} || hideElement"
             customClass="light-green members-page"
             text="Voltar ao início"
-            (click)=cancel()>
+            (click)="cancel()">
         </app-my-button>
     </div>
 </div>
