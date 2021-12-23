@@ -1,13 +1,8 @@
 <div id="membersPage">
   <app-header></app-header>
 
-  <div class="container">
-    <div class="initial">
-      <h2>Membros:</h2>
-      <app-my-button customClass="green members-page" text="Cadastrar novo membro" customValue="cadastrarMembro" ></app-my-button>
-    </div>
-
-    <div class="members">
+  <app-list-full customTitle="Membros:" textButton="Cadastrar novo membro" customValueButton="cadastrarMembro">
+    <ng-template #contentListFull>
       <div *ngFor="let member of members" id="{{ member.id }}" class="member" (click)="select(member)">
         <div class="member-info">
           <div class="member-personal-information">
@@ -37,13 +32,8 @@
           <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-    </div>
-  </div>
-
-
-
-
-
+    </ng-template>
+  </app-list-full>
 
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
     <ng-template #content>
