@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="member-actions">
-          <app-my-button customClass="orange members-page" text= "Excluir" (click)="removerMembro(member.id)"></app-my-button>
+          <app-my-button customClass="orange members-page" text= "Excluir" (click)="saveId(member.id)" customValue="excluirMembro"></app-my-button>
           <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
           <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
@@ -126,15 +126,33 @@
             divPrincipal="divCadastrarMembro">
         </app-dialog-box>
       </div>
-
-      <div id="divSucessMsg">
-        <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!" textButton="Finalizar"></app-dialog-box>
-      </div>
-
-      <div id="divErrorMsg">
-        <app-dialog-box customClassError="showElement" text="Algo deu errado" textButton="Tentar novamente"></app-dialog-box>
-      </div>
-
     </ng-template>
   </app-modal>
+
+  <app-modal customId="excluirMembro">
+    <ng-template #content>
+      <div id="warningMsgDeleteMember">
+        <app-dialog-box
+            customClassWarning="showElement"
+            text="Deseja realmente excluir esse membro?"
+            textButton="Confirmar ação"
+            closeAll="true"
+            (callParent)="removerMembro()">
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgDeleteMember">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Membro excluído com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+    </ng-template>
+  </app-modal>
+</div>
+
+
+<div id="divSucessMsg">
+  <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!" textButton="Finalizar"></app-dialog-box>
 </div>

@@ -75,6 +75,7 @@
 }
 
 #divCadastrarMembro, #sucessMsgCreateMember, #errorMsgCreateMember, #warningMsgCreateMember,
+#warningMsgDeleteMember, #sucessMsgDeleteMember,
 #divSucessMsg, #divErrorMsg, #divWarningMsg {
   width: 272px;
   height: 100%;
@@ -84,7 +85,7 @@
   margin-bottom: 96px;
 }
 
-#divCadastrarMembro {
+#divCadastrarMembro, #warningMsgDeleteMember {
   display: flex;
 }
 

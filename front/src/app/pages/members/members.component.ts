@@ -15,6 +15,7 @@ export class MembersComponent implements OnInit  {
   private form: FormGroup;
   static fileTemp: File;
   public members: Member[];
+  public idSelected: number;
 
   constructor(private fb: FormBuilder, private service: MemberService) {
     this.form = this.fb.group({
@@ -212,12 +213,6 @@ export class MembersComponent implements OnInit  {
     );
   }
 
-  removerMembro(memberId: number): void {
-    this.service.Remove(`${environment.API}member/${memberId}`).subscribe(
-      complete => this.getMembers()
-    );
-  }
-
   changeFormatDate(date: string) : string {
     const newDate: Date = new Date(date);
     return newDate.toLocaleDateString();
@@ -225,5 +220,18 @@ export class MembersComponent implements OnInit  {
 
   cancelarCadastro(): void {
     dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember");
+  }
+
+  saveId(id: number) : void {
+    this.idSelected = id;
+  }
+
+  removerMembro(): void {
+    this.service.Remove(`${environment.API}member/${this.idSelected}`).subscribe(
+      complete => {
+        this.getMembers();
+        dialogBoxComponent.showDialogbox("warningMsgDeleteMember", "sucessMsgDeleteMember")
+      }
+    );
   }
 }
