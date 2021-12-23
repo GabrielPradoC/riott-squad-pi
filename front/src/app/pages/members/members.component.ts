@@ -1,16 +1,22 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Data } from '@angular/router';
+import { MemberService } from 'src/app/@core/services/member.service';
+import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
+import { environment } from 'src/environments/environment';
+import { Member } from 'src/models/member.model';
 
 @Component({
   selector: 'app-members',
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.scss']
 })
-export class MembersComponent {
+export class MembersComponent implements OnInit  {
   private form: FormGroup;
   static fileTemp: File;
+  public members: Member[];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private service: MemberService) {
     this.form = this.fb.group({
       foto: ['', Validators.compose([
         Validators.required
@@ -29,10 +35,20 @@ export class MembersComponent {
   }
 
   ngOnInit() {
+    this.getMembers();
     window.onload = function () {
       MembersComponent.initAttributesDrop();
       MembersComponent.initAttributesDate();
     }
+  }
+
+  getMembers() {
+    const id = localStorage.getItem("riott:userId");
+    this.service.List(`${environment.API}user/${id}/members`)
+      .subscribe(complete => {
+        this.members = complete.data.children;
+      },
+      error => console.log(error));
   }
 
   static initAttributesDrop() : void {
@@ -44,7 +60,7 @@ export class MembersComponent {
       if(files.length > 1) {
         alert("É permitido o envio de apenas uma imagem");
       } else {
-        MembersComponent.prototype.setFileTemp(files.item(0));
+        MembersComponent.fileTemp = files.item(0);
       }
     }
   }
@@ -55,10 +71,6 @@ export class MembersComponent {
 
     document.getElementById("dataNascimento").setAttribute("min", (today.getFullYear() - 18) + month + (today.getDate()+1));
     document.getElementById("dataNascimento").setAttribute("max", today.getFullYear() + month + (today.getDate()-1));
-  }
-
-  setFileTemp(file: File) : void {
-    MembersComponent.fileTemp = file;
   }
 
   getFileDrop() {
@@ -94,7 +106,7 @@ export class MembersComponent {
       }
     }
 
-    document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "");
+    document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "default");
     document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("src", "../../../assets/file.ico");
     this.form.controls['foto'].setErrors({ required: true });
     alert(error);
@@ -114,6 +126,7 @@ export class MembersComponent {
     await this.delay(100);
   
     imageTemp = localStorage.getItem("RIOTT:imgTemp");
+    MembersComponent.fileTemp = image;
 
     if(imageTemp) {
       document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "imgUpload");
@@ -174,30 +187,35 @@ export class MembersComponent {
   }
 
   mask(){
-    setTimeout(() => {
-      let inputElement = (<HTMLSelectElement>document.getElementById("valorMesada"));
-      inputElement.value = MembersComponent.prototype.replaceValue(inputElement.value);
-    }, 1);
-  }
+    let value: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value;
 
-  replaceValue(value: string) : string {
     value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
     value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
-    return value;
-}
+
+    (<HTMLSelectElement>document.getElementById("valorMesada")).value = value;
+  }
 
   cadastrarMembro() : void {
-    const foto = localStorage.getItem("RIOTT:imgTemp");
-    const nome: string = this.form.controls['nome'].value;
-    const dataNascimento = this.form.controls['dataNascimento'].value;
-    const valorMesada = parseFloat(this.form.controls['valorMesada'].value.replace(/(\d)(\d\d$)/,"$1.$2"));
+    const photo = MembersComponent.fileTemp;
+    const name: string = this.form.controls['nome'].value;
+    const birthday: string = this.changeFormatDate(this.form.controls['dataNascimento'].value);
+    const allowance: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value.replace(",", ".");
+    const parent = parseInt(localStorage.getItem("riott:userId"));
 
-    console.log(foto);
-    console.log(nome);
-    console.log(dataNascimento);
-    console.log(valorMesada);
+    this.service.postFormData({name, parent, birthday, allowance, photo}, `${environment.API}member`).subscribe(
+      complete => {
+        dialogBoxComponent.showDialogbox("divCadastrarMembro", "sucessMsgCreateMember")
+      },
+      error => dialogBoxComponent.showDialogbox("divCadastrarMembro", "errorMsgCreateMember")
+    );
+  }
 
-    
+  changeFormatDate(date: string) : string {
+    const newDate: Date = new Date(date);
+    return newDate.toLocaleDateString();
+  }
+
+  cancelarCadastro() {
+    dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember");
   }
 }
-
