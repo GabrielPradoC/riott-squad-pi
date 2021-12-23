@@ -8,7 +8,7 @@
     </div>
 
     <div class="members">
-      <div *ngFor="let member of members" id="{{ member.id }}" class="member" (click)="select(member)">
+      <div *ngFor="let member of members" id="{{ member.id }}" class="member">
         <div class="member-info">
           <div class="member-personal-information">
             <div>
@@ -32,18 +32,13 @@
           </div>
         </div>
         <div class="member-actions">
-          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
+          <app-my-button customClass="orange members-page" text= "Excluir" (click)="removerMembro(member.id)"></app-my-button>
           <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
           <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
     </div>
   </div>
-
-
-
-
-
 
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
     <ng-template #content>
@@ -137,8 +132,6 @@
         </app-dialog-box>
       </div>
 
-
-
       <div id="divSucessMsg">
         <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!" textButton="Finalizar"></app-dialog-box>
       </div>
@@ -147,7 +140,6 @@
         <app-dialog-box customClassError="showElement" text="Algo deu errado" textButton="Tentar novamente"></app-dialog-box>
       </div>
 
-  
     </ng-template>
   </app-modal>
 </div>
