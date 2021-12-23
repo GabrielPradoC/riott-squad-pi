@@ -30,7 +30,7 @@ services:
         networks:
             - riott-connect
         ports:
-            - 3307:3306
+            - 3306:3306
     angular:
         container_name: riott-angular
         build: ./front
