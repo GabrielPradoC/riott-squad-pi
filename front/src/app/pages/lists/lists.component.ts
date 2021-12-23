@@ -76,20 +76,26 @@ export class ListsComponent implements OnInit {
 
         this.members = members?.data?.children;
 
+        let selectedUserId: number;
         if (id) {
           //get the current member
           this.currentMemberFinalize = members?.data?.children.find(user => user.id === id);
+
+          selectedUserId = members?.data?.children.find(user => user.id === id).id;
         }
         else {
           //get the first member
           this.currentMemberFinalize = members?.data?.children[0];
+
+          selectedUserId = members?.data?.children[0].id;
         }
 
+        const indexOfSelectedUser = members?.data.children.findIndex(user => user.id == selectedUserId);
         //allowance
-        this.allowance = members?.data?.children[0]?.allowance;
+        this.allowance = members?.data?.children[indexOfSelectedUser]?.allowance;
 
-        this.getTaskList(members?.data?.children[0].id);
-        this.getTaskListForManage(members?.data?.children[0].id);
+        this.getTaskList(members?.data?.children[indexOfSelectedUser].id);
+        this.getTaskListForManage(members?.data?.children[indexOfSelectedUser].id);
       });
   }
 
@@ -292,11 +298,11 @@ export class ListsComponent implements OnInit {
     })
     
     if (validation) {
-      // this.listService.Create(`${environment.API}list`, list).subscribe(
-      //   result => {
-      //     this.tasksToCreate = [];
-      //   }
-      // );
+      this.listService.Create(`${environment.API}list`, list).subscribe(
+        result => {
+          this.tasksToCreate = [];
+        }
+      );
 
       this.tasksToCreate = [];
     }
