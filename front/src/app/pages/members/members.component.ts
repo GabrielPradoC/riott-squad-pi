@@ -45,10 +45,12 @@ export class MembersComponent implements OnInit  {
   getMembers() {
     const id = localStorage.getItem("riott:userId");
     this.service.List(`${environment.API}user/${id}/members`)
-      .subscribe(complete => {
-        this.members = complete.data.children;
-      },
-      error => console.log(error));
+      .subscribe(
+        complete => {
+          this.members = complete.data.children;
+        },
+        error => console.log(error)
+      );
   }
 
   static initAttributesDrop() : void {
@@ -73,7 +75,7 @@ export class MembersComponent implements OnInit  {
     document.getElementById("dataNascimento").setAttribute("max", today.getFullYear() + month + (today.getDate()-1));
   }
 
-  getFileDrop() {
+  getFileDrop(): void {
     MembersComponent.fileTemp = null;
     
     setTimeout(() => { this.checkFile(MembersComponent.fileTemp); }, 100);
@@ -112,7 +114,7 @@ export class MembersComponent implements OnInit  {
     alert(error);
   }
 
-  async saveImage(image: File) : Promise<boolean> {
+  async saveImage(image: File): Promise<boolean> {
     const reader: FileReader = new FileReader();
     let imageTemp: string;
     localStorage.removeItem("RIOTT:imgTemp");
@@ -144,12 +146,12 @@ export class MembersComponent implements OnInit  {
     });
   }
 
-  labelUp() {
+  labelUp(): void {
     document.getElementById("dateLabel").style.transform = "translateY(-22px)";
     document.getElementById("dateLabel").style.color = "#7C8D93";
   }
 
-  onChange() {
+  onChange(): void {
     const birthday = (<HTMLSelectElement>document.getElementById("dataNascimento")).value;
     if(birthday) {
       const year = parseInt(birthday.substring(0, 4));
@@ -186,7 +188,7 @@ export class MembersComponent implements OnInit  {
     }
   }
 
-  mask(){
+  mask(): void{
     let value: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value;
 
     value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
@@ -210,12 +212,18 @@ export class MembersComponent implements OnInit  {
     );
   }
 
+  removerMembro(memberId: number): void {
+    this.service.Remove(`${environment.API}member/${memberId}`).subscribe(
+      complete => this.getMembers()
+    );
+  }
+
   changeFormatDate(date: string) : string {
     const newDate: Date = new Date(date);
     return newDate.toLocaleDateString();
   }
 
-  cancelarCadastro() {
+  cancelarCadastro(): void {
     dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember");
   }
 }
