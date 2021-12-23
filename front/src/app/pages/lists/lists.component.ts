@@ -57,7 +57,6 @@ export class ListsComponent implements OnInit {
     private fb: FormBuilder) {
     this.form = this.fb.group({
       name: ['', Validators.compose([
-        Validators.email,
         Validators.required
       ])]
     });
@@ -68,31 +67,36 @@ export class ListsComponent implements OnInit {
     this.getAllTasks();
   }
 
-  getMembers(): void {
-    const id = this.localStorageService.getItem("riott:userId");
+  getMembers(id?: number): void {
+    const userId = this.localStorageService.getItem("riott:userId");
 
-    this.memberService.List(`${environment.API}user/${id}/members`)
+    this.memberService.List(`${environment.API}user/${userId}/members`)
       .subscribe(members => {
         this.members = [];
 
         this.members = members?.data?.children;
-        // if (Array.isArray(this.members)) {
-        //   console.log('deu certo');
-        // }
-        // else {
-        //   console.log('não deu certo');
-        // }
-        //console.log(`members: ${members?.data?.children}, ${members?.data?.children.length}`);
 
-        //get the first member
-        this.currentMemberFinalize = members?.data?.children[0];
+        let selectedUserId: number;
+        if (id) {
+          //get the current member
+          this.currentMemberFinalize = members?.data?.children.find(user => user.id === id);
 
+          selectedUserId = members?.data?.children.find(user => user.id === id).id;
+        }
+        else {
+          //get the first member
+          this.currentMemberFinalize = members?.data?.children[0];
+
+          selectedUserId = members?.data?.children[0].id;
+        }
+
+        const indexOfSelectedUser = members?.data.children.findIndex(user => user.id == selectedUserId);
         //allowance
-        this.allowance = members?.data?.children[0]?.allowance;
+        this.allowance = members?.data?.children[indexOfSelectedUser]?.allowance;
+
+        this.getTaskList(members?.data?.children[indexOfSelectedUser].id);
+        this.getTaskListForManage(members?.data?.children[indexOfSelectedUser].id);
       });
-    
-    this.getTaskList(Number(id));
-    this.getTaskListForManage(Number(id));
   }
 
   getTaskList(memberId: number): void {
@@ -124,6 +128,19 @@ export class ListsComponent implements OnInit {
 
         const statesList = ["STARTED", "ONHOLD"];
         this.listManageData = lists?.data?.find(list => statesList.includes(list.state));
+
+        // if (this.listManageData) {
+        //   //show the no-list div
+        //   const list = document.getElementById('no-list-container-display');
+          
+        //   if (list) {
+        //     list.style.display = "";
+        //   }
+        // }
+        // else {
+        //   const list = document.getElementById('no-list-container-display');
+        //   list.style.display = "none"
+        // }
       
         if (statesList.includes(this.listManageData?.state)) {
           this.tasksManage = lists?.data?.find(list => statesList.includes(list.state))?.tasks;
@@ -174,7 +191,7 @@ export class ListsComponent implements OnInit {
       this.getTaskList(member.id);
   }
 
-  selectInManageList(member: Member): void {
+  selectInManageList(member: Member): void {    
     const selected = document.getElementsByClassName('selected-in-manage-list');
     
     if (selected.length > 0) {
@@ -200,9 +217,14 @@ export class ListsComponent implements OnInit {
 
   activeUserVersionList() {
     const initialVersion: HTMLDivElement = document.getElementsByClassName('list-initial').item(0) as HTMLDivElement;
+    const userVersion: HTMLDivElement = document.getElementById('list') as HTMLDivElement;
 
     if (initialVersion) {
       initialVersion.style.display = "none";
+    }
+
+    if (userVersion) {
+      userVersion.style.display = "";
     }
   }
 
@@ -219,7 +241,7 @@ export class ListsComponent implements OnInit {
     }
 
     this.listService.markAsMissed(`${environment.API}list/task/${task.id}`, body).subscribe(
-      result => this.getMembers()
+      result => this.getMembers(this.currentMemberFinalize.id)
     );
   }
 
@@ -248,6 +270,16 @@ export class ListsComponent implements OnInit {
     )
   }
 
+  startList(listId: number) {
+    const body = {
+      state: "STARTED"
+    };
+
+    this.listService.patch(`${environment.API}list/${listId}`, body).subscribe(
+      result => this.getTaskListForManage(this.currentMemberManage.id)
+    )
+  }
+
   //Create list modal
   createList(): void {
     const name = this.form.controls['name'].value;
@@ -260,10 +292,19 @@ export class ListsComponent implements OnInit {
       tasks: this.tasksToCreate
     };
 
-    const validation = this.tasksToCreate.every(task => task.value !== null);
+    const validation = this.tasksToCreate.every(task => task.value.toString().length > 0);
+    this.tasksToCreate.map((task) => {
+      console.log(`${task.task}, ${task.value}`)
+    })
     
     if (validation) {
-      this.listService.Create(`${environment.API}list`, list).subscribe();
+      this.listService.Create(`${environment.API}list`, list).subscribe(
+        result => {
+          this.tasksToCreate = [];
+        }
+      );
+
+      this.tasksToCreate = [];
     }
     else {
       alert('Alguma atividade está sem o valor de desconto. Para prosseguir, preencha o campo!');
@@ -288,6 +329,10 @@ export class ListsComponent implements OnInit {
         this.tasksToCreate.splice(index, 1);
       }
     }
+  }
+
+  existsTaskInArray(id: number): TaskToCreate {
+    return this.tasksToCreate.find(task => task.task == id);
   }
 
   getTasksValues(tasks: TaskToCreate[]): void {

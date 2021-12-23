@@ -25,10 +25,10 @@
     <div class="gap"></div>
 
     <div class="list-lists">
-      <h2 *ngIf="lists.length > 0">Listas finalizadas:</h2>
+      <h2 *ngIf="lists?.length > 0">Listas finalizadas:</h2>
 
       <div class="main">
-        <div *ngIf="lists.length > 0" class="lists" [ngClass]="{'no-list': !list}">
+        <div *ngIf="lists?.length > 0" class="lists" [ngClass]="{'no-list': !list}">
           <div *ngFor="let list of lists" class="list">
             <div class="list-name">
               <label>Nome da lista:</label>
@@ -60,14 +60,14 @@
           </div>
         </div>
 
-        <div *ngIf="!lists.length" class="no-lists-container">
+        <div *ngIf="lists?.length == 0" class="no-lists-container">
           <div class="no-list">
             <div class="warning-image">
               <img src="../../../assets/warning1.ico" alt="aviso1">
               <img src="../../../assets/warning2.ico" alt="aviso2">
             </div>
 
-            <p>Este membro não possui lista configurada</p>
+            <p>Este membro ainda não possui listas finalizadas</p>
           </div>
         </div>
       </div>
