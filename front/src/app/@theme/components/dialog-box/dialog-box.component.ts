@@ -33,7 +33,7 @@ export class dialogBoxComponent {
   }
 
   cancel() : void {
-    if(this.closeAll === true) {
+    if(this.closeAll.toString() === "true") {
       ModalComponent.prototype.hideModal();
     } else {
       this.back();
