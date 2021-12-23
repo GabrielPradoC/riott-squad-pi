@@ -87,7 +87,7 @@ import { Task } from 'src/models/task.model';
       this.currentList = list;
 
       //get the tasks list
-      this.listService.ListByID(`${environment.API}list`, list.id).subscribe(
+      this.listService.ListById(`${environment.API}list`, list.id).subscribe(
         result => {
           this.tasks = result?.data?.tasks;
         }

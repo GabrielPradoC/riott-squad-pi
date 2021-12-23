@@ -43,11 +43,9 @@ h2 {
     .member-info {
       display: flex;
       align-items: center;
-      gap: 5rem;
 
       .member-personal-information {
         display: flex;
-        gap: 10rem;
 
         div:first-child {
           display: flex;
@@ -65,6 +63,7 @@ h2 {
             display: flex;
             flex-direction: column;
             gap: 0.7rem;
+            width: 252px;
 
             label {
               color: #7c8d93;
@@ -76,6 +75,7 @@ h2 {
           display: flex;
           flex-direction: column;
           gap: 0.7rem;
+          width: 208px;
 
           label {
             color: #7c8d93;
@@ -118,7 +118,8 @@ h2 {
   }
 }
 
-#divCadastrarMembro, #divSucessMsg, #divErrorMsg, #divWarningMsg {
+#divCadastrarMembro, #sucessMsgCreateMember, #errorMsgCreateMember, #warningMsgCreateMember,
+#divSucessMsg, #divErrorMsg, #divWarningMsg {
   width: 272px;
   height: 100%;
   display: none;
@@ -154,14 +155,14 @@ form {
         color: #3B4244;
       }
 
-      input, div {
+      input, #uploadFoto {
         position: relative;
         width: 100%;
         border-radius: 4px;
         margin-top: 24px;
       }
 
-      div {
+      #uploadFoto {
         display: flex;
         flex-direction: row;
         height: 20px;
@@ -170,10 +171,25 @@ form {
         border: 1px dashed #B5C5CA;
         align-items:center;
       
-        > img {
+        > div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           height: 52px;
           width: 52px;
-          padding: 7px 13px 7px 1px;
+
+          .default {
+            height: 37.5px;
+            width: 37.5px;
+            margin: 7px 13px 7px 1px;
+          }
+
+          .imgUpload {
+            height: 52px;
+            width: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
         }
       
         > p {

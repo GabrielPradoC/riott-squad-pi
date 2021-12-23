@@ -26,7 +26,7 @@ export class ListService extends CrudService<Lists, List> {
       .pipe(take(2));
   }
 
-  ListByID(apiUrl: string, id: number) {
+  ListById(apiUrl: string, id: number) {
     return this.http.get<ListById>(`${apiUrl}/${id}`, { headers: this.headers }).pipe(take(2));
   }
 }

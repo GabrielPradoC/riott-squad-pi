@@ -4,7 +4,7 @@
   <div class="container">
     <div class="list-members">
       <div class="main">
-        <div class="initial">
+        <div *ngIf="members?.length > 0" class="initial">
           <h2>Listas:</h2>
         </div>
 
@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <div id="button">
+      <div *ngIf="members?.length > 0" id="button">
         <app-my-button customClass="light-green lists-page" text="Gerenciar listas" (click)="OpenManageListsModal()">
         </app-my-button>
       </div>
@@ -76,12 +76,25 @@
           </div>
         </div>
 
-        <div *ngIf="!list" class="no-list-container">
+        <div *ngIf="!list && members?.length > 0" class="no-list-container">
           <div class="no-list">
-            <div>
-              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
-              <p>Este membro não possui lista configurada</p>
+            <div class="warning-image">
+              <img src="../../../assets/warning1.ico" alt="aviso1">
+              <img src="../../../assets/warning2.ico" alt="aviso2">
             </div>
+            
+            <p>Este membro não possui lista configurada</p>
+          </div>
+        </div>
+
+        <div *ngIf="!members?.length > 0" class="no-list-container">
+          <div class="no-list">
+            <div class="warning-image">
+              <img src="../../../assets/warning1.ico" alt="aviso1">
+              <img src="../../../assets/warning2.ico" alt="aviso2">
+            </div>
+            
+            <p>Não há membros cadastrados. Por isso, aqui está vazio.</p>
           </div>
         </div>
 
@@ -128,20 +141,19 @@
   <!-- Modal of finalize list -->
   <app-modal customId="finalize-list" customTitle="">
     <ng-template #content>
-      <div id="warningMsgExample">
+      <div id="warningMsgFinalizeList">
         <app-dialog-box (callParent)="finalizeList(list)" customClassWarning="showElement"
-          text="Deseja realmente finalizar essa lista?" textButton="Confirmar e finalizar lista"
-          divPrincipal="warningMsgExample" divAtual="sucessMsgExample" closeAll="true">
+          text="Deseja realmente finalizar essa lista?" textButton="Confirmar e finalizar lista" closeAll="true">
           <ng-template #contentDialogBox>
             <div class="gap" style="margin-top: 1.7rem;"></div>
 
-            <div class="member">
+            <div *ngIf="currentMemberFinalize" class="member">
               <div class="member-information">
-                <img src="data:image/png;base64,{{ currentMember.photo }}" alt="Member photo" width="40px">
+                <img src="data:image/png;base64,{{ currentMemberFinalize.photo }}" alt="Member photo" width="40px">
 
                 <div class="member-name">
                   <label>Membro:</label>
-                  <span>{{ currentMember.name }}</span>
+                  <span>{{ currentMemberFinalize.name }}</span>
                 </div>
               </div>
             </div>
@@ -170,10 +182,8 @@
         </app-dialog-box>
       </div>
 
-      <div id="sucessMsgExample">
-        <app-dialog-box (callParent)="funcaoBotaoVerde($event)" customClassSucess="showElement"
-          text="Lista finalizada com sucesso!" divPrincipal="warningMsgExample" divAtual="sucessMsgExample"
-          closeAll="true">
+      <div id="sucessMsgFinalizeList">
+        <app-dialog-box customClassSucess="showElement" text="Lista finalizada com sucesso!" closeAll="true">
         </app-dialog-box>
       </div>
     </ng-template>
@@ -185,7 +195,7 @@
         <h2>Membros ativos</h2>
         <div *ngIf="members" class="members">
           <div *ngFor="let member of members" id="{{ member.id }}manage" class="member"
-            (click)="selectInManageList(member.id)">
+            (click)="selectInManageList(member)">
             <div class="member-photo">
               <img width="40px" src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
             </div>
@@ -197,7 +207,7 @@
           </div>
         </div>
 
-        <div *ngIf="allTasks" class="list-initial">
+        <div *ngIf="allTasks?.length > 0" class="list-initial">
           <h2>Atividades:</h2>
 
           <div class="container-activities">
@@ -212,7 +222,22 @@
           </div>
         </div>
 
-        <div style="display: none;" *ngIf="listManageData" class="list">
+        <div *ngIf="!allTasks?.length > 0" class="no-list-container smaller">
+          <div class="no-list">
+            <div>
+              <div class="warning-image">
+                <img src="../../../assets/warning1.ico" alt="aviso1">
+                <img src="../../../assets/warning2.ico" alt="aviso2">
+              </div>
+              
+              <p>Não há atividades cadastradas. Por isso, aqui está vazio.</p>
+            </div>
+
+            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
+          </div>
+        </div>
+
+        <div *ngIf="listManageData" id="list" class="list">
           <div class="list-information">
             <div class="list-status">
               <label>Status da lista:</label>
@@ -228,9 +253,9 @@
             </div>
           </div>
 
-          <div class="gap"></div>
+          <div *ngIf="listManageData" class="gap"></div>
 
-          <div class="container-activities">
+          <div *ngIf="tasksManage?.length > 0" class="container-activities">
             <h2>Atividades:</h2>
 
             <div *ngIf="tasksManage" class="activities">
@@ -252,14 +277,176 @@
         <div *ngIf="!listManageData" class="no-list-container">
           <div class="no-list">
             <div>
-              <img src="https://cdn-icons-png.flaticon.com/512/463/463612.png" alt="Error" width="65px">
+              <div class="warning-image">
+                <img src="../../../assets/warning1.ico" alt="aviso1">
+                <img src="../../../assets/warning2.ico" alt="aviso2">
+              </div>
+              
               <p>Este membro não possui lista configurada</p>
             </div>
 
-            <app-my-button customClass="green login-page" text="Criar lista" (click)="login()"></app-my-button>
+            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
           </div>
         </div>
       </div>
+
+      <div id="warningMsgInitList">
+        <app-dialog-box
+            (callParent)="confirmInit($event)"
+            customClassWarning="showElement"
+            text="Deseja realmente iniciar essa lista?"
+            textButton="Confirmar e iniciar a lista"
+            closeAll="false">
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgInitList">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Lista iniciada com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+
+      <div id="errorMsgInitList">
+        <app-dialog-box
+            customClassError="showElement"
+            text="Algo deu errado"
+            closeAll="true"
+            divAtual="errorMsgInitList"
+            divPrincipal="contentInitList">
+        </app-dialog-box>
+      </div>
+
+      <div id="warningMsgDeleteList">
+        <app-dialog-box
+            (callParent)="confirmDelete($event)"
+            customClassWarning="showElement"
+            text="Deseja realmente excluir essa lista?"
+            textButton="Confirmar e excluir a lista"
+            closeAll="false">
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgDeleteList">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Lista excluida com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+
+      <div id="errorMsgDeleteList">
+        <app-dialog-box
+            customClassError="showElement"
+            text="Algo deu errado"
+            closeAll="true"
+            divAtual="errorMsgDeleteList"
+            divPrincipal="contentDeleteList">
+        </app-dialog-box>
+      </div>
     </ng-template>
   </app-modal>
+
+  <div id="divcreateList">
+    <app-modal customId="createList" customTitle="Criar nova lista">
+      <ng-template #content>
+        <div id="contentCreateList">
+          <div>
+            <form [formGroup]="form">
+              <div class="field">
+                <input
+                    type="string"
+                    id="name"
+                    placeholder=" "
+                    formControlName="name"
+                >
+                  <label for="name">Nome da lista <span class="required">*</span></label>
+              </div>
+              
+              <div class="member-container">
+                <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member"
+                  (click)="selectInCreateList(currentMemberManage)">
+                  <div class="member-photo">
+                    <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
+                  </div>
+  
+                  <div class="member-info">
+                    <label>Membro:</label>
+                    <span>{{ currentMemberManage.name }}</span>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="activities-container">
+                <h2>Selecione as atividades e defina seus valores:</h2>
+  
+                <div *ngIf="allTasks" class="activities">
+                  <div *ngFor="let task of allTasks" class="activity" id="{{ task.id }}">
+                    <div>
+                      <div class="checkbox">
+                        <input type="checkbox" id="task" name="task" (change)="onCheckChange($event, task.id)">
+                      </div>
+
+                      <div class="description">
+                        <label>Descrição da atividade:</label>
+                        <span>{{ task.description }}</span>
+                      </div>
+                    </div>
+
+                    <div class="field-discount-value">
+                      <input
+                        type="string"
+                        id="{{ task.id }}task-create-modal"
+                        placeholder=" "
+                      >
+                      <label for="tasks">Valor do desconto:</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button [disabled]="!tasksToCreate || !form.controls['name'].value" (click)="createList()">Submit</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="sucessMsgCreateList">
+          <app-dialog-box
+              customClassSucess="showElement"
+              text="Lista criada com sucesso!"
+              closeAll="true">
+          </app-dialog-box>
+        </div>
+
+        <div id="errorMsgCreateList">
+          <app-dialog-box
+              customClassError="showElement"
+              text="Algo deu errado"
+              closeAll="true"
+              divAtual="errorMsgCreateList"
+              divPrincipal="contentCreateList">
+          </app-dialog-box>
+        </div>
+      </ng-template>
+    </app-modal>
+  </div>
+
+  <div id="diveditList">
+    <app-modal customId="editList" customTitle="Editar lista">
+      <ng-template #content>
+        <div id="contentEditList">
+
+        </div>
+
+        <div id="sucessMsgEditList">
+          <app-dialog-box
+              customClassSucess="showElement"
+              text="Lista salva com sucesso!"
+              closeAll="true">
+          </app-dialog-box>
+        </div>
+      </ng-template>
+    </app-modal>
+  </div>
 </div>
