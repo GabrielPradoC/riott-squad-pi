@@ -259,6 +259,16 @@ export class ListsComponent implements OnInit {
     )
   }
 
+  startList(listId: number) {
+    const body = {
+      state: "STARTED"
+    };
+
+    this.listService.patch(`${environment.API}list/${listId}`, body).subscribe(
+      result => this.getTaskListForManage(this.currentMemberManage.id)
+    )
+  }
+
   //Create list modal
   createList(): void {
     const name = this.form.controls['name'].value;
@@ -299,6 +309,10 @@ export class ListsComponent implements OnInit {
         this.tasksToCreate.splice(index, 1);
       }
     }
+  }
+
+  existsTaskInArray(id: number): TaskToCreate {
+    return this.tasksToCreate.find(task => task.task == id);
   }
 
   getTasksValues(tasks: TaskToCreate[]): void {

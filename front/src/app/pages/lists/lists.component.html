@@ -262,7 +262,7 @@
               <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="light-green members-page"
                 text="Editar"></app-my-button>
               <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="green members-page"
-                text="Iniciar lista"></app-my-button>
+                text="Iniciar lista" (click)="startList(listManageData.id)"></app-my-button>
             </div>
           </div>
 
@@ -349,7 +349,7 @@
     <app-modal customId="createList" customTitle="Criar nova lista">
       <ng-template #content>
         <div id="contentCreateList">
-          <div>
+          <div class="container-create-list" [ngClass]="{'visible-create-list-button': (tasksToCreate?.length && form.controls['name'].value != '')}">
             <form [formGroup]="form">
               <div class="field">
                 <input
@@ -374,7 +374,7 @@
                   </div>
                 </div>
               </div>
-  
+
               <div class="activities-container">
                 <h2>Selecione as atividades e defina seus valores:</h2>
   
@@ -391,7 +391,7 @@
                       </div>
                     </div>
 
-                    <div class="field-discount-value">
+                    <div *ngIf="existsTaskInArray(task.id)" class="field-discount-value">
                       <input
                         type="string"
                         id="{{ task.id }}task-create-modal"
@@ -402,9 +402,33 @@
                   </div>
                 </div>
               </div>
-
-              <button [disabled]="!tasksToCreate || !form.controls['name'].value" (click)="createList()">Submit</button>
             </form>
+          </div>
+
+          <div *ngIf="tasksToCreate?.length && form.controls['name'].value != ''" class="card-create-list">
+            <div class="information-container">
+              <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}" class="member">
+                <div class="member-photo">
+                  <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
+                </div>
+
+                <div class="member-info">
+                  <label>Membro:</label>
+                  <span>{{ currentMemberManage.name }}</span>
+                </div>
+              </div>
+
+              <div class="gap"></div>
+
+              <div class="lacks">
+                <label>Total de atividades na lista:</label>
+                <span>12</span>
+              </div>
+            </div>
+
+            <app-my-button customClass="light-green lists-page" text="Criar lista"
+              (click)="createList()">
+            </app-my-button>
           </div>
         </div>
 
