@@ -5,7 +5,7 @@ import { List } from 'src/models/list.model';
 import { CrudService } from './crud.service';
 import { take } from 'rxjs/operators';
 import { listRequestBody } from '../common/interfaces/listRequestBody.interface';
-import { ListById } from 'src/models/listByid.model';
+import { ListById } from 'src/models/listById.model';
 
 @Injectable({
   providedIn: 'root'

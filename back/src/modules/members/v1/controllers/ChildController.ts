@@ -23,9 +23,6 @@ import { ChildRepository } from '../../../../library/database/repository';
 // Validators
 import { ChildValidator } from '../middlewares/ChildValidator';
 
-// Utils
-import { StringUtils } from '../../../../utils';
-
 @Controller(EnumEndpoints.MEMBER_V1)
 export class ChildController extends BaseController {
     /**
