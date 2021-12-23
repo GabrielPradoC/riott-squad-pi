@@ -10,7 +10,7 @@
 
         <div class="members">
           <div *ngFor="let member of members" id="{{ member.id }}" class="member"
-            [ngClass]="{'selected': member.id === members[0].id}" (click)="select(member)">
+            [ngClass]="{'selected': member.id === currentMemberFinalize.id}" (click)="select(member)">
 
             <div class="member-photo">
               <img src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
@@ -358,7 +358,12 @@
                     placeholder=" "
                     formControlName="name"
                 >
-                  <label for="name">Nome da lista <span class="required">*</span></label>
+                
+                <label for="name">Nome da lista <span class="required">*</span></label>
+
+                <small class="danger" *ngIf="form.controls.name.invalid">
+                  Este campo é obrigatório.<br>
+                </small>
               </div>
               
               <div class="member-container">

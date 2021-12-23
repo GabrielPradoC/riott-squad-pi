@@ -878,15 +878,16 @@
           position: relative;
   
           input {
+            margin-top: 15px;
+            margin-bottom: 8px;
             padding: 20px 20px 16px;
             position: relative;
             width: 100%;
             height: 55px;
+            color: #3b4244;
             font-size: 1rem;
             border: 1px solid #7C8D93;
             border-radius: 4px;
-            margin-top: 15px;
-            margin-bottom: 15px;
   
             transition: 0.2s;
           }
@@ -917,6 +918,13 @@
           input:focus {
             outline: none !important;
             border: 1px solid #006D77;
+          }
+
+          .danger {
+            color: #eb5757;
+            font-weight: bold;
+            padding: 5px;
+            margin-top: 10px;
           }
   
           ::-webkit-input-placeholder {

@@ -57,7 +57,6 @@ export class ListsComponent implements OnInit {
     private fb: FormBuilder) {
     this.form = this.fb.group({
       name: ['', Validators.compose([
-        Validators.email,
         Validators.required
       ])]
     });
@@ -68,17 +67,23 @@ export class ListsComponent implements OnInit {
     this.getAllTasks();
   }
 
-  getMembers(): void {
-    const id = this.localStorageService.getItem("riott:userId");
+  getMembers(id?: number): void {
+    const userId = this.localStorageService.getItem("riott:userId");
 
-    this.memberService.List(`${environment.API}user/${id}/members`)
+    this.memberService.List(`${environment.API}user/${userId}/members`)
       .subscribe(members => {
         this.members = [];
 
         this.members = members?.data?.children;
 
-        //get the first member
-        this.currentMemberFinalize = members?.data?.children[0];
+        if (id) {
+          //get the current member
+          this.currentMemberFinalize = members?.data?.children.find(user => user.id === id);
+        }
+        else {
+          //get the first member
+          this.currentMemberFinalize = members?.data?.children[0];
+        }
 
         //allowance
         this.allowance = members?.data?.children[0]?.allowance;
@@ -230,7 +235,7 @@ export class ListsComponent implements OnInit {
     }
 
     this.listService.markAsMissed(`${environment.API}list/task/${task.id}`, body).subscribe(
-      result => this.getMembers()
+      result => this.getMembers(this.currentMemberFinalize.id)
     );
   }
 
@@ -281,10 +286,19 @@ export class ListsComponent implements OnInit {
       tasks: this.tasksToCreate
     };
 
-    const validation = this.tasksToCreate.every(task => task.value !== null);
+    const validation = this.tasksToCreate.every(task => task.value.toString().length > 0);
+    this.tasksToCreate.map((task) => {
+      console.log(`${task.task}, ${task.value}`)
+    })
     
     if (validation) {
-      this.listService.Create(`${environment.API}list`, list).subscribe();
+      // this.listService.Create(`${environment.API}list`, list).subscribe(
+      //   result => {
+      //     this.tasksToCreate = [];
+      //   }
+      // );
+
+      this.tasksToCreate = [];
     }
     else {
       alert('Alguma atividade está sem o valor de desconto. Para prosseguir, preencha o campo!');
