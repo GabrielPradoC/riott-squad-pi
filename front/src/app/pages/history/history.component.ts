@@ -37,13 +37,14 @@ import { Task } from 'src/models/task.model';
   
       this.memberService.List(`${environment.API}user/${id}/members`)
         .subscribe(members => {
-          this.members = members.data.children;
+          this.members = [];
+          this.members = members?.data?.children;
   
           //get the first member
-          this.currentMember = members.data.children[0];
+          this.currentMember = members?.data?.children[0];
+
+          this.getLists(members?.data?.children[0].id);
         });
-      
-      this.getLists(Number(id));
     }
 
     getLists(memberId: number): void {
@@ -51,7 +52,6 @@ import { Task } from 'src/models/task.model';
         result => {
           this.lists = [];
           this.lists = result?.data?.filter(list => list.state == "FINISHED");
-          console.log(result?.data?.filter(list => list.state == "FINISHED"));
   
           this.lists.map((list: List) => this.calculateTotalLacks(list));
         }
