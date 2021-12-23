@@ -18,20 +18,31 @@ export class dialogBoxComponent {
   @Output() callParent = new EventEmitter<any>();
   @ContentChild('contentDialogBox') contentDialogBox: TemplateRef<any>;
 
-  onClick(){
-    this.callParent.emit(null);
+  static showDialogbox(divAtual: string, divDialog: string) {
+    document.getElementById(divAtual).style.display = "none";
+    document.getElementById(divDialog).style.display = "flex";
+    document.getElementById("whiteDiv").style.display = "flex";
   }
 
-  cancel() : void {
-    if(this.closeAll) {
+  onClick(){
+    if(this.callParent.observers.length === 0) {
       ModalComponent.prototype.hideModal();
     } else {
-      this.close();
+      this.callParent.emit(null);
     }
   }
 
-  close() : void {
+  cancel() : void {
+    if(this.closeAll.toString() === "true") {
+      ModalComponent.prototype.hideModal();
+    } else {
+      this.back();
+    }
+  }
+
+  back() : void {
     document.getElementById(this.divAtual).style.display = "none";
     document.getElementById(this.divPrincipal).style.display = "flex";
+    document.getElementById("whiteDiv").style.display = "none";
   }
 }

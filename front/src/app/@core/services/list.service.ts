@@ -5,7 +5,7 @@ import { List } from 'src/models/list.model';
 import { CrudService } from './crud.service';
 import { take } from 'rxjs/operators';
 import { listRequestBody } from '../common/interfaces/listRequestBody.interface';
-import { ListById } from 'src/models/listByid.model';
+import { ListById } from 'src/models/listById.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class ListService extends CrudService<Lists, List> {
       .pipe(take(2));
   }
 
-  ListByID(apiUrl: string, id: number) {
+  ListById(apiUrl: string, id: number) {
     return this.http.get<ListById>(`${apiUrl}/${id}`, { headers: this.headers }).pipe(take(2));
   }
 }

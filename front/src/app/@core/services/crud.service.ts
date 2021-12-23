@@ -22,8 +22,8 @@ export class CrudService<List, Model> {
    * @param body - object containing user email and password
    * @ret urns - void
    */
-  Create(data, apiUrl: string): Observable<Model> {
-    return this.http.post<Model>(apiUrl, data).pipe(take(2));
+  Create(apiUrl: string, data): Observable<Model> {
+    return this.http.post<Model>(apiUrl, data, { headers: this.headers }).pipe(take(2));
   }
 
   Update(data, apiUrl: string): Observable<Model> {
