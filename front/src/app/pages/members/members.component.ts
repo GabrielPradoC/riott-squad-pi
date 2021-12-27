@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Data } from '@angular/router';
+import { Data, Router } from '@angular/router';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { environment } from 'src/environments/environment';
@@ -17,7 +17,7 @@ export class MembersComponent implements OnInit  {
   public members: Member[];
   public idSelected: number;
 
-  constructor(private fb: FormBuilder, private service: MemberService) {
+  constructor(private fb: FormBuilder, private service: MemberService, private router: Router) {
     this.form = this.fb.group({
       foto: ['', Validators.compose([
         Validators.required
@@ -220,6 +220,12 @@ export class MembersComponent implements OnInit  {
 
   cancelarCadastro(): void {
     dialogBoxComponent.showDialogbox("divCadastrarMembro", "warningMsgCreateMember");
+  }
+
+  redirectLists() {
+    setTimeout(() => {
+      this.router.navigate(['/pages/lists']);
+    }, 200);
   }
 
   saveId(id: number) : void {
