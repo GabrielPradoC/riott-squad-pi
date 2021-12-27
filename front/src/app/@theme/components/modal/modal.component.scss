@@ -58,8 +58,8 @@
 }
 
 @keyframes hideElement2 {
-    from {top: 0vh}
-    to {top: 89vh}
+    from {top: 11vh}
+    to {top: 100vh}
 }
 
 .down2 {
@@ -67,4 +67,11 @@
     animation-fill-mode: forwards;
 }
 
-.subModal {}
+.subModal {
+    display: flex;
+    position: fixed !important;
+    top: 11vh;
+    height: 89vh;
+    width: 100vw;
+    z-index: 4;
+}

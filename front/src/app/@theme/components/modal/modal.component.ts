@@ -20,8 +20,7 @@ export class ModalComponent {
     if(document.getElementsByClassName("modal subModal").length > 0) {
       document.getElementById(modalId).style.display = "none";
       modalId = document.getElementsByClassName("modal subModal").item(0).attributes.getNamedItem("id").value;
-      document.getElementById(modalId).setAttribute("class", "modal down2");
-      document.getElementById("div"+modalId).style.display = "none";
+      document.getElementById(modalId).setAttribute("class", "modal subModal down2");
     }
 
     setTimeout(() => {

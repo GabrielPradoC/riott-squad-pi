@@ -344,74 +344,29 @@
     </ng-template>
   </app-modal>
 
-  <div id="divcreateList">
-    <app-modal customId="createList" customTitle="Criar nova lista">
-      <ng-template #content>
-        <div id="contentCreateList">
-          <div class="container-create-list" [ngClass]="{'visible-create-list-button': (tasksToCreate?.length && form.controls['name'].value != '')}">
-            <form [formGroup]="form">
-              <div class="field">
-                <input
-                    type="string"
-                    id="name"
-                    placeholder=" "
-                    formControlName="name"
-                >
-                
-                <label for="name">Nome da lista <span class="required">*</span></label>
-
-                <small class="danger" *ngIf="form.controls.name.invalid">
-                  Este campo é obrigatório.<br>
-                </small>
-              </div>
+  <app-modal customId="createList" customTitle="Criar nova lista">
+    <ng-template #content>
+      <div id="contentCreateList">
+        <div class="container-create-list" [ngClass]="{'visible-create-list-button': (tasksToCreate?.length && form.controls['name'].value != '')}">
+          <form [formGroup]="form">
+            <div class="field">
+              <input
+                  type="string"
+                  id="name"
+                  placeholder=" "
+                  formControlName="name"
+              >
               
-              <div class="member-container">
-                <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member"
-                  (click)="selectInCreateList(currentMemberManage)">
-                  <div class="member-photo">
-                    <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
-                  </div>
-  
-                  <div class="member-info">
-                    <label>Membro:</label>
-                    <span>{{ currentMemberManage.name }}</span>
-                  </div>
-                </div>
-              </div>
+              <label for="name">Nome da lista <span class="required">*</span></label>
 
-              <div class="activities-container">
-                <h2>Selecione as atividades e defina seus valores:</h2>
-  
-                <div *ngIf="allTasks" class="activities">
-                  <div *ngFor="let task of allTasks" class="activity" id="{{ task.id }}">
-                    <div>
-                      <div class="checkbox">
-                        <input type="checkbox" id="task" name="task" (change)="onCheckChange($event, task.id)">
-                      </div>
-
-                      <div class="description">
-                        <label>Descrição da atividade:</label>
-                        <span>{{ task.description }}</span>
-                      </div>
-                    </div>
-
-                    <div *ngIf="existsTaskInArray(task.id)" class="field-discount-value">
-                      <input
-                        type="string"
-                        id="{{ task.id }}task-create-modal"
-                        placeholder=" "
-                      >
-                      <label for="tasks">Valor do desconto:</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <div *ngIf="tasksToCreate?.length && form.controls['name'].value != ''" class="card-create-list">
-            <div class="information-container">
-              <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}" class="member">
+              <small class="danger" *ngIf="form.controls.name.invalid">
+                Este campo é obrigatório.<br>
+              </small>
+            </div>
+            
+            <div class="member-container">
+              <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member"
+                (click)="selectInCreateList(currentMemberManage)">
                 <div class="member-photo">
                   <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
                 </div>
@@ -421,57 +376,98 @@
                   <span>{{ currentMemberManage.name }}</span>
                 </div>
               </div>
+            </div>
 
-              <div class="gap"></div>
+            <div class="activities-container">
+              <h2>Selecione as atividades e defina seus valores:</h2>
 
-              <div class="lacks">
-                <label>Total de atividades na lista:</label>
-                <span>{{ tasksToCreate?.length }}</span>
+              <div *ngIf="allTasks" class="activities">
+                <div *ngFor="let task of allTasks" class="activity" id="{{ task.id }}">
+                  <div>
+                    <div class="checkbox">
+                      <input type="checkbox" id="task" name="task" (change)="onCheckChange($event, task.id)">
+                    </div>
+
+                    <div class="description">
+                      <label>Descrição da atividade:</label>
+                      <span>{{ task.description }}</span>
+                    </div>
+                  </div>
+
+                  <div *ngIf="existsTaskInArray(task.id)" class="field-discount-value">
+                    <input
+                      type="string"
+                      id="{{ task.id }}task-create-modal"
+                      placeholder=" "
+                    >
+                    <label for="tasks">Valor do desconto:</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="tasksToCreate?.length && form.controls['name'].value != ''" class="card-create-list">
+          <div class="information-container">
+            <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}" class="member">
+              <div class="member-photo">
+                <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
+              </div>
+
+              <div class="member-info">
+                <label>Membro:</label>
+                <span>{{ currentMemberManage.name }}</span>
               </div>
             </div>
 
-            <app-my-button customClass="light-green lists-page" text="Criar lista"
-              (click)="createList()">
-            </app-my-button>
+            <div class="gap"></div>
+
+            <div class="lacks">
+              <label>Total de atividades na lista:</label>
+              <span>{{ tasksToCreate?.length }}</span>
+            </div>
           </div>
-        </div>
 
-        <div id="sucessMsgCreateList">
-          <app-dialog-box
-              customClassSucess="showElement"
-              text="Lista criada com sucesso!"
-              closeAll="true">
-          </app-dialog-box>
+          <app-my-button customClass="light-green lists-page" text="Criar lista"
+            (click)="createList()">
+          </app-my-button>
         </div>
+      </div>
 
-        <div id="errorMsgCreateList">
-          <app-dialog-box
-              customClassError="showElement"
-              text="Algo deu errado"
-              closeAll="true"
-              divAtual="errorMsgCreateList"
-              divPrincipal="contentCreateList">
-          </app-dialog-box>
-        </div>
-      </ng-template>
-    </app-modal>
-  </div>
+      <div id="sucessMsgCreateList">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Lista criada com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
 
-  <div id="diveditList">
-    <app-modal customId="editList" customTitle="Editar lista">
-      <ng-template #content>
-        <div id="contentEditList">
+      <div id="errorMsgCreateList">
+        <app-dialog-box
+            customClassError="showElement"
+            text="Algo deu errado"
+            closeAll="true"
+            divAtual="errorMsgCreateList"
+            divPrincipal="contentCreateList">
+        </app-dialog-box>
+      </div>
+    </ng-template>
+  </app-modal>
 
-        </div>
+  <app-modal customId="editList" customTitle="Editar lista">
+    <ng-template #content>
+      <div id="contentEditList">
 
-        <div id="sucessMsgEditList">
-          <app-dialog-box
-              customClassSucess="showElement"
-              text="Lista salva com sucesso!"
-              closeAll="true">
-          </app-dialog-box>
-        </div>
-      </ng-template>
-    </app-modal>
-  </div>
+      </div>
+
+      <div id="sucessMsgEditList">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Lista salva com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+    </ng-template>
+  </app-modal>
 </div>
