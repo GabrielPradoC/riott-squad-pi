@@ -15,6 +15,15 @@
     justify-content:space-between;
     width: 100vw;
     height: 96px;
+    
+    #whiteDiv {
+        display: none;
+        position: absolute;
+        height: 96px;
+        width: 50vw;
+        background-color: #fff;
+        z-index: 9;
+    }
   
     > h2 {
         height: 28px;

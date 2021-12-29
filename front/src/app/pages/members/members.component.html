@@ -28,7 +28,7 @@
         </div>
         <div class="member-actions">
           <app-my-button customClass="orange members-page" text= "Excluir" (click)="saveId(member.id)" customValue="excluirMembro"></app-my-button>
-          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar" (click)="saveId(member.id)" customValue="editarMembro"></app-my-button>
           <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
@@ -37,96 +37,7 @@
 
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
     <ng-template #content>
-      <div id="divCadastrarMembro">
-        <p>
-          Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
-        </p>
-
-        <form [formGroup]="form">
-
-          <div class="field">
-            <input
-                type="file"
-                id="foto"
-                formControlName="foto"
-                (change)="fileChangeEvent($event)"
-            >
-          
-            <div id="uploadFoto" (drop)="getFileDrop()">
-              <div>
-                <img src="../../../assets/file.ico" class="default">
-              </div>
-              <p>Arraste ou <label for="foto">clique aqui</label> para fazer o upload da <b>foto do usuário</b></p>
-            </div>
-          </div>
-          
-          <div class="field">
-              <input
-                  type="string"
-                  id="nome"
-                  placeholder=" "
-                  formControlName="nome"
-              >
-              <label for="nome">Nome do membro</label>
-          </div>
-
-          <div class="field">
-              <input
-                  type="date"
-                  id="dataNascimento"
-                  placeholder=" "
-                  formControlName="dataNascimento"
-                  (click)="labelUp()"
-                  (blur)="onChange()"
-              >
-              <label id="dateLabel" for="dataNascimento">Data de nascimento</label>
-          </div>
-
-          <div class="field">
-            <input
-                type="string"
-                id="valorMesada"
-                placeholder=" "
-                formControlName="valorMesada"
-                (keyup)="mask()"
-            >
-            <label for="valorMesada">Valor da mesada</label>
-          </div>
-      
-          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="cadastrarMembro()" ></app-my-button>
-        </form>
-        <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelarCadastro()"></app-my-button>
-      </div>
-
-      <div id="sucessMsgCreateMember">
-        <app-dialog-box
-            customClassSucess="showElement"
-            text="Membro adicionado com sucesso!"
-            closeAll="true"
-            (click)="redirectLists()">
-        </app-dialog-box>
-      </div>
-
-      <div id="errorMsgCreateMember">
-        <app-dialog-box
-            customClassError="showElement"
-            text="Algo deu errado"
-            closeAll="true"
-            divAtual="errorMsgCreateMember"
-            divPrincipal="divCadastrarMembro">
-        </app-dialog-box>
-      </div>
-
-      <div id="warningMsgCreateMember">
-        <app-dialog-box
-            customClassWarning="showElement"
-            text="Deseja realmente interromper o cadastro?"
-            textButton="Confirmar ação"
-            closeAll="false"
-            divAtual="warningMsgCreateMember"
-            divPrincipal="divCadastrarMembro">
-        </app-dialog-box>
-      </div>
+      <app-form-member typeForm="create"></app-form-member>
     </ng-template>
   </app-modal>
 
@@ -151,9 +62,10 @@
       </div>
     </ng-template>
   </app-modal>
-</div>
 
-
-<div id="divSucessMsg">
-  <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!" textButton="Finalizar"></app-dialog-box>
+  <app-modal customId="editarMembro" customTitle="Editar membro">
+    <ng-template #content>
+      <app-form-member typeForm="edit" memberId="this.idSelected"></app-form-member>
+    </ng-template>
+  </app-modal>
 </div>

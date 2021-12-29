@@ -1,0 +1,122 @@
+#divFormulario, #sucessMsgFormulario, #errorMsgFormulario, #warningMsgCreateMember {
+  width: 272px;
+  height: calc(78vh - 96px);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 96px;
+}
+
+#divFormulario {
+  display: flex;
+}
+
+#divFormulario p {
+  color: #3B4244;
+}
+
+form {
+    width: 100%;
+    margin-bottom: 8px;
+  
+    .field {
+        position:relative;
+  
+        #foto {
+          display: none;
+        }
+  
+        input {
+          padding: 16px 20px 14px;
+          height: 46px;
+          border: 1px solid #7C8D93;
+          font-size: 14px;
+          color: #3B4244;
+        }
+  
+        input, #uploadFoto {
+          position: relative;
+          width: 100%;
+          border-radius: 4px;
+          margin-top: 24px;
+        }
+  
+        #uploadFoto {
+          display: flex;
+          flex-direction: row;
+          height: 20px;
+          padding: 16px 32px;
+          height: 86px;
+          border: 1px dashed #B5C5CA;
+          align-items:center;
+        
+          > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 52px;
+            width: 52px;
+  
+            .default {
+              height: 37.5px;
+              width: 37.5px;
+              margin: 7px 13px 7px 1px;
+            }
+  
+            .imgUpload {
+              height: 52px;
+              width: 52px;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+          }
+        
+          > p {
+            font-size: 14px;
+            color: #7C8D93;
+            margin-left: 13px;
+  
+            > label {
+              text-decoration: underline;
+              cursor: pointer;
+            }
+          }
+        }
+  
+        #dataNascimento::-webkit-calendar-picker-indicator{
+          background-image: url(../../../../assets/calendar.ico);
+          width: 14px;
+          height: 14px;
+        }
+  
+        > label {
+            position: absolute;
+            left: 16px;
+            top: 36px;
+            transition: 0.2s;
+            background: #FFFFFF;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            color: #B5C5CA;
+            border: 4px solid #FFFFFF;
+        }
+        
+        input:focus + label, input:not(:placeholder-shown) + label {
+            transform: translateY(-22px);
+            color: #7C8D93;
+        }
+  
+        input[type='date']:not(:placeholder-shown) + label {
+          transform: translateY(0);
+          color: #B5C5CA;
+        }
+  
+        input:focus {
+            outline: none !important;
+        }
+  
+        &:last-of-type {
+            margin-bottom: 16px;
+        }
+    }
+  }
