@@ -12,6 +12,7 @@ import { Member } from 'src/models/member.model';
 export class MembersComponent implements OnInit  {
   public members: Member[];
   public idSelected: number;
+  public modalEditShowed: boolean = false;
 
   constructor(private service: MemberService) {
   }
@@ -40,6 +41,11 @@ export class MembersComponent implements OnInit  {
     this.idSelected = id;
   }
 
+  callEdit(id: number) : void {
+    this.saveId(id);
+    this.modalEditShowed = true;
+  }
+
   removerMembro(): void {
     this.service.Remove(`${environment.API}member/${this.idSelected}`).subscribe(
       complete => {
@@ -48,6 +54,4 @@ export class MembersComponent implements OnInit  {
       }
     );
   }
-
-
 }

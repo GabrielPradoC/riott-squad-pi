@@ -1,4 +1,4 @@
-#divFormulario, #sucessMsgFormulario, #errorMsgFormulario, #warningMsgCreateMember {
+div[name = "divFormulario"], div[name = "sucessMsgFormulario"], div[name = "errorMsgFormulario"], #warningMsgFormulario {
   width: 272px;
   height: calc(78vh - 96px);
   display: none;
@@ -7,11 +7,11 @@
   margin-bottom: 96px;
 }
 
-#divFormulario {
+div[name = "divFormulario"] {
   display: flex;
 }
 
-#divFormulario p {
+div[name = "divFormulario"] p {
   color: #3B4244;
 }
 

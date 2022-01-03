@@ -14,6 +14,7 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class FormMemberComponent implements OnInit {
   @Input() typeForm: number;
+  @Input() memberId: string;
 
   public form: FormGroup;
   private fileTemp: File;
@@ -37,12 +38,9 @@ export class FormMemberComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.typeForm == 0) {
-      this.form.controls['nome'].setValue("create");
-    }
     if(this.typeForm == 1) {
       this.trocaIds();
-      this.form.controls['nome'].setValue("edit");
+      this.setValuesMember();
     }
 
     this.initAttributesDrop();
@@ -50,6 +48,9 @@ export class FormMemberComponent implements OnInit {
   }
 
   trocaIds() {
+    document.getElementsByName("divFormulario").item(1).setAttribute("id", "divFormulario2");
+    document.getElementsByName("sucessMsgFormulario").item(1).setAttribute("id", "sucessMsgFormulario2");
+    document.getElementsByName("errorMsgFormulario").item(1).setAttribute("id", "errorMsgFormulario2");
     document.getElementsByName("foto").item(1).setAttribute("id", "foto2");
     document.getElementsByName("nome").item(1).setAttribute("id", "nome2");
     document.getElementsByName("labelNome").item(1).setAttribute("for", "nome2");
@@ -57,6 +58,12 @@ export class FormMemberComponent implements OnInit {
     document.getElementsByName("labelDataNascimento").item(1).setAttribute("for", "dataNascimento2");
     document.getElementsByName("valorMesada").item(1).setAttribute("id", "valorMesada2");
     document.getElementsByName("labelValorMesada").item(1).setAttribute("for", "valorMesada2");
+  }
+
+  setValuesMember() : void {
+    //fazer requisicao pelo id e preencher os forms
+
+    this.form.controls['nome'].setValue("edit");
   }
 
   initAttributesDrop() : void {
@@ -235,21 +242,38 @@ export class FormMemberComponent implements OnInit {
     );
   }
 
-  cancelarCadastro(): void {
+  editarMembro() {
+  }
+
+  cancelar(): void {
     if(this.typeForm == 0) {
-      dialogBoxComponent.showDialogbox("divFormulario", "warningMsgCreateMember");
+      dialogBoxComponent.showDialogbox("divFormulario", "warningMsgFormulario");
     } else {
       ModalComponent.prototype.hideModal();
-      console.log(this.typeForm)
+    }
+  }
+
+  textSucess() : string {
+    if(this.typeForm == 0) {
+      return 'Membro adicionado com sucesso!'
+    }  {
+      return 'Membro editado com sucesso!';
     }
   }
 
   redirectLists() {
-    setTimeout(() => {
-      this.router.navigate(['/pages/lists']);
-    }, 200);
+    if(this.typeForm == 0) {
+      setTimeout(() => {
+        this.router.navigate(['/pages/lists']);
+      }, 200);
+    }
   }
 
-  editarMembro() {
+  completeEdit() {
+    if(this.typeForm == 0) {
+      return ''
+    }  {
+      return '2';
+    }
   }
 }

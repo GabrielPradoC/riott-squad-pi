@@ -28,7 +28,7 @@
         </div>
         <div class="member-actions">
           <app-my-button customClass="orange members-page" text= "Excluir" (click)="saveId(member.id)" customValue="excluirMembro"></app-my-button>
-          <app-my-button customClass="light-green members-page" text= "Editar" (click)="saveId(member.id)" customValue="editarMembro"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar" (click)="callEdit(member.id)" customValue="editarMembro"></app-my-button>
           <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
@@ -64,8 +64,8 @@
   </app-modal>
 
   <app-modal customId="editarMembro" customTitle="Editar membro">
-    <ng-template #content>
-      <app-form-member typeForm="1" memberId="this.idSelected"></app-form-member>
+    <ng-template #content *ngIf="modalEditShowed">
+      <app-form-member typeForm="1" memberId="{{ this.idSelected }}"></app-form-member>
     </ng-template>
   </app-modal>
 </div>

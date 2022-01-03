@@ -1,4 +1,4 @@
-<div id="divFormulario">
+<div id="divFormulario" name="divFormulario">
     <p *ngIf="typeForm == 0; else textEdit">
         Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
     </p>
@@ -86,35 +86,35 @@
             </app-my-button>
         </ng-template>
     </form>
-    <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelarCadastro()"></app-my-button>
-  </div>
+    <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
+</div>
 
-  <div id="sucessMsgFormulario">
+<div id="sucessMsgFormulario" name="sucessMsgFormulario">
     <app-dialog-box
         customClassSucess="showElement"
-        text="Membro adicionado com sucesso!"
+        text="{{ textSucess() }}"
         closeAll="true"
         (click)="redirectLists()">
     </app-dialog-box>
-  </div>
+</div>
 
-  <div id="errorMsgFormulario">
+<div id="errorMsgFormulario" name="errorMsgFormulario">
     <app-dialog-box
         customClassError="showElement"
         text="Algo deu errado"
         closeAll="true"
-        divAtual="errorMsgFormulario"
-        divPrincipal="divFormulario">
+        divAtual="errorMsgFormulario{{ completeEdit() }}"
+        divPrincipal="divFormulario{{ completeEdit() }}">
     </app-dialog-box>
-  </div>
+</div>
 
-  <div id="warningMsgCreateMember">
+<div id="warningMsgFormulario">
     <app-dialog-box
         customClassWarning="showElement"
         text="Deseja realmente interromper o cadastro?"
         textButton="Confirmar ação"
         closeAll="false"
-        divAtual="warningMsgCreateMember"
+        divAtual="warningMsgFormulario"
         divPrincipal="divFormulario">
     </app-dialog-box>
-  </div>
+</div>
