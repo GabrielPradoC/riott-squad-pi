@@ -356,7 +356,6 @@ export class ListsComponent implements OnInit {
     document.getElementById("createList").style.position = "initial";
     document.getElementById("createList").style.display = "flex";
     document.getElementById("createList").setAttribute("class", "modal subModal");
-    document.getElementById("divcreateList").style.display = "flex";
   }
 
   showEditList() {
@@ -364,6 +363,5 @@ export class ListsComponent implements OnInit {
     document.getElementById("editList").style.position = "initial";
     document.getElementById("editList").style.display = "flex";
     document.getElementById("editList").setAttribute("class", "modal subModal");
-    document.getElementById("diveditList").style.display = "flex";
   }
 }

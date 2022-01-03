@@ -4,122 +4,77 @@
   z-index: 1;
 }
 
-.container {
-  margin: 0rem 3.6rem 0 3.6rem;
-  height: 89vh;
-  box-sizing: border-box;
-}
-
-.initial {
+.member {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  height: 11vh;
-}
 
-h2 {
-  color: #3b4244;
-}
+  border: 1px solid #dee8eb;
+  border-radius: 0.3rem;
 
-.members {
-  padding-right: 1.8rem;
-  overflow-y: auto;
+  padding: 1.5rem 2rem;
 
-  height: calc(78vh - 1rem);
-  
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-
-  .member {
+  .member-info {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
 
-    border: 1px solid #dee8eb;
-    border-radius: 0.3rem;
-
-    padding: 1.5rem 2rem;
-
-    .member-info {
+    .member-personal-information {
       display: flex;
-      align-items: center;
 
-      .member-personal-information {
+      div:first-child {
         display: flex;
+        align-items: center;
+        gap: 4rem;
 
-        div:first-child {
-          display: flex;
-          align-items: center;
-          gap: 4rem;
-
-          img {
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            object-fit: cover;
-          }
-
-          .member-name {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-            width: 252px;
-
-            label {
-              color: #7c8d93;
-            }
-          }
+        img {
+          border-radius: 50%;
+          width: 45px;
+          height: 45px;
+          object-fit: cover;
         }
 
-        .member-birth-date {
+        .member-name {
           display: flex;
           flex-direction: column;
           gap: 0.7rem;
-          width: 208px;
+          width: 252px;
 
           label {
             color: #7c8d93;
           }
         }
       }
-      
-      .allowance {
+
+      .member-birth-date {
         display: flex;
         flex-direction: column;
         gap: 0.7rem;
+        width: 208px;
 
         label {
           color: #7c8d93;
         }
       }
     }
-
-    .member-actions {
+    
+    .allowance {
       display: flex;
-      align-items: center;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 0.7rem;
+
+      label {
+        color: #7c8d93;
+      }
     }
   }
 
-  // scrollbar
-
-  &::-webkit-scrollbar-track {
-    background-color: #dee8eb;
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar {
-    width: 0.6rem;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background-color: #b5c5ca;
-    border-radius: 10px;
+  .member-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 }
 
-#divCadastrarMembro, #sucessMsgCreateMember, #errorMsgCreateMember, #warningMsgCreateMember,
-#divSucessMsg, #divErrorMsg, #divWarningMsg {
+#warningMsgDeleteMember, #sucessMsgDeleteMember {
   width: 272px;
   height: 100%;
   display: none;
@@ -128,116 +83,6 @@ h2 {
   margin-bottom: 96px;
 }
 
-#divCadastrarMembro {
+#warningMsgDeleteMember {
   display: flex;
-}
-
-#divCadastrarMenbro p {
-  color: #3B4244;
-}
-
-form {
-  width: 100%;
-  margin-bottom: 8px;
-
-  .field {
-      position:relative;
-
-      #foto {
-        display: none;
-      }
-
-      input {
-        padding: 16px 20px 14px;
-        height: 46px;
-        border: 1px solid #7C8D93;
-        font-size: 14px;
-        color: #3B4244;
-      }
-
-      input, #uploadFoto {
-        position: relative;
-        width: 100%;
-        border-radius: 4px;
-        margin-top: 24px;
-      }
-
-      #uploadFoto {
-        display: flex;
-        flex-direction: row;
-        height: 20px;
-        padding: 16px 32px;
-        height: 86px;
-        border: 1px dashed #B5C5CA;
-        align-items:center;
-      
-        > div {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 52px;
-          width: 52px;
-
-          .default {
-            height: 37.5px;
-            width: 37.5px;
-            margin: 7px 13px 7px 1px;
-          }
-
-          .imgUpload {
-            height: 52px;
-            width: 52px;
-            border-radius: 50%;
-            object-fit: cover;
-          }
-        }
-      
-        > p {
-          font-size: 14px;
-          color: #7C8D93;
-          margin-left: 13px;
-
-          > label {
-            text-decoration: underline;
-            cursor: pointer;
-          }
-        }
-      }
-
-      #dataNascimento::-webkit-calendar-picker-indicator{
-        background-image: url(../../../assets/calendar.ico);
-        width: 14px;
-        height: 14px;
-      }
-
-      > label {
-          position: absolute;
-          left: 16px;
-          top: 36px;
-          transition: 0.2s;
-          background: #FFFFFF;
-          font-family: 'Roboto', sans-serif;
-          font-size: 14px;
-          color: #B5C5CA;
-          border: 4px solid #FFFFFF;
-      }
-      
-      input:focus + label, input:not(:placeholder-shown) + label {
-          transform: translateY(-22px);
-          color: #7C8D93;
-      }
-
-      input[type='date']:not(:placeholder-shown) + label {
-        transform: translateY(0);
-        color: #B5C5CA;
-      }
-
-      input:focus {
-          outline: none !important;
-      }
-
-      &:last-of-type {
-          margin-bottom: 16px;
-      }
-  }
 }

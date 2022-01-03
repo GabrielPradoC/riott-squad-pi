@@ -1,0 +1,120 @@
+<div id="divFormulario" name="divFormulario">
+    <p *ngIf="typeForm == 0; else textEdit">
+        Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
+    </p>
+    <ng-template #textEdit>
+        <p>
+            Altere os dados abaixo para editar o cadastro de um membro no RIOTT.
+        </p>
+    </ng-template>
+
+    <form [formGroup]="form">
+        <div class="field">
+            <input
+                type="file"
+                id="foto"
+                name="foto"
+                formControlName="foto"
+                (change)="fileChangeEvent($event)"
+            >
+            <div name="uploadFoto" (drop)="getFileDrop()">
+                <div>
+                    <img src="../../../assets/file.ico" class="default">
+                </div>
+                <p  *ngIf="typeForm == 0; else textDropzoneEdit">
+                    Arraste ou <label for="foto">clique aqui</label> para fazer o upload da <b>foto do usuário</b>
+                </p>
+                <ng-template #textDropzoneEdit>
+                    <p>
+                        Arraste ou <label for="foto2">clique aqui</label> para trocar a <b>foto do usuário</b>
+                    </p>
+                </ng-template>
+            </div>
+        </div>
+      
+        <div class="field">
+            <input
+                type="string"
+                id="nome"
+                name="nome"
+                placeholder=" "
+                formControlName="nome"
+            >
+            <label name="labelNome" for="nome">Nome do membro</label>
+        </div>
+
+        <div class="field">
+            <input
+                type="date"
+                id="dataNascimento"
+                name="dataNascimento"
+                placeholder=" "
+                formControlName="dataNascimento"
+                (click)="labelUp()"
+                (blur)="onChange()"
+            >
+            <label name="labelDataNascimento" for="dataNascimento">Data de nascimento</label>
+        </div>
+
+        <div class="field">
+            <input
+                type="string"
+                id="valorMesada"
+                name="valorMesada"
+                placeholder=" "
+                formControlName="valorMesada"
+                (keyup)="mask()"
+            >
+            <label name="labelValorMesada" for="valorMesada">Valor da mesada</label>
+        </div>
+
+        <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
+            <app-my-button
+                [disabled]="form.invalid"
+                customClass="light-gray green members-page"
+                text="Cadastrar membro"
+                (click)="cadastrarMembro()">
+            </app-my-button>
+        </ng-template>
+    
+        <ng-template #buttonEdit>
+            <app-my-button
+                [disabled]="form.invalid"
+                customClass="light-gray green members-page"
+                text="Salvar edição"
+                (click)="editarMembro()">
+            </app-my-button>
+        </ng-template>
+    </form>
+    <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
+</div>
+
+<div id="sucessMsgFormulario" name="sucessMsgFormulario">
+    <app-dialog-box
+        customClassSucess="showElement"
+        text="{{ textSucess() }}"
+        closeAll="true"
+        (click)="redirectLists()">
+    </app-dialog-box>
+</div>
+
+<div id="errorMsgFormulario" name="errorMsgFormulario">
+    <app-dialog-box
+        customClassError="showElement"
+        text="Algo deu errado"
+        closeAll="true"
+        divAtual="errorMsgFormulario{{ completeEdit() }}"
+        divPrincipal="divFormulario{{ completeEdit() }}">
+    </app-dialog-box>
+</div>
+
+<div id="warningMsgFormulario">
+    <app-dialog-box
+        customClassWarning="showElement"
+        text="Deseja realmente interromper o cadastro?"
+        textButton="Confirmar ação"
+        closeAll="false"
+        divAtual="warningMsgFormulario"
+        divPrincipal="divFormulario">
+    </app-dialog-box>
+</div>

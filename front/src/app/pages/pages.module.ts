@@ -13,6 +13,8 @@ import { TasksComponent } from "./tasks/tasks.component";
 import { PagesAuthGuard } from "./pages-auth.guard";
 import { ModalComponent } from "../@theme/components/modal/modal.component";
 import { dialogBoxComponent } from "../@theme/components/dialog-box/dialog-box.component";
+import { ListFullComponent } from "../@theme/components/list-full/list-full.component";
+import { FormMemberComponent } from "../@theme/components/form-member/form-member.component";
 
 @NgModule({
 	imports: [
@@ -30,7 +32,9 @@ import { dialogBoxComponent } from "../@theme/components/dialog-box/dialog-box.c
 		HistoryComponent,
 		TasksComponent,
 		ModalComponent,
-		dialogBoxComponent
+		dialogBoxComponent,
+		ListFullComponent,
+		FormMemberComponent
 	],
 	providers: [PagesAuthGuard]
 })
