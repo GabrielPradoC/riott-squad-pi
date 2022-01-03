@@ -22,7 +22,7 @@ form {
     .field {
         position:relative;
   
-        #foto {
+        input[name = "foto"] {
           display: none;
         }
   
@@ -34,14 +34,15 @@ form {
           color: #3B4244;
         }
   
-        input, #uploadFoto {
+        input, div[name = "uploadFoto"] {
           position: relative;
           width: 100%;
           border-radius: 4px;
           margin-top: 24px;
+          background-color: #FFFFFF;
         }
   
-        #uploadFoto {
+        div[name = "uploadFoto"] {
           display: flex;
           flex-direction: row;
           height: 20px;
@@ -83,7 +84,7 @@ form {
           }
         }
   
-        #dataNascimento::-webkit-calendar-picker-indicator{
+        input[name = "dataNascimento"]::-webkit-calendar-picker-indicator{
           background-image: url(../../../../assets/calendar.ico);
           width: 14px;
           height: 14px;

@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MemberService } from 'src/app/@core/services/member.service';
@@ -13,13 +13,12 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrls: ['./form-member.component.scss']
 })
 export class FormMemberComponent implements OnInit {
-  @Input() typeForm: string;
+  @Input() typeForm: number;
 
   public form: FormGroup;
-  static fileTemp: File;
+  private fileTemp: File;
 
   constructor(private fb: FormBuilder, private service: MemberService, private router: Router) {
-
     this.form = this.fb.group({
       foto: ['', Validators.compose([
         Validators.required
@@ -38,45 +37,64 @@ export class FormMemberComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form.controls['nome'].setValue("fds");
-
-    if(!document.getElementById("dataNascimento")) {
-      console.log('dwefde')
-    } else {
-      window.onload = function () {
-        console.log("eefg")
-        FormMemberComponent.initAttributesDrop();
-        FormMemberComponent.initAttributesDate();
-      }
+    if(this.typeForm == 0) {
+      this.form.controls['nome'].setValue("create");
     }
+    if(this.typeForm == 1) {
+      this.trocaIds();
+      this.form.controls['nome'].setValue("edit");
+    }
+
+    this.initAttributesDrop();
+    this.initAttributesDate();
   }
 
-  static initAttributesDrop() : void {
-    document.getElementById("uploadFoto").ondragover = (event) => { event.preventDefault(); }
-    document.getElementById("uploadFoto").ondrop = (event) => {
+  trocaIds() {
+    document.getElementsByName("foto").item(1).setAttribute("id", "foto2");
+    document.getElementsByName("nome").item(1).setAttribute("id", "nome2");
+    document.getElementsByName("labelNome").item(1).setAttribute("for", "nome2");
+    document.getElementsByName("dataNascimento").item(1).setAttribute("id", "dataNascimento2");
+    document.getElementsByName("labelDataNascimento").item(1).setAttribute("for", "dataNascimento2");
+    document.getElementsByName("valorMesada").item(1).setAttribute("id", "valorMesada2");
+    document.getElementsByName("labelValorMesada").item(1).setAttribute("for", "valorMesada2");
+  }
+
+  initAttributesDrop() : void {
+    const element: HTMLElement = <HTMLSelectElement>document.getElementsByName("uploadFoto").item(this.typeForm);
+
+    element.ondragover = (event) => { event.preventDefault(); }
+    element.ondrop = (event) => {
       event.preventDefault();
       const files = event.dataTransfer.files;
   
       if(files.length > 1) {
         alert("É permitido o envio de apenas uma imagem");
       } else {
-        FormMemberComponent.fileTemp = files.item(0);
+        this.fileTemp = files.item(0);
       }
     }
   }
 
-  static initAttributesDate() : void {
+  initAttributesDate() : void {
+    const dateElement: Element = document.getElementsByName("dataNascimento").item(this.typeForm);
     const today: Date = new Date();
-    const month: string = "-" + (today.getMonth() + 1) + "-";
+    const month: string = "-" + this.fixDate(today.getMonth() + 1) + "-";
 
-    document.getElementById("dataNascimento").setAttribute("min", (today.getFullYear() - 18) + month + (today.getDate()+1));
-    document.getElementById("dataNascimento").setAttribute("max", today.getFullYear() + month + (today.getDate()-1));
+    dateElement.setAttribute("min", (today.getFullYear() - 18) + month + this.fixDate(today.getDate()));
+    dateElement.setAttribute("max", today.getFullYear() + month + this.fixDate(today.getDate()));
+  }
+
+  fixDate(date: number): string {
+    if(date < 10) {
+      return "0" + date;
+    }
+    return date.toString();
   }
 
   getFileDrop(): void {
-    FormMemberComponent.fileTemp = null;
+    this.fileTemp = null;
     
-    setTimeout(() => { this.checkFile(FormMemberComponent.fileTemp); }, 100);
+    setTimeout(() => { this.checkFile(this.fileTemp); }, 100);
   }
 
   fileChangeEvent(inputFile: any) : void {
@@ -106,10 +124,16 @@ export class FormMemberComponent implements OnInit {
       }
     }
 
-    document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "default");
-    document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("src", "../../../assets/file.ico");
+    this.changeImage("default",  "../../../assets/file.ico");
     this.form.controls['foto'].setErrors({ required: true });
     alert(error);
+  }
+
+  changeImage(classChange: string, path: string) {
+    const elementImage: Element = document.getElementsByName("uploadFoto").item(this.typeForm).firstElementChild.firstElementChild;
+
+    elementImage.setAttribute("class", classChange);
+    elementImage.setAttribute("src", path);
   }
 
   async saveImage(image: File): Promise<boolean> {
@@ -126,11 +150,10 @@ export class FormMemberComponent implements OnInit {
     await this.delay(100);
   
     imageTemp = localStorage.getItem("RIOTT:imgTemp");
-    FormMemberComponent.fileTemp = image;
+    this.fileTemp = image;
 
     if(imageTemp) {
-      document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("class", "imgUpload");
-      document.getElementById("uploadFoto").firstElementChild.firstElementChild.setAttribute("src", imageTemp);
+      this.changeImage("imgUpload",  imageTemp);
       return true;
     }
     return false;
@@ -145,12 +168,14 @@ export class FormMemberComponent implements OnInit {
   }
 
   labelUp(): void {
-    document.getElementById("dateLabel").style.transform = "translateY(-22px)";
-    document.getElementById("dateLabel").style.color = "#7C8D93";
+    const elementDateLabel: HTMLElement = document.getElementsByName("labelDataNascimento").item(this.typeForm);
+
+    elementDateLabel.style.transform = "translateY(-22px)";
+    elementDateLabel.style.color = "#7C8D93";
   }
 
   onChange(): void {
-    const birthday = (<HTMLSelectElement>document.getElementById("dataNascimento")).value;
+    const birthday: string = (<HTMLSelectElement>document.getElementsByName("dataNascimento").item(this.typeForm)).value;
     if(birthday) {
       const year = parseInt(birthday.substring(0, 4));
       const month = parseInt(birthday.substring(5, 7));
@@ -187,19 +212,19 @@ export class FormMemberComponent implements OnInit {
   }
 
   mask(): void{
-    let value: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value;
+    let value: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value;
 
     value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
     value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
 
-    (<HTMLSelectElement>document.getElementById("valorMesada")).value = value;
+    (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value = value;
   }
 
   cadastrarMembro() : void {
-    const photo = FormMemberComponent.fileTemp;
+    const photo = this.fileTemp;
     const name: string = this.form.controls['nome'].value;
     const birthday: string = MembersComponent.prototype.changeFormatDate(this.form.controls['dataNascimento'].value);
-    const allowance: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value.replace(",", ".");
+    const allowance: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.replace(",", ".");
     const parent = parseInt(localStorage.getItem("riott:userId"));
 
     this.service.postFormData({name, parent, birthday, allowance, photo}, `${environment.API}member`).subscribe(
@@ -211,7 +236,7 @@ export class FormMemberComponent implements OnInit {
   }
 
   cancelarCadastro(): void {
-    if(this.typeForm === 'create') {
+    if(this.typeForm == 0) {
       dialogBoxComponent.showDialogbox("divFormulario", "warningMsgCreateMember");
     } else {
       ModalComponent.prototype.hideModal();

@@ -1,5 +1,5 @@
 <div id="divFormulario">
-    <p *ngIf="typeForm === 'create'; else textEdit">
+    <p *ngIf="typeForm == 0; else textEdit">
         Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
     </p>
     <ng-template #textEdit>
@@ -13,19 +13,20 @@
             <input
                 type="file"
                 id="foto"
+                name="foto"
                 formControlName="foto"
                 (change)="fileChangeEvent($event)"
             >
-            <div id="uploadFoto" (drop)="getFileDrop()">
+            <div name="uploadFoto" (drop)="getFileDrop()">
                 <div>
-                <img src="../../../assets/file.ico" class="default">
+                    <img src="../../../assets/file.ico" class="default">
                 </div>
-                <p  *ngIf="typeForm === 'create'; else textDropzoneEdit">
+                <p  *ngIf="typeForm == 0; else textDropzoneEdit">
                     Arraste ou <label for="foto">clique aqui</label> para fazer o upload da <b>foto do usuário</b>
                 </p>
                 <ng-template #textDropzoneEdit>
                     <p>
-                        Arraste ou <label for="foto">clique aqui</label> para trocar a <b>foto do usuário</b>
+                        Arraste ou <label for="foto2">clique aqui</label> para trocar a <b>foto do usuário</b>
                     </p>
                 </ng-template>
             </div>
@@ -35,36 +36,39 @@
             <input
                 type="string"
                 id="nome"
+                name="nome"
                 placeholder=" "
                 formControlName="nome"
             >
-            <label for="nome">Nome do membro</label>
+            <label name="labelNome" for="nome">Nome do membro</label>
         </div>
 
         <div class="field">
             <input
                 type="date"
                 id="dataNascimento"
+                name="dataNascimento"
                 placeholder=" "
                 formControlName="dataNascimento"
                 (click)="labelUp()"
                 (blur)="onChange()"
             >
-            <label id="dateLabel" for="dataNascimento">Data de nascimento</label>
+            <label name="labelDataNascimento" for="dataNascimento">Data de nascimento</label>
         </div>
 
         <div class="field">
             <input
                 type="string"
                 id="valorMesada"
+                name="valorMesada"
                 placeholder=" "
                 formControlName="valorMesada"
                 (keyup)="mask()"
             >
-            <label for="valorMesada">Valor da mesada</label>
+            <label name="labelValorMesada" for="valorMesada">Valor da mesada</label>
         </div>
 
-        <ng-template [ngIf]="typeForm === 'create'" [ngIfElse]="buttonEdit">
+        <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
             <app-my-button
                 [disabled]="form.invalid"
                 customClass="light-gray green members-page"
