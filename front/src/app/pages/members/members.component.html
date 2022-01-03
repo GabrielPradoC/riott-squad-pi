@@ -37,7 +37,7 @@
 
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
     <ng-template #content>
-      <app-form-member typeForm="create"></app-form-member>
+      <app-form-member typeForm="0"></app-form-member>
     </ng-template>
   </app-modal>
 
@@ -65,7 +65,7 @@
 
   <app-modal customId="editarMembro" customTitle="Editar membro">
     <ng-template #content>
-      <app-form-member typeForm="edit" memberId="this.idSelected"></app-form-member>
+      <app-form-member typeForm="1" memberId="this.idSelected"></app-form-member>
     </ng-template>
   </app-modal>
 </div>

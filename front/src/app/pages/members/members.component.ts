@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
-import { FormMemberComponent } from 'src/app/@theme/components/form-member/form-member.component';
 import { environment } from 'src/environments/environment';
 import { Member } from 'src/models/member.model';
 
