@@ -1,0 +1,120 @@
+#container {
+    display: flex;
+    flex-direction: row;
+
+    #img {
+        display: flex;
+        align-items: flex-end;
+        width: 62%;
+        height: 100vh;
+        background-image: url(../../../assets/img-login.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    
+        .phrase {
+            position: relative;
+            width: 700px;
+            padding-left: 56px;
+            padding-bottom: 56px;
+            margin: 0px;
+    
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            font-size: 86px;
+            line-height: 101px;
+    
+            color: #FFFFFF;
+        }
+    }
+
+    #form {
+        width: 38%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+        padding-top: 10%;
+        padding-bottom: 15%;
+        padding-right: 7%;
+        padding-left: 7%;
+        box-sizing: border-box;
+
+        .title {
+            position: relative;
+            margin: 5px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            font-size: 56px;
+            color: #006D77;
+        }
+
+        .description {
+            position: relative;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            line-height: 19px;
+            margin: 10px;
+            text-align: center;
+            color: #7C8D93;
+        }
+
+        form {
+            width: 100%;
+
+            .field {
+                position:relative;
+    
+                input {
+                    padding: 20px 20px 16px;
+                    position: relative;
+                    width: 100%;
+                    height: 55px;
+                    border: 1px solid #7C8D93;
+                    border-radius: 4px;
+                    margin-top: 15px;
+                    margin-bottom: 15px;
+
+                    transition: 0.2s;
+                }
+                
+                input[type="password"] {
+                    color: #4F4F4F;
+                }
+    
+                label {
+                    position: absolute;
+                    left: 20px;
+                    top: 33px;
+                    transition: 0.2s;
+                    background: #FFFFFF;
+                    font-family: 'Roboto', sans-serif;
+                    font-size: 16px;
+                    color: #B5C5CA;
+                    border: 2px solid #FFFFFF;
+                }
+                
+                input:focus + label, input:not(:placeholder-shown) + label {
+                    transform: translateY(-28px);
+                    font-size: 14px;
+                    color: #7C8D93;
+                    border: 0;
+                }
+
+                input:focus {
+                    outline: none !important;
+                    border: 1px solid #006D77;
+                }
+
+                &:last-child {
+                    margin-bottom: 10rem;
+                }
+            }
+
+            .field:nth-child(2) {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}

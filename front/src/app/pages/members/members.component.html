@@ -1,0 +1,71 @@
+<div id="membersPage">
+  <app-header></app-header>
+
+  <app-list-full customTitle="Membros:" textButton="Cadastrar novo membro" customValueButton="cadastrarMembro">
+    <ng-template #contentListFull>
+      <div *ngFor="let member of members" id="{{ member.id }}" class="member">
+        <div class="member-info">
+          <div class="member-personal-information">
+            <div>
+              <img src="data:image/png;base64,{{ member.photo }}" alt="Member photo">
+
+              <div class="member-name">
+                <label>Membro:</label>
+                <span>{{ member.name }}</span>
+              </div>
+            </div>
+
+            <div class="member-birth-date">
+              <label>Data de nascimento:</label>
+              <span>{{ changeFormatDate(member.birthday) }}</span>
+            </div>
+          </div>
+
+          <div class="allowance">
+            <label>Valor da mesada:</label>
+            <span>{{ member.allowance }}</span>
+          </div>
+        </div>
+        <div class="member-actions">
+          <app-my-button customClass="orange members-page" text= "Excluir" (click)="saveId(member.id)" customValue="excluirMembro"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar" (click)="callEdit(member.id)" customValue="editarMembro"></app-my-button>
+          <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
+        </div>
+      </div>
+    </ng-template>
+  </app-list-full>
+
+  <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
+    <ng-template #content>
+      <app-form-member typeForm="0"></app-form-member>
+    </ng-template>
+  </app-modal>
+
+  <app-modal customId="excluirMembro">
+    <ng-template #content>
+      <div id="warningMsgDeleteMember">
+        <app-dialog-box
+            customClassWarning="showElement"
+            text="Deseja realmente excluir esse membro?"
+            textButton="Confirmar ação"
+            closeAll="true"
+            (callParent)="removerMembro()">
+        </app-dialog-box>
+      </div>
+
+      <div id="sucessMsgDeleteMember">
+        <app-dialog-box
+            customClassSucess="showElement"
+            text="Membro excluído com sucesso!"
+            closeAll="true">
+        </app-dialog-box>
+      </div>
+    </ng-template>
+  </app-modal>
+
+  <app-modal customId="editarMembro" customTitle="Editar membro">
+    <ng-template #content *ngIf="modalEditShowed">
+      <app-form-member typeForm="1" memberId="{{ this.idSelected }}"></app-form-member>
+    </ng-template>
+  </app-modal>
+</div>

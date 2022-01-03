@@ -1,0 +1,42 @@
+<div id="tasksPage">
+    <app-header></app-header>
+    
+    <div id="teste">
+        <app-my-button customClass="green members-page" text="Cadastrar nova atividade" customValue="cadastrarAtividade"></app-my-button>
+    </div>
+
+    <app-modal customId="cadastrarAtividade" customTitle="Cadastrar nova atividade">
+        <ng-template #content>
+            <div id="warningMsgExample">
+                <app-dialog-box
+                    (callParent)="funcaoBotaoVerde($event)"
+                    customClassWarning="showElement"
+                    text="Deseja realmente finalizar essa lista?"
+                    textButton="Confirmar e finalizar lista"
+                    closeAll="true">
+                    <ng-template #contentDialogBox>
+                        Conteúdo personalizado aqui
+                    </ng-template>
+                </app-dialog-box>
+            </div>
+
+            <div id="sucessMsgExample">
+                <app-dialog-box
+                    customClassSucess="showElement"
+                    text="Lista finalizada com sucesso!"
+                    closeAll="true">
+                </app-dialog-box>
+            </div>
+
+            <div id="errorMsgExample">
+                <app-dialog-box
+                    customClassError="showElement"
+                    text="Algo deu errado"
+                    closeAll="true"
+                    divAtual="errorMsgExample"
+                    divPrincipal="warningMsgExample">
+                </app-dialog-box>
+            </div>
+        </ng-template>
+    </app-modal>
+</div>

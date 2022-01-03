@@ -1,0 +1,20 @@
+#tasksPage {
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#teste {
+    height: 89vh;
+}
+
+
+
+#sucessMsgExample, #errorMsgExample {
+    width: 272px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 96px;
+    display: none;
+}

@@ -1,0 +1,48 @@
+version: "3"
+services:
+    node:
+        container_name: riott-api
+        build: ./back
+        volumes:
+            - ./back:/app
+            - /app/node_modules
+        environment:
+            - NODE_ENV=development # Define o host, controla a exibição de logs e execução de migrations
+            - PORT=8080
+            - MYSQL_CONNECTION_URL=mysql://riott_root:90e271d9b4ae4a6812e86cee@riott-mysql:3306
+        networks:
+            - riott-connect
+        links:
+            - mysql
+        ports:
+            - 4444:8080
+    mysql:
+        container_name: riott-mysql
+        restart: always
+        image: mysql:5.7
+        volumes:
+            - ~/docker/volumes/RIOTT_Mysql:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: riott-database
+            MYSQL_USER: riott_root
+            MYSQL_PASSWORD: 90e271d9b4ae4a6812e86cee
+            MYSQL_ROOT_PASSWORD: 327c56a1d1c5803d92a4dad9
+        networks:
+            - riott-connect
+        ports:
+            - 3306:3306
+    angular:
+        container_name: riott-angular
+        build: ./front
+        ports:
+            - "4200:4200"
+        volumes:
+            - ./front:/usr/src/app
+            - /usr/src/app/node_modules
+volumes:
+    riott-node-data:
+    riott-mysql-data:
+    riott-web-data:
+networks:
+    riott-connect:
+        driver: bridge
