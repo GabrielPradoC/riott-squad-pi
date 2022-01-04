@@ -77,7 +77,7 @@ export class TaskController extends BaseController {
     @Get('/:id')
     @Middlewares(TaskValidator.onlyId())
     public async getOne(req: Request, res: Response): Promise<void> {
-        RouteResponse.success({ ...req.body.TaskRef }, res);
+        RouteResponse.success({ ...req.body.taskRef }, res);
     }
 
     /**
