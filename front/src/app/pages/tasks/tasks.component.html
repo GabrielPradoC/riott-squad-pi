@@ -1,42 +1,54 @@
 <div id="tasksPage">
     <app-header></app-header>
-    
-    <div id="teste">
-        <app-my-button customClass="green members-page" text="Cadastrar nova atividade" customValue="cadastrarAtividade"></app-my-button>
-    </div>
-
-    <app-modal customId="cadastrarAtividade" customTitle="Cadastrar nova atividade">
-        <ng-template #content>
-            <div id="warningMsgExample">
-                <app-dialog-box
-                    (callParent)="funcaoBotaoVerde($event)"
-                    customClassWarning="showElement"
-                    text="Deseja realmente finalizar essa lista?"
-                    textButton="Confirmar e finalizar lista"
-                    closeAll="true">
-                    <ng-template #contentDialogBox>
-                        Conteúdo personalizado aqui
-                    </ng-template>
-                </app-dialog-box>
+  
+    <app-list-full customTitle="Atividades:" textButton="Cadastrar nova atividade" customValueButton="cadastrarAtividade">
+      <ng-template #contentListFull>
+        <div *ngFor="let task of tasks" class="task">
+            <div class="task-info">
+                <div class="task-description">
+                    <label>Descrição da atividade:</label>
+                    <span>{{ task.description }}</span>
+                </div>
             </div>
-
-            <div id="sucessMsgExample">
-                <app-dialog-box
-                    customClassSucess="showElement"
-                    text="Lista finalizada com sucesso!"
-                    closeAll="true">
-                </app-dialog-box>
+            <div class="tasks-actions">
+                <app-my-button customClass="orange members-page" text= "Excluir" (click)="saveId(task.id)" customValue="excluirAtividade"></app-my-button>
+                <app-my-button customClass="light-green members-page" text= "Editar" (click)="callEdit(task.id)" customValue="editarAtividade"></app-my-button>
             </div>
+        </div>
+      </ng-template>
+    </app-list-full>
 
-            <div id="errorMsgExample">
-                <app-dialog-box
-                    customClassError="showElement"
-                    text="Algo deu errado"
-                    closeAll="true"
-                    divAtual="errorMsgExample"
-                    divPrincipal="warningMsgExample">
-                </app-dialog-box>
-            </div>
-        </ng-template>
+    <app-modal customId="cadastrarAtividade" customTitle="Cadastrar nova atividade:">
+      <ng-template #content>
+        <app-form-task typeForm="0"></app-form-task>
+      </ng-template>
     </app-modal>
-</div>
+  
+    <app-modal customId="excluirAtividade">
+      <ng-template #content>
+        <div id="warningMsgDeleteTask">
+          <app-dialog-box
+              customClassWarning="showElement"
+              text="Deseja realmente excluir essa atividade?"
+              textButton="Confirmar e excluir a atividade"
+              closeAll="true"
+              (callParent)="removerAtividade()">
+          </app-dialog-box>
+        </div>
+  
+        <div id="sucessMsgDeleteTask">
+          <app-dialog-box
+              customClassSucess="showElement"
+              text="Atividade excluída com sucesso!"
+              closeAll="true">
+          </app-dialog-box>
+        </div>
+      </ng-template>
+    </app-modal>
+  
+    <app-modal customId="editarAtividade" customTitle="Editar atividade:">
+      <ng-template #content *ngIf="modalEditShowed">
+        <app-form-task typeForm="1" taskId="{{ this.idSelected }}"></app-form-task>
+      </ng-template>
+    </app-modal>
+  </div>

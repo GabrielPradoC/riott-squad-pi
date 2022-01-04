@@ -2,19 +2,49 @@
     height: 100vh;
     overflow: hidden;
     z-index: 1;
-}
+  }
+  
+  .task {
+    display: flex;
+    justify-content: space-between;
+  
+    border: 1px solid #dee8eb;
+    border-radius: 0.3rem;
+  
+    padding: 1.5rem 2rem;
+  
+    .task-info {
+        display: flex;
+        align-items: center;
+        gap: 4rem;
+  
+        .task-description {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
 
-#teste {
-    height: 89vh;
-}
+            label {
+                color: #7c8d93;
+            }
+        }
+    }
+  
+    .tasks-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
 
-
-
-#sucessMsgExample, #errorMsgExample {
+  #warningMsgDeleteTask, #sucessMsgDeleteTask {
     width: 272px;
     height: 100%;
+    display: none;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 96px;
-    display: none;
-}
+  }
+  
+  #warningMsgDeleteTask {
+    display: flex;
+  }
