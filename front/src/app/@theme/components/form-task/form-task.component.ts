@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from 'src/app/@core/services/task.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { environment } from 'src/environments/environment';
-import { TaskMinimum } from 'src/models/taskMinimum.model';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -11,8 +10,9 @@ import { ModalComponent } from '../modal/modal.component';
   templateUrl: './form-task.component.html',
   styleUrls: ['./form-task.component.scss']
 })
+
 export class FormTaskComponent implements OnInit {
-  @Input() typeForm: number;
+  @Input() typeForm: number;      //0 para create, 1 para edit
   @Input() taskId: string;
 
   public form: FormGroup;
@@ -27,19 +27,23 @@ export class FormTaskComponent implements OnInit {
 
   ngOnInit() {
     if(this.typeForm == 1) {
-      this.trocaIds();
       this.setValuesTask();
     }
   }
 
-  trocaIds() {
-    document.getElementsByName("divFormTask").item(1).setAttribute("id", "divFormTask2");
-    document.getElementsByName("sucessMsgFormTask").item(1).setAttribute("id", "sucessMsgFormTask2");
-    document.getElementsByName("errorMsgFormTask").item(1).setAttribute("id", "errorMsgFormTask2");
-    document.getElementsByName("description").item(1).setAttribute("id", "description2");
-    document.getElementsByName("labelDescription").item(1).setAttribute("for", "description2");
+  /**
+   * @returns string para complementar o id com '2' caso seja o formulário de edição
+   */
+  completeEdit() : string {
+    if(this.typeForm == 1) {
+      return '2'
+    }
+    return '';
   }
 
+  /**
+   * Preenche o formulário com a descrição da tarefa selecionada
+   */
   setValuesTask() : void {
     this.service.LoadOneByID(`${environment.API}task`, this.taskId).subscribe(
       complete => {
@@ -47,6 +51,9 @@ export class FormTaskComponent implements OnInit {
       })
   }
 
+  /**
+   * Pega valor do formulário e id de usuário e redireciona para a função adequada
+   */
   requisicaoAtividade() : void {
     const description: string = this.form.controls['description'].value;
     const parent = parseInt(localStorage.getItem("riott:userId"));
@@ -58,6 +65,11 @@ export class FormTaskComponent implements OnInit {
     }
   }
 
+  /**
+   * Faz a requisição de criação e redireciona para o dialog-box adequado
+   * @param description - descrição da atividade
+   * @param parent - id do usuário atual
+   */
   cadastrarAtividade(description: string, parent: number) : void {
     this.service.Create(`${environment.API}task`, {description, parent}).subscribe(
       complete => {
@@ -67,6 +79,11 @@ export class FormTaskComponent implements OnInit {
     );
   }
 
+  /**
+   * Faz a requisição de edição e redireciona para o dialog-box adequado
+   * @param description - nova descrição para a ativdade
+   * @param parent - id do usuário atual
+   */
   editarAtividade(description: string, parent: number) {
     this.service.UpdateOne({description, parent}, `${environment.API}task/${this.taskId}`).subscribe(
       complete => {
@@ -76,23 +93,21 @@ export class FormTaskComponent implements OnInit {
     );
   }
 
+  /**
+   * Chama a função que fecha o modal atual
+   */
   cancelar(): void {
     ModalComponent.prototype.hideModal();
   }
 
+  /**
+   * @returns frase de sucesso de acordo com o tipo de formulário
+   */
   textSucess() : string {
     if(this.typeForm == 0) {
-      return 'Atividade adicionada com sucesso!'
-    }  {
+      return 'Atividade adicionada com sucesso!';
+    } else {
       return 'Atividade editada com sucesso!';
-    }
-  }
-
-  completeEdit() {
-    if(this.typeForm == 0) {
-      return ''
-    }  {
-      return '2';
     }
   }
 }
