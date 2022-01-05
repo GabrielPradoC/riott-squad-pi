@@ -1,14 +1,9 @@
 <div id="membersPage">
   <app-header></app-header>
 
-  <div class="container">
-    <div class="initial">
-      <h2>Membros:</h2>
-      <app-my-button customClass="green members-page" text="Cadastrar novo membro" customValue="cadastrarMembro" ></app-my-button>
-    </div>
-
-    <div class="members">
-      <div *ngFor="let member of members" id="{{ member.id }}" class="member" (click)="select(member)">
+  <app-list-full customTitle="Membros:" textButton="Cadastrar novo membro" customValueButton="cadastrarMembro">
+    <ng-template #contentListFull>
+      <div *ngFor="let member of members" id="{{ member.id }}" class="member">
         <div class="member-info">
           <div class="member-personal-information">
             <div>
@@ -32,122 +27,45 @@
           </div>
         </div>
         <div class="member-actions">
-          <app-my-button customClass="orange members-page" text= "Excluir"></app-my-button>
-          <app-my-button customClass="light-green members-page" text= "Editar"></app-my-button>
+          <app-my-button customClass="orange members-page" text= "Excluir" (click)="saveId(member.id)" customValue="excluirMembro"></app-my-button>
+          <app-my-button customClass="light-green members-page" text= "Editar" (click)="callEdit(member.id)" customValue="editarMembro"></app-my-button>
           <app-my-button customClass="green members-page" text= "Ver lista"></app-my-button>
         </div>
       </div>
-    </div>
-  </div>
-
-
-
-
-
+    </ng-template>
+  </app-list-full>
 
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
     <ng-template #content>
-      <div id="divCadastrarMembro">
-        <p>
-          Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
-        </p>
+      <app-form-member typeForm="0"></app-form-member>
+    </ng-template>
+  </app-modal>
 
-        <form [formGroup]="form">
-
-          <div class="field">
-            <input
-                type="file"
-                id="foto"
-                formControlName="foto"
-                (change)="fileChangeEvent($event)"
-            >
-          
-            <div id="uploadFoto" (drop)="getFileDrop()">
-              <div>
-                <img src="../../../assets/file.ico" class="default">
-              </div>
-              <p>Arraste ou <label for="foto">clique aqui</label> para fazer o upload da <b>foto do usuário</b></p>
-            </div>
-          </div>
-          
-          <div class="field">
-              <input
-                  type="string"
-                  id="nome"
-                  placeholder=" "
-                  formControlName="nome"
-              >
-              <label for="nome">Nome do membro</label>
-          </div>
-
-          <div class="field">
-              <input
-                  type="date"
-                  id="dataNascimento"
-                  placeholder=" "
-                  formControlName="dataNascimento"
-                  (click)="labelUp()"
-                  (blur)="onChange()"
-              >
-              <label id="dateLabel" for="dataNascimento">Data de nascimento</label>
-          </div>
-
-          <div class="field">
-            <input
-                type="string"
-                id="valorMesada"
-                placeholder=" "
-                formControlName="valorMesada"
-                (keyup)="mask()"
-            >
-            <label for="valorMesada">Valor da mesada</label>
-          </div>
-      
-          <app-my-button [disabled]="form.invalid" customClass="light-gray green members-page" text="Cadastrar membro" (click)="cadastrarMembro()" ></app-my-button>
-        </form>
-        <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelarCadastro()"></app-my-button>
+  <app-modal customId="excluirMembro">
+    <ng-template #content>
+      <div id="warningMsgDeleteMember">
+        <app-dialog-box
+            customClassWarning="showElement"
+            text="Deseja realmente excluir esse membro?"
+            textButton="Confirmar ação"
+            closeAll="true"
+            (callParent)="removerMembro()">
+        </app-dialog-box>
       </div>
 
-      <div id="sucessMsgCreateMember">
+      <div id="sucessMsgDeleteMember">
         <app-dialog-box
             customClassSucess="showElement"
-            text="Membro adicionado com sucesso!"
+            text="Membro excluído com sucesso!"
             closeAll="true">
         </app-dialog-box>
       </div>
+    </ng-template>
+  </app-modal>
 
-      <div id="errorMsgCreateMember">
-        <app-dialog-box
-            customClassError="showElement"
-            text="Algo deu errado"
-            closeAll="true"
-            divAtual="errorMsgCreateMember"
-            divPrincipal="divCadastrarMembro">
-        </app-dialog-box>
-      </div>
-
-      <div id="warningMsgCreateMember">
-        <app-dialog-box
-            customClassWarning="showElement"
-            text="Deseja realmente interromper o cadastro?"
-            textButton="Confirmar ação"
-            closeAll="false"
-            divAtual="warningMsgCreateMember"
-            divPrincipal="divCadastrarMembro">
-        </app-dialog-box>
-      </div>
-
-
-
-      <div id="divSucessMsg">
-        <app-dialog-box customClassSucess="showElement" text="Membro editado com sucesso!" textButton="Finalizar"></app-dialog-box>
-      </div>
-
-      <div id="divErrorMsg">
-        <app-dialog-box customClassError="showElement" text="Algo deu errado" textButton="Tentar novamente"></app-dialog-box>
-      </div>
-
-  
+  <app-modal customId="editarMembro" customTitle="Editar membro">
+    <ng-template #content *ngIf="modalEditShowed">
+      <app-form-member typeForm="1" memberId="{{ this.idSelected }}"></app-form-member>
     </ng-template>
   </app-modal>
 </div>
