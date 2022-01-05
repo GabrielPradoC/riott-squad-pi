@@ -1,0 +1,72 @@
+button {
+  width: 100%;
+
+  align-items: center;
+  justify-content: center;
+  
+  color: #FFFFFF;
+  background-color: #B5C5CA;
+  border: 2px solid #B5C5CA;;
+  
+  border-radius: 0.4rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+button:not(:disabled) {
+  transition: filter 0.2s, background-color 0.2s;
+
+  &:hover {
+    cursor: pointer;
+    filter: opacity(.8);
+  }
+}
+
+//margins and paddings
+
+.login-page {
+  padding: 16px 24px;
+}
+
+.members-page {
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.lists-page {
+  padding: 12px 20px;
+}
+
+// colors
+
+.light-gray {
+  background-color: #DEE8EB;
+  border-color: #DEE8EB;
+  color: #B5C5CA;
+}
+
+.green {
+  &:not(:disabled) {
+    background-color: #006D77;
+    border-color: #006D77;
+    color: #FFFFFF;
+  }
+}
+
+.orange {
+  color: #e29578;
+  background-color: #fff;
+  border-color: #e29578;
+}
+
+.background-orange {
+  color: #fff;
+  background-color: #e29578;
+  border-color: #e29578;
+}
+
+.light-green {
+  background-color: #83c5be;
+  border-color: #83c5be;
+}

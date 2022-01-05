@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="initial">
+      <h2>{{ customTitle }}</h2>
+      <app-my-button customClass="green members-page" text="{{ textButton }}" customValue="{{ customValueButton }}"></app-my-button>
+    </div>
+
+    <div class="table">
+        <ng-container [ngTemplateOutlet]="contentListFull"></ng-container>
+    </div>
+
+    <app-shadow></app-shadow>
+</div>

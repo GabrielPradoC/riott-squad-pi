@@ -1,0 +1,8 @@
+#shadow{
+  pointer-events: none;
+  position: relative;
+  width: calc(100% - 30px);
+  height: 86px;
+  top: -86px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 62.32%);
+}

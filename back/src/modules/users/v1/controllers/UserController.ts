@@ -1,12 +1,11 @@
 // Modules
-import { DeepPartial } from 'typeorm';
 import { Request, Response } from 'express';
 
 // Library
 import { BaseController } from '../../../../library';
 
 // Decorators
-import { Controller, Delete, Get, Middlewares, Post, PublicRoute, Put } from '../../../../decorators';
+import { Controller, Delete, Get, Middlewares, Put } from '../../../../decorators';
 
 // Models
 import { EnumEndpoints } from '../../../../models';
@@ -23,6 +22,9 @@ import { UserRepository } from '../../../../library/database/repository';
 // Validators
 import { UserValidator } from '../middlewares/UserValidator';
 
+// Utility
+import { getListResults } from '../../../members/v1/utils/memberUtils';
+
 @Controller(EnumEndpoints.USER_V1)
 export class UserController extends BaseController {
     /**
@@ -31,6 +33,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Lista os usuários
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -44,7 +48,6 @@ export class UserController extends BaseController {
      *       $ref: '#/components/responses/baseResponse'
      */
     @Get()
-    @PublicRoute()
     public async get(req: Request, res: Response): Promise<void> {
         const [rows, count] = await new UserRepository().list<User>(UserController.listParams(req));
 
@@ -57,6 +60,8 @@ export class UserController extends BaseController {
      *   get:
      *     summary: Retorna informações de um usuário
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -71,7 +76,6 @@ export class UserController extends BaseController {
      *       $ref: '#/components/responses/baseResponse'
      */
     @Get('/:id')
-    @PublicRoute()
     @Middlewares(UserValidator.onlyId())
     public async getOne(req: Request, res: Response): Promise<void> {
         RouteResponse.success({ ...req.body.userRef }, res);
@@ -79,40 +83,66 @@ export class UserController extends BaseController {
 
     /**
      * @swagger
-     * /v1/user:
-     *   post:
-     *     summary: Cadastra um usuário
-     *     tags: [Users]
+     * /v1/user/{userId}/members:
+     *   get:
+     *     summary: Retorna todos os membros pertencentes a um usuário
+     *     tags: [Users, Members]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
      *       - application/json
-     *     requestBody:
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             example:
-     *               name: userName
-     *             required:
-     *               - name
-     *             properties:
-     *               name:
-     *                 type: string
+     *     parameters:
+     *       - in: path
+     *         name: userId
+     *         schema:
+     *           type: string
+     *         required: true
      *     responses:
-     *       $ref: '#/components/responses/baseCreate'
+     *       $ref: '#/components/responses/baseResponse'
      */
-    @Post()
-    @PublicRoute()
-    @Middlewares(UserValidator.post())
-    public async add(req: Request, res: Response): Promise<void> {
-        const newUser: DeepPartial<User> = {
-            name: req.body.name
-        };
+    @Get('/:id/members')
+    @Middlewares(UserValidator.onlyId())
+    public async getChildren(req: Request, res: Response): Promise<void> {
+        const { children } = req.body.userRef;
+        const populatedChildren = children.map((child: any) => {
+            const result = getListResults(child);
+            const newChild = {
+                ...child,
+                currentListResult: result
+            };
+            return newChild;
+        });
+        RouteResponse.success({ children: populatedChildren }, res);
+    }
 
-        await new UserRepository().insert(newUser);
-
-        RouteResponse.successCreate(res);
+    /**
+     * @swagger
+     * /v1/user/{userId}/tasks:
+     *   get:
+     *     summary: Retorna todas as tarefas pertencentes a um usuário
+     *     tags: [Users, Tasks]
+     *     security:
+     *       - BearerAuth: []
+     *     consumes:
+     *       - application/json
+     *     produces:
+     *       - application/json
+     *     parameters:
+     *       - in: path
+     *         name: userId
+     *         schema:
+     *           type: string
+     *         required: true
+     *     responses:
+     *       $ref: '#/components/responses/baseResponse'
+     */
+    @Get('/:id/tasks')
+    @Middlewares(UserValidator.onlyId())
+    public async getTasks(req: Request, res: Response): Promise<void> {
+        const { createdTasks } = req.body.userRef;
+        RouteResponse.success({ createdTasks }, res);
     }
 
     /**
@@ -121,6 +151,8 @@ export class UserController extends BaseController {
      *   put:
      *     summary: Altera um usuário
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -145,7 +177,6 @@ export class UserController extends BaseController {
      *       $ref: '#/components/responses/baseEmpty'
      */
     @Put()
-    @PublicRoute()
     @Middlewares(UserValidator.put())
     public async update(req: Request, res: Response): Promise<void> {
         const user: User = req.body.userRef;
@@ -163,6 +194,8 @@ export class UserController extends BaseController {
      *   delete:
      *     summary: Apaga um usuário definitivamente
      *     tags: [Users]
+     *     security:
+     *       - BearerAuth: []
      *     consumes:
      *       - application/json
      *     produces:
@@ -177,7 +210,6 @@ export class UserController extends BaseController {
      *       $ref: '#/components/responses/baseResponse'
      */
     @Delete('/:id')
-    @PublicRoute()
     @Middlewares(UserValidator.onlyId())
     public async remove(req: Request, res: Response): Promise<void> {
         const { id } = req.params;

@@ -1,0 +1,44 @@
+.container {
+    margin: 0rem 3.6rem 0 3.6rem;
+    height: 89vh;
+    box-sizing: border-box;
+}
+  
+.initial {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 11vh;
+}
+
+h2 {
+    color: #3b4244;
+}
+
+.table {
+    padding-right: 1.8rem;
+    padding-bottom: 40px;
+    overflow-y: scroll;
+  
+    height: calc(78vh - 1rem);
+    
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+
+    // scrollbar
+
+    &::-webkit-scrollbar-track {
+        background-color: #dee8eb;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 0.6rem;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #b5c5ca;
+        border-radius: 10px;
+    }
+}

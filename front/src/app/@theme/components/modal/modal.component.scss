@@ -1,0 +1,86 @@
+.modal {
+    position: relative;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: 89vh;
+    background-color: white;
+    z-index: 3;
+}
+
+#top {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    width: 100vw;
+    height: 96px;
+    
+    #whiteDiv {
+        display: none;
+        position: absolute;
+        height: 96px;
+        width: 50vw;
+        background-color: #fff;
+        z-index: 9;
+    }
+  
+    > h2 {
+        height: 28px;
+        margin: 34px 52px;
+        color: #3b4244;
+    }
+  
+    > button {
+        border: none;
+        background-color: white;
+        cursor: pointer;
+        margin: 36.69px 60.69px;
+        height: 23px;
+        width: 23px;
+  
+      > img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+}
+  
+@keyframes showElement {
+    from {top: 0px;}
+    to {top: -89vh;}
+}
+
+.up {
+    animation: showElement 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideElement {
+    from {top: -89vh}
+    to {top: 0}
+}
+
+.down {
+    animation: hideElement 0.3s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideElement2 {
+    from {top: 11vh}
+    to {top: 100vh}
+}
+
+.down2 {
+    animation: hideElement2 0.3s;
+    animation-fill-mode: forwards;
+}
+
+.subModal {
+    display: flex;
+    position: fixed !important;
+    top: 11vh;
+    height: 89vh;
+    width: 100vw;
+    z-index: 4;
+}

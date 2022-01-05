@@ -1,0 +1,88 @@
+#membersPage {
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.member {
+  display: flex;
+  justify-content: space-between;
+
+  border: 1px solid #dee8eb;
+  border-radius: 0.3rem;
+
+  padding: 1.5rem 2rem;
+
+  .member-info {
+    display: flex;
+    align-items: center;
+
+    .member-personal-information {
+      display: flex;
+
+      div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 4rem;
+
+        img {
+          border-radius: 50%;
+          width: 45px;
+          height: 45px;
+          object-fit: cover;
+        }
+
+        .member-name {
+          display: flex;
+          flex-direction: column;
+          gap: 0.7rem;
+          width: 252px;
+
+          label {
+            color: #7c8d93;
+          }
+        }
+      }
+
+      .member-birth-date {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        width: 208px;
+
+        label {
+          color: #7c8d93;
+        }
+      }
+    }
+    
+    .allowance {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+
+      label {
+        color: #7c8d93;
+      }
+    }
+  }
+
+  .member-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+#warningMsgDeleteMember, #sucessMsgDeleteMember {
+  width: 272px;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 96px;
+}
+
+#warningMsgDeleteMember {
+  display: flex;
+}

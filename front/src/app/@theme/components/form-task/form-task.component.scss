@@ -1,0 +1,63 @@
+.divFormTask, .sucessMsgFormTask, .errorMsgFormTask {
+  width: 272px;
+  height: calc(78vh - 96px);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 96px;
+}
+
+.divFormTask {
+  display: flex;
+}
+
+.divFormTask p {
+  color: #3B4244;
+}
+
+form {
+    width: 100%;
+    margin-bottom: 8px;
+  
+    .field {
+        position:relative;
+
+        textarea {
+          padding: 16px 20px 14px;
+          height: 186px;
+          border: 1px solid #7C8D93;
+          font-size: 14px;
+          color: #3B4244;
+          position: relative;
+          width: 100%;
+          border-radius: 4px;
+          margin-top: 24px;
+          background-color: #FFFFFF;
+        }
+  
+        > label {
+            position: absolute;
+            left: 16px;
+            top: 36px;
+            transition: 0.2s;
+            background: #FFFFFF;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            color: #B5C5CA;
+            border: 4px solid #FFFFFF;
+        }
+        
+        textarea:focus + label, textarea:not(:placeholder-shown) + label {
+            transform: translateY(-22px);
+            color: #7C8D93;
+        }
+  
+        textarea:focus {
+            outline: none !important;
+        }
+  
+        &:last-of-type {
+            margin-bottom: 16px;
+        }
+    }
+  }

@@ -1,0 +1,36 @@
+<div id="container">
+    <div id="img">
+        <h1 class="phrase">Seu time em harmonia.</h1>
+    </div>
+
+    <div id="form">
+        <h1 class="title">RIOTT</h1>
+
+        <p class="description">Controle as tarefas e mesada dos seus filhos para manter a casa em harmonia.</p>
+
+        <form [formGroup]="form">
+            <div class="field">
+                <input
+                    type="string"
+                    id="email"
+                    placeholder=" "
+                    formControlName="email"
+                >
+                <label for="email">E-mail</label>
+            </div>
+            <div class="field">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder=" "
+                    minlength="8"
+                    maxlength="100"
+                    formControlName="password"
+                >
+                <label for="password">Senha</label>
+            </div>
+        
+            <app-my-button [disabled]="form.invalid" customClass="green login-page" text="Entrar" (click)="login()" ></app-my-button>
+        </form>
+    </div>
+</div>

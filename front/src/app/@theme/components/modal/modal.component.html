@@ -1,0 +1,12 @@
+<div id="{{ customId }}" class="modal">
+    <div id="top">
+        <div id="whiteDiv"></div>
+        <h2>{{ customTitle }}</h2>
+
+        <button (click)="hideModal()">
+            <img src="../../../assets/iconClose.ico" alt="fechar">
+        </button>
+    </div>
+
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+</div>
