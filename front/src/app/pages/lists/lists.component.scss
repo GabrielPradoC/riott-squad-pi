@@ -1170,6 +1170,15 @@
   }
 }
 
+.activities {
+  padding-bottom: 40px;
+}
+
+.shadow {
+  position: relative;
+  overflow: hidden;
+}
+
 #warningMsgInitList, #sucessMsgInitList, #errorMsgInitList,
 #sucessMsgCreateList, #errorMsgCreateList, #sucessMsgEditList,
 #warningMsgDeleteList, #sucessMsgDeleteList, #errorMsgDeleteList,
