@@ -31,7 +31,7 @@
         margin-top: 2rem;
         padding-right: 1.5rem;
         overflow-y: auto;
-        height: calc(66vh - 1.3rem);
+        height: calc(64.5vh - 2rem);
 
         display: flex;
         flex-direction: column;
@@ -256,7 +256,6 @@
         height: 55vh;
         align-items: center;
         justify-content: center;
-        margin-top: 7rem;
       
         .no-list {
           max-width: 390px;
@@ -318,6 +317,7 @@
   
         .lacks {
           display: flex;
+          align-items: center;
           gap: 1rem;
       
           > label {
