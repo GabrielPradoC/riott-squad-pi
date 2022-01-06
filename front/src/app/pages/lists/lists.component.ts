@@ -47,6 +47,7 @@ export class ListsComponent implements OnInit {
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
   public form: FormGroup;
   public tasksToCreate: TaskToCreate[];
+  public visibleTasks: Boolean = true;
 
   constructor(
     private memberService: MemberService,
@@ -191,41 +192,34 @@ export class ListsComponent implements OnInit {
       this.getTaskList(member.id);
   }
 
-  selectInManageList(member: Member): void {    
+  selectInManageList(member: Member): void {
+    //makes the to-do list invisible
+    this.visibleTasks = false;
+
+    //if exists, get the selected user
     const selected = document.getElementsByClassName('selected-in-manage-list');
-    
-    if (selected.length > 0) {
-      selected.item(0).classList.toggle('selected-in-manage-list');
-    }
-    
-    const newSelected: HTMLElement = document.getElementById(member.id + 'manage');
-    newSelected.classList.toggle('selected-in-manage-list');
+    const selectedId = selected?.item(0)?.id;
 
     //set as the current member
     this.currentMemberManage = member;
 
-    if (selected.item(0).id != member.id.toString())
+    if (selected?.length > 0) {
+      //remove selected user border
+      selected.item(0)?.classList.toggle('selected-in-manage-list');
+    }
+
+    //get the tasklist of the selected user
+    if (selectedId?.replace("manage", "") != member.id.toString())
       this.getTaskListForManage(member.id);
 
-    this.activeUserVersionList();
+    //set the new selected user
+    const newSelected: HTMLElement = document.getElementById(member.id + 'manage');
+    newSelected.classList.toggle('selected-in-manage-list');
   }
 
   selectInCreateList(id): void {
     const newSelected: HTMLElement = document.getElementById(id + 'create');
     newSelected.classList.toggle('selected-in-create-list');
-  }
-
-  activeUserVersionList() {
-    const initialVersion: HTMLDivElement = document.getElementsByClassName('list-initial').item(0) as HTMLDivElement;
-    const userVersion: HTMLDivElement = document.getElementById('list') as HTMLDivElement;
-
-    if (initialVersion) {
-      initialVersion.style.display = "none";
-    }
-
-    if (userVersion) {
-      userVersion.style.display = "";
-    }
   }
 
   toggleMissed(task: Task): void {

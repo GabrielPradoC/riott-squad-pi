@@ -211,7 +211,7 @@
           </div>
         </div>
 
-        <div *ngIf="allTasks?.length > 0" class="list-initial">
+        <div *ngIf="allTasks?.length > 0 && visibleTasks" class="list-initial">
           <h2>Atividades:</h2>
 
           <div class="container-activities">
@@ -255,7 +255,7 @@
           </div>
         </div>
 
-        <div *ngIf="listManageData" style="display: none;" id="list" class="list">
+        <div *ngIf="listManageData && !visibleTasks" id="list" class="list">
           <div class="list-information">
             <div class="list-status">
               <label>Status da lista:</label>
