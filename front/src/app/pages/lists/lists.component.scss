@@ -637,7 +637,7 @@
         flex-wrap: wrap;
 
         .activity {
-          flex: 0 48.7585%;
+          flex: 0 47.7585%;
           padding: 1.5rem 2rem;
           margin: 0.5rem;
 
@@ -666,7 +666,7 @@
   .no-list-container {
     margin: 0 3.6rem 0 3.6rem;
     display: flex;
-    height: 55vh;
+    height: 42vh;
     align-items: center;
     justify-content: center;
 
@@ -1186,4 +1186,18 @@
   justify-content: center;
   margin-bottom: 96px;
   display: none;
+}
+
+@media (max-width: 840px) {
+  .container-manage-lists {
+    .list-initial {
+      .container-activities {
+        .activities {
+          .activity {
+            flex: 0 100%;
+          }
+        }
+      }
+    }
+  }
 }
