@@ -1,4 +1,4 @@
-<div id="divFormTask" name="divFormTask">
+<div id="divFormTask{{ completeEdit() }}" class="divFormTask">
     <p *ngIf="typeForm == 0; else textEdit">
         Insira os dados abaixo para cadastrar uma nova atividade ao RIOTT.
     </p>
@@ -12,12 +12,11 @@
         <div class="field">
             <textarea
                 type="string"
-                id="description"
-                name="description"
+                id="description{{ completeEdit() }}"
                 placeholder=" "
                 formControlName="description">
             </textarea>
-            <label name="labelDescription" for="description">Descrição da atividade</label>
+            <label for="description{{ completeEdit() }}">Descrição da atividade</label>
         </div>
 
         <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
@@ -41,7 +40,7 @@
     <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
 </div>
 
-<div id="sucessMsgFormTask" name="sucessMsgFormTask">
+<div id="sucessMsgFormTask{{ completeEdit() }}" class="sucessMsgFormTask">
     <app-dialog-box
         customClassSucess="showElement"
         text="{{ textSucess() }}"
@@ -49,7 +48,7 @@
     </app-dialog-box>
 </div>
 
-<div id="errorMsgFormTask" name="errorMsgFormTask">
+<div id="errorMsgFormTask{{ completeEdit() }}" class="errorMsgFormTask">
     <app-dialog-box
         customClassError="showElement"
         text="Algo deu errado"

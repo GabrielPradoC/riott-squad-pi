@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     margin: 0rem 3.6rem 0 3.6rem;
     height: 89vh;
     box-sizing: border-box;
@@ -15,8 +16,9 @@ h2 {
     color: #3b4244;
 }
 
-.members {
+.table {
     padding-right: 1.8rem;
+    padding-bottom: 40px;
     overflow-y: scroll;
   
     height: calc(78vh - 1rem);

@@ -1,4 +1,4 @@
-div[name = "divFormTask"], div[name = "sucessMsgFormTask"], div[name = "errorMsgFormTask"] {
+.divFormTask, .sucessMsgFormTask, .errorMsgFormTask {
   width: 272px;
   height: calc(78vh - 96px);
   display: none;
@@ -7,11 +7,11 @@ div[name = "divFormTask"], div[name = "sucessMsgFormTask"], div[name = "errorMsg
   margin-bottom: 96px;
 }
 
-div[name = "divFormTask"] {
+.divFormTask {
   display: flex;
 }
 
-div[name = "divFormTask"] p {
+.divFormTask p {
   color: #3B4244;
 }
 
