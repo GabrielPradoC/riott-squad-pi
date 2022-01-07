@@ -16,6 +16,7 @@ export class FormTaskComponent implements OnInit {
   @Input() taskId: string;
 
   public form: FormGroup;
+  public error: string;
 
   constructor(private fb: FormBuilder, private service: TaskService) {
     this.form = this.fb.group({
@@ -75,7 +76,10 @@ export class FormTaskComponent implements OnInit {
       complete => {
         dialogBoxComponent.showDialogbox("divFormTask", "sucessMsgFormTask")
       },
-      error => dialogBoxComponent.showDialogbox("divFormTask", "errorMsgFormTask")
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("divFormTask", "errorMsgFormTask")
+      }
     );
   }
 
@@ -89,7 +93,10 @@ export class FormTaskComponent implements OnInit {
       complete => {
         dialogBoxComponent.showDialogbox("divFormTask2", "sucessMsgFormTask2")
       },
-      error => dialogBoxComponent.showDialogbox("divFormTask2", "errorMsgFormTask2")
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("divFormTask2", "errorMsgFormTask2")
+      }
     );
   }
 

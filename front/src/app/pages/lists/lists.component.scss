@@ -831,7 +831,8 @@
 }
 
 #contentCreateList {
-  display: initial !important;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0 3.4rem;
 
@@ -1176,6 +1177,7 @@
 
 .shadow {
   position: relative;
+  width: 100%;
   overflow: hidden;
 }
 
