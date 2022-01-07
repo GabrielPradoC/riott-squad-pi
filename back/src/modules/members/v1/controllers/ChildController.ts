@@ -203,11 +203,6 @@ export class ChildController extends BaseController {
      *               birthday: 10/10/2006
      *               allowance: 100.00
      *               parent: 1
-     *             required:
-     *               - id
-     *               - name
-     *               - allowance
-     *               - parent
      *             properties:
      *               name:
      *                 type: string
@@ -224,11 +219,18 @@ export class ChildController extends BaseController {
     @Middlewares(ChildValidator.put())
     public async update(req: Request, res: Response): Promise<void> {
         const child: Child = req.body.childRef;
+        const { name, birthday, allowance, photoRef } = req.body;
 
-        child.name = req.body.name;
-        child.birthday = req.body.birthday;
-        child.allowance = req.body.allowance;
-        child.photo = req.body.photoRef;
+        let formatedBirthday: any;
+        if (birthday) {
+            const [day, month, year] = birthday.split('/');
+            formatedBirthday = [year, month, day].join('/');
+        }
+
+        child.name = name || child.name;
+        child.birthday = formatedBirthday || child.birthday;
+        child.allowance = allowance || child.allowance;
+        child.photo = photoRef || child.photo;
 
         await new ChildRepository().update(child);
 
