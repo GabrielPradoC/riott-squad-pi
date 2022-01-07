@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormMemberComponent } from './form-member.component';
+import { ShadowComponent } from './shadow.component';
 
-describe('FormMemberComponent', () => {
-  let component: FormMemberComponent;
-  let fixture: ComponentFixture<FormMemberComponent>;
+describe('ShadowComponent', () => {
+  let component: ShadowComponent;
+  let fixture: ComponentFixture<ShadowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormMemberComponent ]
+      declarations: [ ShadowComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormMemberComponent);
+    fixture = TestBed.createComponent(ShadowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,60 @@
+<div id="divFormTask{{ completeEdit() }}" class="divFormTask">
+    <p *ngIf="typeForm == 0; else textEdit">
+        Insira os dados abaixo para cadastrar uma nova atividade ao RIOTT.
+    </p>
+    <ng-template #textEdit>
+        <p>
+            Altere os dados abaixo para editar uma atividade no RIOTT.
+        </p>
+    </ng-template>
+
+    <form [formGroup]="form">
+        <div class="field">
+            <textarea
+                type="string"
+                id="description{{ completeEdit() }}"
+                placeholder=" "
+                formControlName="description">
+            </textarea>
+            <label for="description{{ completeEdit() }}">Descrição da atividade</label>
+        </div>
+
+        <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
+            <app-my-button
+                [disabled]="form.invalid"
+                customClass="light-gray green members-page"
+                text="Adicionar atividade"
+                (click)="requisicaoAtividade()">
+            </app-my-button>
+        </ng-template>
+    
+        <ng-template #buttonEdit>
+            <app-my-button
+                [disabled]="form.invalid"
+                customClass="light-gray green members-page"
+                text="Salvar edição"
+                (click)="requisicaoAtividade()">
+            </app-my-button>
+        </ng-template>
+    </form>
+    <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
+</div>
+
+<div id="sucessMsgFormTask{{ completeEdit() }}" class="sucessMsgFormTask">
+    <app-dialog-box
+        customClassSucess="showElement"
+        text="{{ textSucess() }}"
+        closeAll="true">
+    </app-dialog-box>
+</div>
+
+<div id="errorMsgFormTask{{ completeEdit() }}" class="errorMsgFormTask">
+    <app-dialog-box
+        customClassError="showElement"
+        text="Algo deu errado"
+        closeAll="true"
+        divAtual="errorMsgFormTask{{ completeEdit() }}"
+        divPrincipal="divFormTask{{ completeEdit() }}"
+        textError="{{ error }}">
+    </app-dialog-box>
+</div>

@@ -15,6 +15,8 @@ import { ModalComponent } from "../@theme/components/modal/modal.component";
 import { dialogBoxComponent } from "../@theme/components/dialog-box/dialog-box.component";
 import { ListFullComponent } from "../@theme/components/list-full/list-full.component";
 import { FormMemberComponent } from "../@theme/components/form-member/form-member.component";
+import { FormTaskComponent } from "../@theme/components/form-task/form-task.component";
+import { ShadowComponent } from "../@theme/components/shadow/shadow.component";
 
 @NgModule({
 	imports: [
@@ -34,7 +36,9 @@ import { FormMemberComponent } from "../@theme/components/form-member/form-membe
 		ModalComponent,
 		dialogBoxComponent,
 		ListFullComponent,
-		FormMemberComponent
+		FormMemberComponent,
+		FormTaskComponent,
+		ShadowComponent
 	],
 	providers: [PagesAuthGuard]
 })

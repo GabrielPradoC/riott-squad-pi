@@ -831,7 +831,8 @@
 }
 
 #contentCreateList {
-  display: initial !important;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0 3.4rem;
 
@@ -1168,6 +1169,16 @@
       }
     }
   }
+}
+
+.activities {
+  padding-bottom: 40px;
+}
+
+.shadow {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
 #warningMsgInitList, #sucessMsgInitList, #errorMsgInitList,
