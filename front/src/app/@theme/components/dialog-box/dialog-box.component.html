@@ -14,7 +14,7 @@
 
     <p>
         {{ text }}
-        <span class="{{ customClassError }} || hideElement">(Texto explicativo do erro aqui)</span>
+        <span class="{{ customClassError }} || hideElement">{{ textError }}</span>
     </p>
 
     <ng-container [ngTemplateOutlet]="contentDialogBox"></ng-container>

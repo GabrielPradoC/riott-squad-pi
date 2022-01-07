@@ -18,6 +18,7 @@ export class FormMemberComponent implements OnInit {
 
   public form: FormGroup;
   private fileTemp: File;
+  public error: string;
 
   constructor(private fb: FormBuilder, private service: MemberService, private router: Router) {
     this.form = this.fb.group({
@@ -238,7 +239,10 @@ export class FormMemberComponent implements OnInit {
       complete => {
         dialogBoxComponent.showDialogbox("divFormulario", "sucessMsgFormulario")
       },
-      error => dialogBoxComponent.showDialogbox("divFormulario", "errorMsgFormulario")
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("divFormulario", "errorMsgFormulario");
+      }
     );
   }
 

@@ -47,6 +47,7 @@ export class ListsComponent implements OnInit {
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
   public form: FormGroup;
   public tasksToCreate: TaskToCreate[];
+  public error: string;
 
   constructor(
     private memberService: MemberService,
@@ -266,7 +267,11 @@ export class ListsComponent implements OnInit {
 
   removeList(id: number) {
     this.listService.Remove(`${environment.API}list/${id}`).subscribe(
-      result => this.getTaskListForManage(this.currentMemberManage.id)
+      result => this.getTaskListForManage(this.currentMemberManage.id),
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("contentDeleteList", "errorMsgDeleteList");
+      }
     )
   }
 
@@ -276,7 +281,11 @@ export class ListsComponent implements OnInit {
     };
 
     this.listService.patch(`${environment.API}list/${listId}`, body).subscribe(
-      result => this.getTaskListForManage(this.currentMemberManage.id)
+      result => this.getTaskListForManage(this.currentMemberManage.id),
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("contentInitList", "errorMsgInitList");
+      }
     )
   }
 
@@ -301,6 +310,10 @@ export class ListsComponent implements OnInit {
       this.listService.Create(`${environment.API}list`, list).subscribe(
         result => {
           this.tasksToCreate = [];
+        },
+        error => {
+          this.error = dialogBoxComponent.formatError(error.error.error);
+          dialogBoxComponent.showDialogbox("contentCreateList", "errorMsgCreateList");
         }
       );
 
