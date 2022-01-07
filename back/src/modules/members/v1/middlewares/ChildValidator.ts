@@ -119,7 +119,23 @@ export class ChildValidator extends BaseValidator {
     public static put(): RequestHandler[] {
         return ChildValidator.validationList({
             id: ChildValidator.model.id,
-            ...ChildValidator.model
+            birthday: { ...ChildValidator.model.birthday, optional: true },
+            minor: { ...ChildValidator.model.minor, optional: true },
+            allowance: { ...ChildValidator.model.allowance, optional: true },
+            photo: { ...ChildValidator.model.photo, optional: true }
+        });
+    }
+
+    /**
+     * patch
+     *
+     * @summary retorna basicamente todos os validadores de model
+     *
+     * @returns Lista de validadores
+     */
+    public static patch(): RequestHandler[] {
+        return ChildValidator.validationList({
+            id: ChildValidator.model.id
         });
     }
 
