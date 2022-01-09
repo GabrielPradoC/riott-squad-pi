@@ -61,10 +61,34 @@ export class FormMemberComponent implements OnInit {
     document.getElementsByName("labelValorMesada").item(1).setAttribute("for", "valorMesada2");
   }
 
-  setValuesMember() : void {
-    //fazer requisicao pelo id e preencher os forms
+  /**
+   * Preenche o formulário com os dados do membro selecionado
+   */
+   setValuesMember() : void {
+    this.service.LoadMemberByID(`${environment.API}member`, this.memberId).subscribe(
+      complete => {
+        let member = complete.data;
 
-    this.form.controls['nome'].setValue("edit");
+        localStorage.setItem("RIOTT:imgTemp", member.photo);
+        this.convertToFile();
+        this.form.controls['foto'].markAsTouched();
+        console.log(this.form.controls['foto'].setErrors(null))
+        this.form.controls['nome'].setValue(member.name);
+        this.form.controls['dataNascimento'].setValue(member.birthday.toString().substring(0, 10));
+        this.labelUp();
+        this.form.controls['valorMesada'].setValue(member.allowance.toString(0).replace(".", ","));
+      })
+  }
+
+  convertToFile() {
+    const url = "data:image/png;base64," + localStorage.getItem("RIOTT:imgTemp");
+
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], "File name",{ type: "image/png" })
+        this.saveImage(file)
+      })
   }
 
   initAttributesDrop() : void {
@@ -100,13 +124,13 @@ export class FormMemberComponent implements OnInit {
   }
 
   getFileDrop(): void {
-    this.fileTemp = null;
+    //this.fileTemp = null;
     
     setTimeout(() => { this.checkFile(this.fileTemp); }, 100);
   }
 
   fileChangeEvent(inputFile: any) : void {
-    this.checkFile(inputFile.target.files[0]);
+    this.checkFile(inputFile.target.files[0] || this.fileTemp);
   }
 
   async checkFile(file: File) {
