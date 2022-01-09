@@ -23,6 +23,9 @@ import { ChildRepository } from '../../../../library/database/repository';
 // Validators
 import { ChildValidator } from '../middlewares/ChildValidator';
 
+// Utils
+import { FileUtils } from '../../../../utils';
+
 @Controller(EnumEndpoints.MEMBER_V1)
 export class ChildController extends BaseController {
     /**
@@ -219,7 +222,14 @@ export class ChildController extends BaseController {
     @Middlewares(ChildValidator.put())
     public async update(req: Request, res: Response): Promise<void> {
         const child: Child = req.body.childRef;
-        const { name, birthday, allowance, photoRef } = req.body;
+        const { name, birthday, allowance } = req.body;
+        let photoRef;
+
+        if (req.files && req.files[0]) {
+            const { buffer } = req.files[0];
+
+            photoRef = buffer.toString('base64');
+        }
 
         let formatedBirthday: any;
         if (birthday) {
