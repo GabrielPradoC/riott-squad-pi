@@ -71,8 +71,7 @@ export class FormMemberComponent implements OnInit {
 
         localStorage.setItem("RIOTT:imgTemp", member.photo);
         this.convertToFile();
-        this.form.controls['foto'].markAsTouched();
-        console.log(this.form.controls['foto'].setErrors(null))
+        this.form.controls['foto'].setErrors(null)
         this.form.controls['nome'].setValue(member.name);
         this.form.controls['dataNascimento'].setValue(member.birthday.toString().substring(0, 10));
         this.labelUp();
@@ -124,8 +123,6 @@ export class FormMemberComponent implements OnInit {
   }
 
   getFileDrop(): void {
-    //this.fileTemp = null;
-    
     setTimeout(() => { this.checkFile(this.fileTemp); }, 100);
   }
 
@@ -252,14 +249,49 @@ export class FormMemberComponent implements OnInit {
     (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value = value;
   }
 
-  cadastrarMembro() : void {
-    const photo = this.fileTemp;
-    const name: string = this.form.controls['nome'].value;
-    const birthday: string = MembersComponent.prototype.changeFormatDate(this.form.controls['dataNascimento'].value);
-    const allowance: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.replace(",", ".");
-    const parent = parseInt(localStorage.getItem("riott:userId"));
+  acaoMembro() : void {
+    let body: Map<string, string | File> = new Map();
+    let formData: FormData;
 
-    this.service.postFormData({name, parent, birthday, allowance, photo}, `${environment.API}member`).subscribe(
+    body.set("parent", localStorage.getItem("riott:userId"));
+
+    if(this.form.controls['nome'].dirty) {
+      body.set("name", this.form.controls['nome'].value);
+    }
+    
+    if(this.form.controls['dataNascimento'].dirty) {
+      body.set("birthday", MembersComponent.prototype.changeFormatDate(this.form.controls['dataNascimento'].value));
+    }
+
+    if(this.form.controls['valorMesada'].dirty) {
+      body.set("allowance", (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.replace(",", "."));
+    }
+
+    if(this.fileTemp && this.fileTemp.name != "File name") {
+      body.set("photo", this.fileTemp)
+    }
+
+    formData = this.createFormData(body);
+
+    if(this.typeForm == 0) {
+      this.cadastrarMembro(formData);
+    } else {
+      this.editarMembro(formData);
+    }
+  }
+
+  createFormData(body: Map<string, string | File>) : FormData {
+    const formData: FormData = new FormData();
+
+    body.forEach((item, key) => {
+      formData.append(key, <string | Blob>item.valueOf())
+    })
+
+    return formData;
+  }
+
+  cadastrarMembro(formData: FormData) : void {
+    this.service.createMember(formData, `${environment.API}member`).subscribe(
       complete => {
         dialogBoxComponent.showDialogbox("divFormulario", "sucessMsgFormulario")
       },
@@ -270,7 +302,16 @@ export class FormMemberComponent implements OnInit {
     );
   }
 
-  editarMembro() {
+  editarMembro(formData: FormData) {
+    this.service.editMember(formData, `${environment.API}member/${this.memberId}`).subscribe(
+      complete => {
+        dialogBoxComponent.showDialogbox("divFormulario2", "sucessMsgFormulario2")
+      },
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("divFormulario2", "errorMsgFormulario2");
+      }
+    );
   }
 
   cancelar(): void {

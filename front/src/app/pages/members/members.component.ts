@@ -34,7 +34,8 @@ export class MembersComponent implements OnInit  {
 
   changeFormatDate(date: string) : string {
     const newDate: Date = new Date(date);
-    return newDate.toLocaleDateString();
+    return newDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'});;
+    
   }
 
   saveId(id: number) : void {

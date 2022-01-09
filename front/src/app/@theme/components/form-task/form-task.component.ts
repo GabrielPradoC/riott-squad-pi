@@ -55,7 +55,7 @@ export class FormTaskComponent implements OnInit {
   /**
    * Pega valor do formulário e id de usuário e redireciona para a função adequada
    */
-  requisicaoAtividade() : void {
+  acaoAtividade() : void {
     const description: string = this.form.controls['description'].value;
     const parent = parseInt(localStorage.getItem("riott:userId"));
 

@@ -17,22 +17,23 @@ export class MemberService extends CrudService<Members, Member> {
   }
 
   /**
-   * Passa os valores recebidos pelo parâmetro data para um FormData e o envia numa requisição post
-   * @param data - dados do membro a ser cadastrado
+   * Envia o formData por uma requisição post
+   * @param formData - dados do membro a ser cadastrado
    * @param apiUrl - url da requisição
    * @returns resultado da requisição
    */
-  postFormData(data: any, apiUrl: string): Observable<any> {
-    const formData: FormData = new FormData();
-
-    for(let i=0; i<5; i++) {
-      formData.append(
-        Object.keys(data)[i],
-        Object.values<string | Blob>(data)[i]
-      );
-    }
-
+  createMember(formData: FormData, apiUrl: string): Observable<any> {
     return this.http.post(apiUrl, formData, { headers: this.headers }).pipe(take(2));
+  }
+
+  /**
+   * Envia o formData por uma requisição put
+   * @param data - novos dados do membro a ser alterado
+   * @param apiUrl - url da requisição
+   * @returns resultado da requisição
+   */
+   editMember(formData: FormData, apiUrl: string): Observable<any> {
+    return this.http.put(apiUrl, formData, { headers: this.headers }).pipe(take(2));
   }
 
   /**
