@@ -1,4 +1,4 @@
-<div id="divFormulario" name="divFormulario">
+<div id="divFormulario{{ completeEdit() }}" name="divFormulario">
     <p *ngIf="typeForm == 0; else textEdit">
         Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
     </p>
@@ -12,7 +12,7 @@
         <div class="field">
             <input
                 type="file"
-                id="foto"
+                id="foto{{ completeEdit() }}"
                 name="foto"
                 formControlName="foto"
                 (change)="fileChangeEvent($event)"
@@ -35,37 +35,36 @@
         <div class="field">
             <input
                 type="string"
-                id="nome"
-                name="nome"
+                id="nome{{ completeEdit() }}"
                 placeholder=" "
                 formControlName="nome"
             >
-            <label name="labelNome" for="nome">Nome do membro</label>
+            <label for="nome{{ completeEdit() }}">Nome do membro</label>
         </div>
 
         <div class="field">
             <input
                 type="date"
-                id="dataNascimento"
+                id="dataNascimento{{ completeEdit() }}"
                 name="dataNascimento"
                 placeholder=" "
                 formControlName="dataNascimento"
                 (click)="labelUp()"
                 (blur)="onChange()"
             >
-            <label name="labelDataNascimento" for="dataNascimento">Data de nascimento</label>
+            <label name="labelDataNascimento" for="dataNascimento{{ completeEdit() }}">Data de nascimento</label>
         </div>
 
         <div class="field">
             <input
                 type="string"
-                id="valorMesada"
+                id="valorMesada{{ completeEdit() }}"
                 name="valorMesada"
                 placeholder=" "
                 formControlName="valorMesada"
                 (keyup)="mask()"
             >
-            <label name="labelValorMesada" for="valorMesada">Valor da mesada</label>
+            <label for="valorMesada{{ completeEdit() }}">Valor da mesada</label>
         </div>
 
         <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
@@ -89,7 +88,7 @@
     <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
 </div>
 
-<div id="sucessMsgFormulario" name="sucessMsgFormulario">
+<div id="sucessMsgFormulario{{ completeEdit() }}" name="sucessMsgFormulario">
     <app-dialog-box
         customClassSucess="showElement"
         text="{{ textSucess() }}"
@@ -98,7 +97,7 @@
     </app-dialog-box>
 </div>
 
-<div id="errorMsgFormulario" name="errorMsgFormulario">
+<div id="errorMsgFormulario{{ completeEdit() }}" name="errorMsgFormulario">
     <app-dialog-box
         customClassError="showElement"
         text="Algo deu errado"

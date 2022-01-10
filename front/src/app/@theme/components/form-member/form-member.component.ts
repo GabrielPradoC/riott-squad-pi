@@ -40,25 +40,11 @@ export class FormMemberComponent implements OnInit {
 
   ngOnInit() {
     if(this.typeForm == 1) {
-      this.trocaIds();
       this.setValuesMember();
     }
 
     this.initAttributesDrop();
     this.initAttributesDate();
-  }
-
-  trocaIds() {
-    document.getElementsByName("divFormulario").item(1).setAttribute("id", "divFormulario2");
-    document.getElementsByName("sucessMsgFormulario").item(1).setAttribute("id", "sucessMsgFormulario2");
-    document.getElementsByName("errorMsgFormulario").item(1).setAttribute("id", "errorMsgFormulario2");
-    document.getElementsByName("foto").item(1).setAttribute("id", "foto2");
-    document.getElementsByName("nome").item(1).setAttribute("id", "nome2");
-    document.getElementsByName("labelNome").item(1).setAttribute("for", "nome2");
-    document.getElementsByName("dataNascimento").item(1).setAttribute("id", "dataNascimento2");
-    document.getElementsByName("labelDataNascimento").item(1).setAttribute("for", "dataNascimento2");
-    document.getElementsByName("valorMesada").item(1).setAttribute("id", "valorMesada2");
-    document.getElementsByName("labelValorMesada").item(1).setAttribute("for", "valorMesada2");
   }
 
   /**
