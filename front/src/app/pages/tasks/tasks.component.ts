@@ -31,8 +31,7 @@ export class TasksComponent implements OnInit {
       .subscribe(
         complete => {
           this.tasks = complete.data.createdTasks;
-        },
-        error => console.log(error)
+        }
       );
   }
 

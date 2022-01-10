@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
@@ -33,9 +33,16 @@ export class FormMemberComponent implements OnInit {
       ])],
       valorMesada: ['', Validators.compose([
         Validators.required,
-        Validators.minLength(3)
+        FormMemberComponent.ValidateMinLength
       ])]
     });
+  }
+
+  static ValidateMinLength(control: FormControl) : { [key: string]: boolean } | null {
+    if(control.value.replace(/[^0-9]/g,'').length >= 3) {
+      return null;
+    }
+    return { validLenght: true };
   }
 
   ngOnInit() {
@@ -60,7 +67,8 @@ export class FormMemberComponent implements OnInit {
         this.form.controls['nome'].setValue(member.name);
         this.form.controls['dataNascimento'].setValue(member.birthday.toString().substring(0, 10));
         this.labelUp();
-        this.form.controls['valorMesada'].setValue(member.allowance.toString(0).replace(".", ","));
+        this.form.controls['valorMesada'].setValue(member.allowance.toString());
+        this.mask();
       })
   }
 
@@ -258,10 +266,10 @@ export class FormMemberComponent implements OnInit {
   mask(): void{
     let value: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value;
 
-    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
-    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+    value = value.replace(/\D/g, "");                 //Remove tudo o que não é dígito
+    value = value.replace(/(\d)(\d\d$)/, "$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
 
-    (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value = value;
+    (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value = "R$ " + value;
   }
 
   /**
@@ -282,13 +290,13 @@ export class FormMemberComponent implements OnInit {
     }
 
     if(this.form.controls['valorMesada'].dirty) {
-      body.set("allowance", (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.replace(",", "."));
+      body.set("allowance", (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.substring(3).replace(",", "."));
     }
 
     if(this.fileTemp && this.fileTemp.name != "File name") {
       body.set("photo", this.fileTemp)
     }
-
+console.log(body)
     formData = this.createFormData(body);
 
     if(this.typeForm == 0) {

@@ -30,8 +30,7 @@ export class MembersComponent implements OnInit  {
       .subscribe(
         complete => {
           this.members = complete.data.children;
-        },
-        error => console.log(error)
+        }
       );
   }
 
@@ -42,8 +41,17 @@ export class MembersComponent implements OnInit  {
    */
   changeFormatDate(date: string) : string {
     const newDate: Date = new Date(date);
-    return newDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'});;
-    
+    return newDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+  }
+
+  
+  /**
+   * Altera a valor numérico para o padrão de valor em reais
+   * @param value - valor da mesada
+   * @returns valor em reais
+   */
+   changeFormatValue(value: number) : string {
+    return "R$ " + value.toString().replace(".", ",");
   }
 
   /**
