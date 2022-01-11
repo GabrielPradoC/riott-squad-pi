@@ -1,4 +1,4 @@
-<div id="divFormTask{{ completeEdit() }}" class="divFormTask">
+<div id="divFormTask">
     <p *ngIf="typeForm == 0; else textEdit">
         Insira os dados abaixo para cadastrar uma nova atividade ao RIOTT.
     </p>
@@ -12,11 +12,11 @@
         <div class="field">
             <textarea
                 type="string"
-                id="description{{ completeEdit() }}"
+                id="description"
                 placeholder=" "
                 formControlName="description">
             </textarea>
-            <label for="description{{ completeEdit() }}">Descrição da atividade</label>
+            <label for="description">Descrição da atividade</label>
         </div>
 
         <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
@@ -24,7 +24,7 @@
                 [disabled]="form.invalid"
                 customClass="light-gray green members-page"
                 text="Adicionar atividade"
-                (click)="requisicaoAtividade()">
+                (click)="acaoAtividade()">
             </app-my-button>
         </ng-template>
     
@@ -33,28 +33,29 @@
                 [disabled]="form.invalid"
                 customClass="light-gray green members-page"
                 text="Salvar edição"
-                (click)="requisicaoAtividade()">
+                (click)="acaoAtividade()">
             </app-my-button>
         </ng-template>
     </form>
     <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
 </div>
 
-<div id="sucessMsgFormTask{{ completeEdit() }}" class="sucessMsgFormTask">
+<div id="sucessMsgFormTask">
     <app-dialog-box
         customClassSucess="showElement"
         text="{{ textSucess() }}"
-        closeAll="true">
+        closeAll="true"
+        (click)="callGetTasks()">
     </app-dialog-box>
 </div>
 
-<div id="errorMsgFormTask{{ completeEdit() }}" class="errorMsgFormTask">
+<div id="errorMsgFormTask">
     <app-dialog-box
         customClassError="showElement"
         text="Algo deu errado"
         closeAll="true"
-        divAtual="errorMsgFormTask{{ completeEdit() }}"
-        divPrincipal="divFormTask{{ completeEdit() }}"
+        divAtual="errorMsgFormTask"
+        divPrincipal="divFormTask"
         textError="{{ error }}">
     </app-dialog-box>
 </div>

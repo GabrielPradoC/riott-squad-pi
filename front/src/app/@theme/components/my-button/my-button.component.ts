@@ -15,15 +15,13 @@ export class MyButtonComponent {
   }
 
   /**
-   * Verifica se foi atribuído um valor ao botão
+   * Verifica se foi atribuído um valor ao customValue
    * Se sim, chama a função showModal() com esse valor como parâmetro
    * Se não, deixa que a funcionalidade do botão seja implementada apenas no componente pai
    */
   check() : void {
-    let value: string = document.activeElement.attributes.getNamedItem("value").value;
-    
-    if(value != '') {
-      this.showModal(value);
+    if(this.customValue != undefined) {
+      this.showModal(this.customValue);
     }
   }
 
@@ -32,8 +30,8 @@ export class MyButtonComponent {
    * @param modalId - id do modal
    */
   showModal(modalId: string) : void {
-    document.getElementById("filtro").style.display = "block";
-    document.getElementById(modalId).style.display = "flex";
-    document.getElementById(modalId).setAttribute("class", "modal up");
+      document.getElementById("filtro").style.display = "block";
+      document.getElementById(modalId).style.display = "flex";
+      document.getElementById(modalId).setAttribute("class", "modal up");
   }
 }

@@ -1,4 +1,4 @@
-div[name = "divFormulario"], div[name = "sucessMsgFormulario"], div[name = "errorMsgFormulario"], #warningMsgFormulario {
+#divFormulario, #sucessMsgFormulario, #errorMsgFormulario, #warningMsgFormulario {
   width: 272px;
   height: calc(78vh - 96px);
   display: none;
@@ -7,11 +7,11 @@ div[name = "divFormulario"], div[name = "sucessMsgFormulario"], div[name = "erro
   margin-bottom: 96px;
 }
 
-div[name = "divFormulario"] {
+#divFormulario {
   display: flex;
 }
 
-div[name = "divFormulario"] p {
+#divFormulario p {
   color: #3B4244;
 }
 
@@ -22,7 +22,7 @@ form {
     .field {
         position:relative;
   
-        input[name = "foto"] {
+        #foto {
           display: none;
         }
   
@@ -34,7 +34,7 @@ form {
           color: #3B4244;
         }
   
-        input, div[name = "uploadFoto"] {
+        input, #uploadFoto {
           position: relative;
           width: 100%;
           border-radius: 4px;
@@ -42,7 +42,7 @@ form {
           background-color: #FFFFFF;
         }
   
-        div[name = "uploadFoto"] {
+        #uploadFoto {
           display: flex;
           flex-direction: row;
           height: 20px;
@@ -84,7 +84,7 @@ form {
           }
         }
   
-        input[name = "dataNascimento"]::-webkit-calendar-picker-indicator{
+        #dataNascimento::-webkit-calendar-picker-indicator{
           background-image: url(../../../../assets/calendar.ico);
           width: 14px;
           height: 14px;

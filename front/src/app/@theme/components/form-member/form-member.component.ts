@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
@@ -15,6 +15,7 @@ import { ModalComponent } from '../modal/modal.component';
 export class FormMemberComponent implements OnInit {
   @Input() typeForm: number;
   @Input() memberId: string;
+  @Output() callParent = new EventEmitter<any>();
 
   public form: FormGroup;
   private fileTemp: File;
@@ -33,14 +34,20 @@ export class FormMemberComponent implements OnInit {
       ])],
       valorMesada: ['', Validators.compose([
         Validators.required,
-        Validators.minLength(3)
+        FormMemberComponent.ValidateMinLength
       ])]
     });
   }
 
+  static ValidateMinLength(control: FormControl) : { [key: string]: boolean } | null {
+    if(control.value.replace(/[^0-9]/g,'').length >= 3) {
+      return null;
+    }
+    return { validLenght: true };
+  }
+
   ngOnInit() {
     if(this.typeForm == 1) {
-      this.trocaIds();
       this.setValuesMember();
     }
 
@@ -48,27 +55,31 @@ export class FormMemberComponent implements OnInit {
     this.initAttributesDate();
   }
 
-  trocaIds() {
-    document.getElementsByName("divFormulario").item(1).setAttribute("id", "divFormulario2");
-    document.getElementsByName("sucessMsgFormulario").item(1).setAttribute("id", "sucessMsgFormulario2");
-    document.getElementsByName("errorMsgFormulario").item(1).setAttribute("id", "errorMsgFormulario2");
-    document.getElementsByName("foto").item(1).setAttribute("id", "foto2");
-    document.getElementsByName("nome").item(1).setAttribute("id", "nome2");
-    document.getElementsByName("labelNome").item(1).setAttribute("for", "nome2");
-    document.getElementsByName("dataNascimento").item(1).setAttribute("id", "dataNascimento2");
-    document.getElementsByName("labelDataNascimento").item(1).setAttribute("for", "dataNascimento2");
-    document.getElementsByName("valorMesada").item(1).setAttribute("id", "valorMesada2");
-    document.getElementsByName("labelValorMesada").item(1).setAttribute("for", "valorMesada2");
+  /**
+   * Preenche o formulário com os dados do membro selecionado
+   */
+   setValuesMember() : void {
+     setTimeout(() => {
+      this.service.LoadMemberByID(`${environment.API}member`, this.memberId).subscribe(
+        complete => {
+          let member = complete.data;
+          this.changeImage("imgUpload", "data:image/png;base64," + member.photo);
+          this.form.controls['foto'].setErrors(null)
+          this.form.controls['nome'].setValue(member.name);
+          this.form.controls['dataNascimento'].setValue(member.birthday.toString().substring(0, 10));
+          this.labelUp();
+          this.form.controls['valorMesada'].setValue(member.allowance.toString());
+          this.mask();
+        })
+     }, 100);
   }
 
-  setValuesMember() : void {
-    //fazer requisicao pelo id e preencher os forms
-
-    this.form.controls['nome'].setValue("edit");
-  }
-
+  /**
+   * Transforma a div uploadFoto em um espaço para arrastar arquivos e assegura o recebimento de apenas um arquivo por vez
+   * Quando recebido, envia o arquivo único para checagem
+   */
   initAttributesDrop() : void {
-    const element: HTMLElement = <HTMLSelectElement>document.getElementsByName("uploadFoto").item(this.typeForm);
+    const element: HTMLElement = <HTMLSelectElement>document.getElementById("uploadFoto");
 
     element.ondragover = (event) => { event.preventDefault(); }
     element.ondrop = (event) => {
@@ -78,20 +89,28 @@ export class FormMemberComponent implements OnInit {
       if(files.length > 1) {
         alert("É permitido o envio de apenas uma imagem");
       } else {
-        this.fileTemp = files.item(0);
+        this.checkFile(files.item(0));
       }
     }
   }
 
+  /**
+   * Define limites mínimo e máximo para a data de nascimento
+   */
   initAttributesDate() : void {
-    const dateElement: Element = document.getElementsByName("dataNascimento").item(this.typeForm);
+    const dateElement: Element = document.getElementById("dataNascimento");
     const today: Date = new Date();
-    const month: string = "-" + this.fixDate(today.getMonth() + 1) + "-";
+    const month: string = "-" + this.fixDate((today.getMonth() + 1)%12) + "-";
 
     dateElement.setAttribute("min", (today.getFullYear() - 18) + month + this.fixDate(today.getDate()));
     dateElement.setAttribute("max", today.getFullYear() + month + this.fixDate(today.getDate()));
   }
 
+  /**
+   * Coloca um zero à esquerda de valores com apenas um dígito
+   * @param date - número referente ao dia ou mês
+   * @returns string de dois caracteres representando o dia ou mês
+   */
   fixDate(date: number): string {
     if(date < 10) {
       return "0" + date;
@@ -99,17 +118,20 @@ export class FormMemberComponent implements OnInit {
     return date.toString();
   }
 
-  getFileDrop(): void {
-    this.fileTemp = null;
-    
-    setTimeout(() => { this.checkFile(this.fileTemp); }, 100);
-  }
-
+  /**
+   * Função chamada quando o input foto é alterado, envia o arquivo para checagem
+   * @param inputFile - arquivo recebido pelo input
+   */
   fileChangeEvent(inputFile: any) : void {
-    this.checkFile(inputFile.target.files[0]);
+    this.checkFile(inputFile.target.files[0] || this.fileTemp);
   }
 
-  async checkFile(file: File) {
+  /**
+   * Faz as validações necessárias para o arquivo e troca a foto de membro de acordo com o resultado
+   * @param file - arquivo recebido
+   * @returns void
+   */
+  async checkFile(file: File) : Promise<void> {
     let error: string;
 
     if(!file) {
@@ -137,29 +159,38 @@ export class FormMemberComponent implements OnInit {
     alert(error);
   }
 
+  /**
+   * Altera a foto de membro no formulário de cadastro/edição
+   * @param classChange - classe desejada para o elemento de foto de membro
+   * @param path - imagem a ser mostrada pelo elemento
+   */
   changeImage(classChange: string, path: string) {
-    const elementImage: Element = document.getElementsByName("uploadFoto").item(this.typeForm).firstElementChild.firstElementChild;
+    const elementImage: Element = document.getElementById("uploadFoto").firstElementChild.firstElementChild;
 
     elementImage.setAttribute("class", classChange);
     elementImage.setAttribute("src", path);
   }
 
+  /**
+   * Lê o arquivo, salva a imagem no localStorage e mostra ela no formulário
+   * @param image - arquivo de imagem recebido
+   * @returns booleano mostrando se a função foi executada sem problemas
+   */
   async saveImage(image: File): Promise<boolean> {
     const reader: FileReader = new FileReader();
     let imageTemp: string;
+
     localStorage.removeItem("RIOTT:imgTemp");
+    this.fileTemp = image;
 
     reader.onload = (e: any) => {
       localStorage.setItem("RIOTT:imgTemp", e.target.result);
     };
-
     reader.readAsDataURL(image);
 
     await this.delay(100);
-  
-    imageTemp = localStorage.getItem("RIOTT:imgTemp");
-    this.fileTemp = image;
 
+    imageTemp = localStorage.getItem("RIOTT:imgTemp");
     if(imageTemp) {
       this.changeImage("imgUpload",  imageTemp);
       return true;
@@ -167,6 +198,11 @@ export class FormMemberComponent implements OnInit {
     return false;
   }
 
+  /**
+   * Função pra pausar a execução de uma função por um tempo
+   * @param ms - tempo desejado para o delay
+   * @returns uma promise apenas para que a função que a chamou fique aguardando o retorno
+   */
   delay(ms: number): Promise<boolean> {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -175,15 +211,22 @@ export class FormMemberComponent implements OnInit {
     });
   }
 
+  /**
+   * Faz a transição da label da data de nascimento para cima e muda sua cor
+   */
   labelUp(): void {
-    const elementDateLabel: HTMLElement = document.getElementsByName("labelDataNascimento").item(this.typeForm);
+    const elementDateLabel: HTMLElement = document.getElementById("labelDataNascimento");
 
     elementDateLabel.style.transform = "translateY(-22px)";
     elementDateLabel.style.color = "#7C8D93";
   }
 
+  /**
+   * Verifica se a data de nascimento inserida pelo teclado respeita os limites mínimo e máximo de data
+   * @returns void
+   */
   onChange(): void {
-    const birthday: string = (<HTMLSelectElement>document.getElementsByName("dataNascimento").item(this.typeForm)).value;
+    const birthday: string = (<HTMLSelectElement>document.getElementById("dataNascimento")).value;
     if(birthday) {
       const year = parseInt(birthday.substring(0, 4));
       const month = parseInt(birthday.substring(5, 7));
@@ -196,7 +239,7 @@ export class FormMemberComponent implements OnInit {
         if(month > (today.getMonth()+1)) {
           return;
         } else if(month === (today.getMonth()+1)) {
-          if(day > today.getDate()) {
+          if(day >= today.getDate()) {
             return;
           }
         }
@@ -204,7 +247,7 @@ export class FormMemberComponent implements OnInit {
         if(month < (today.getMonth()+1)) {
           return;
         } else if(month === (today.getMonth()+1)) {
-          if(day < today.getDate()) {
+          if(day <= today.getDate()) {
             return;
           }
         }
@@ -219,23 +262,73 @@ export class FormMemberComponent implements OnInit {
     }
   }
 
+  /**
+   * Máscara para manter o valor da mesada na formatação correta de valor
+   */
   mask(): void{
-    let value: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value;
+    let value: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value;
 
-    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
-    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+    value = value.replace(/\D/g, "");                 //Remove tudo o que não é dígito
+    value = value.replace(/(\d)(\d\d$)/, "$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
 
-    (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value = value;
+    (<HTMLSelectElement>document.getElementById("valorMesada")).value = "R$ " + value;
   }
 
-  cadastrarMembro() : void {
-    const photo = this.fileTemp;
-    const name: string = this.form.controls['nome'].value;
-    const birthday: string = MembersComponent.prototype.changeFormatDate(this.form.controls['dataNascimento'].value);
-    const allowance: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.replace(",", ".");
-    const parent = parseInt(localStorage.getItem("riott:userId"));
+  /**
+   * Pega valores do formulário e id de usuário e redireciona para a função adequada
+   */
+  acaoMembro() : void {
+    let body: Map<string, string | File> = new Map();
+    let formData: FormData;
 
-    this.service.postFormData({name, parent, birthday, allowance, photo}, `${environment.API}member`).subscribe(
+    body.set("parent", localStorage.getItem("riott:userId"));
+
+    if(this.form.controls['nome'].dirty) {
+      body.set("name", this.form.controls['nome'].value);
+    }
+    
+    if(this.form.controls['dataNascimento'].dirty) {
+      body.set("birthday", MembersComponent.prototype.changeFormatDate(this.form.controls['dataNascimento'].value));
+    }
+
+    if(this.form.controls['valorMesada'].dirty) {
+      body.set("allowance", (<HTMLSelectElement>document.getElementById("valorMesada")).value.substring(3).replace(",", "."));
+    }
+
+    if(this.fileTemp && this.fileTemp.name != "File name") {
+      body.set("photo", this.fileTemp)
+    }
+console.log(body)
+    formData = this.createFormData(body);
+
+    if(this.typeForm == 0) {
+      this.cadastrarMembro(formData);
+    } else {
+      this.editarMembro(formData);
+    }
+  }
+
+  /**
+   * Pega os dados recebidos e os coloca em um formData
+   * @param body - dados do formulário de membro
+   * @returns formData criado
+   */
+  createFormData(body: Map<string, string | File>) : FormData {
+    const formData: FormData = new FormData();
+
+    body.forEach((item, key) => {
+      formData.append(key, <string | Blob>item.valueOf())
+    })
+
+    return formData;
+  }
+
+  /**
+   * Faz a requisição de criação e redireciona para o dialog-box adequado
+   * @param formData - informações do membro a ser criado
+   */
+  cadastrarMembro(formData: FormData) : void {
+    this.service.createMember(formData, `${environment.API}member`).subscribe(
       complete => {
         dialogBoxComponent.showDialogbox("divFormulario", "sucessMsgFormulario")
       },
@@ -246,9 +339,25 @@ export class FormMemberComponent implements OnInit {
     );
   }
 
-  editarMembro() {
+  /**
+   * Faz a requisição de edição e redireciona para o dialog-box adequado
+   * @param formData - novas informações do membro a ser alterado
+   */
+  editarMembro(formData: FormData) {
+    this.service.editMember(formData, `${environment.API}member/${this.memberId}`).subscribe(
+      complete => {
+        dialogBoxComponent.showDialogbox("divFormulario", "sucessMsgFormulario")
+      },
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("divFormulario", "errorMsgFormulario");
+      }
+    );
   }
 
+  /**
+   * Mostra dialog-box para confirmar a ação, caso esteja criando um membro, ou apenas fecha o modal, caso contrário
+   */
   cancelar(): void {
     if(this.typeForm == 0) {
       dialogBoxComponent.showDialogbox("divFormulario", "warningMsgFormulario");
@@ -257,6 +366,9 @@ export class FormMemberComponent implements OnInit {
     }
   }
 
+  /**
+   * @returns frase de sucesso de acordo com o tipo de formulário
+   */
   textSucess() : string {
     if(this.typeForm == 0) {
       return 'Membro adicionado com sucesso!'
@@ -265,14 +377,22 @@ export class FormMemberComponent implements OnInit {
     }
   }
 
+  /**
+   * Aguarda um tempo para o modal fechar e redireciona para a página de listas, ou reinicia a lista de membros
+   */
   redirectLists() {
     if(this.typeForm == 0) {
       setTimeout(() => {
         this.router.navigate(['/pages/lists']);
       }, 200);
+    } else {
+      this.callParent.emit(null);
     }
   }
 
+  /**
+   * @returns string para complementar o id com '2' caso seja o formulário de edição
+   */
   completeEdit() {
     if(this.typeForm == 0) {
       return ''

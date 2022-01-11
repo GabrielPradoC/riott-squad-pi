@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from 'src/app/@core/services/task.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
@@ -14,6 +14,7 @@ import { ModalComponent } from '../modal/modal.component';
 export class FormTaskComponent implements OnInit {
   @Input() typeForm: number;      //0 para create, 1 para edit
   @Input() taskId: string;
+  @Output() callParent = new EventEmitter<any>();
 
   public form: FormGroup;
   public error: string;
@@ -46,16 +47,18 @@ export class FormTaskComponent implements OnInit {
    * Preenche o formulário com a descrição da tarefa selecionada
    */
   setValuesTask() : void {
-    this.service.LoadOneByID(`${environment.API}task`, this.taskId).subscribe(
-      complete => {
-        this.form.controls['description'].setValue(complete.data.description);
-      })
+    setTimeout(() => {
+      this.service.LoadOneByID(`${environment.API}task`, this.taskId).subscribe(
+        complete => {
+          this.form.controls['description'].setValue(complete.data.description);
+        })
+      }, 100);
   }
 
   /**
    * Pega valor do formulário e id de usuário e redireciona para a função adequada
    */
-  requisicaoAtividade() : void {
+  acaoAtividade() : void {
     const description: string = this.form.controls['description'].value;
     const parent = parseInt(localStorage.getItem("riott:userId"));
 
@@ -91,11 +94,11 @@ export class FormTaskComponent implements OnInit {
   editarAtividade(description: string, parent: number) {
     this.service.UpdateOne({description, parent}, `${environment.API}task/${this.taskId}`).subscribe(
       complete => {
-        dialogBoxComponent.showDialogbox("divFormTask2", "sucessMsgFormTask2")
+        dialogBoxComponent.showDialogbox("divFormTask", "sucessMsgFormTask")
       },
       error => {
         this.error = dialogBoxComponent.formatError(error.error.error);
-        dialogBoxComponent.showDialogbox("divFormTask2", "errorMsgFormTask2")
+        dialogBoxComponent.showDialogbox("divFormTask", "errorMsgFormTask")
       }
     );
   }
@@ -116,5 +119,12 @@ export class FormTaskComponent implements OnInit {
     } else {
       return 'Atividade editada com sucesso!';
     }
+  }
+
+  /**
+   * Chama uma função implementada no componente pai
+   */
+  callGetTasks() {
+    this.callParent.emit(null);
   }
 }

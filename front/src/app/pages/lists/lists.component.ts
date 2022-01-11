@@ -13,6 +13,7 @@ import { TaskMinimum } from 'src/models/taskMinimum.model';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ModalComponent } from 'src/app/@theme/components/modal/modal.component';
 
 interface CreateList {
   name: string;
@@ -488,5 +489,14 @@ export class ListsComponent implements OnInit {
     document.getElementById("editList").style.position = "initial";
     document.getElementById("editList").style.display = "flex";
     document.getElementById("editList").setAttribute("class", "modal subModal");
+  }
+
+  /**
+   * Chama a função que verifica se o modal está visível
+   * @param idModal - id do modal a ser verificado
+   * @returns booleano dizendo se está visível ou não
+   */
+  callIsShowed(idModal: string) : boolean {
+    return ModalComponent.isShowed(idModal);
   }
 }
