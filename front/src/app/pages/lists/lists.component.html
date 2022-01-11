@@ -194,7 +194,7 @@
   </app-modal>
 
   <app-modal customId="manageLists" customTitle="Gerenciar listas">
-    <ng-template #content>
+    <ng-template #content *ngIf="callIsShowed('manageLists') === true">
       <div class="container-manage-lists">
         <h2>Membros ativos</h2>
         <div *ngIf="members" class="members">

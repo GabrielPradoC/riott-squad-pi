@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/@core/services/member.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
+import { ModalComponent } from 'src/app/@theme/components/modal/modal.component';
 import { environment } from 'src/environments/environment';
 import { Member } from 'src/models/member.model';
 
@@ -68,7 +69,9 @@ export class MembersComponent implements OnInit  {
    */
   callEdit(id: number) : void {
     this.saveId(id);
-    this.modalEditShowed = true;
+    setTimeout(() => {
+      this.modalEditShowed = true;
+    }, 200);
   }
 
   /**
@@ -81,5 +84,14 @@ export class MembersComponent implements OnInit  {
         dialogBoxComponent.showDialogbox("warningMsgDeleteMember", "sucessMsgDeleteMember")
       }
     );
+  }
+
+  /**
+   * Chama a função que verifica se o modal está visível
+   * @param idModal - id do modal a ser verificado
+   * @returns booleano dizendo se está visível ou não
+   */
+  callIsShowed(idModal: string) : boolean {
+    return ModalComponent.isShowed(idModal);
   }
 }

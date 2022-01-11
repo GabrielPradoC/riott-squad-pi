@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -8,6 +8,7 @@ import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 export class ModalComponent {
   @Input() customId: string;
   @Input() customTitle: string;
+  @Output() callParent = new EventEmitter<any>();
   @ContentChild('content') content: TemplateRef<any>;
 
   /**
@@ -24,8 +25,43 @@ export class ModalComponent {
     }
 
     setTimeout(() => {
+      document.getElementById(modalId).style.display = "none";
       document.getElementById("filtro").style.display = "none";
-      window.location.reload()
+      this.restartModal(modalId);
     }, 200);
+
+    if(this.callParent && (this.callParent.observers.length > 0)) {
+      this.callParent.emit(null);
+    }
+  }
+
+  /**
+   * Volta o modal pra div inicial
+   * @param modalId - id do modal
+   */
+  restartModal(modalId: string) : void {
+    let children: HTMLCollection = document.getElementById(modalId).children;
+    let n: number = 2;
+
+    (<HTMLSelectElement>children.item(1)).style.display = "flex";
+
+    while(children.item(n) != null) {
+      (<HTMLSelectElement>children.item(n)).style.display = "none";
+      n++;
+    }
+  }
+
+  /**
+   * Diz se o modal está visível ou não
+   * @param idModal - id do modal a ser verificado
+   * @returns booleano com a resposta
+   */
+  static isShowed(idModal: string) : boolean {
+    if(document.getElementById(idModal)) {
+      if(document.getElementById(idModal).style.display === "flex") {
+        return true;
+      }
+    }
+    return false;
   }
 }
