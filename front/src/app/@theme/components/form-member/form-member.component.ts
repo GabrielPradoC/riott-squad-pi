@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MemberService } from 'src/app/@core/services/member.service';
@@ -15,6 +15,7 @@ import { ModalComponent } from '../modal/modal.component';
 export class FormMemberComponent implements OnInit {
   @Input() typeForm: number;
   @Input() memberId: string;
+  @Output() callParent = new EventEmitter<any>();
 
   public form: FormGroup;
   private fileTemp: File;
@@ -58,18 +59,19 @@ export class FormMemberComponent implements OnInit {
    * Preenche o formulário com os dados do membro selecionado
    */
    setValuesMember() : void {
-    this.service.LoadMemberByID(`${environment.API}member`, this.memberId).subscribe(
-      complete => {
-        let member = complete.data;
-
-        this.changeImage("imgUpload", "data:image/png;base64," + member.photo);
-        this.form.controls['foto'].setErrors(null)
-        this.form.controls['nome'].setValue(member.name);
-        this.form.controls['dataNascimento'].setValue(member.birthday.toString().substring(0, 10));
-        this.labelUp();
-        this.form.controls['valorMesada'].setValue(member.allowance.toString());
-        this.mask();
-      })
+     setTimeout(() => {
+      this.service.LoadMemberByID(`${environment.API}member`, this.memberId).subscribe(
+        complete => {
+          let member = complete.data;
+          this.changeImage("imgUpload", "data:image/png;base64," + member.photo);
+          this.form.controls['foto'].setErrors(null)
+          this.form.controls['nome'].setValue(member.name);
+          this.form.controls['dataNascimento'].setValue(member.birthday.toString().substring(0, 10));
+          this.labelUp();
+          this.form.controls['valorMesada'].setValue(member.allowance.toString());
+          this.mask();
+        })
+     }, 100);
   }
 
   /**
@@ -77,7 +79,7 @@ export class FormMemberComponent implements OnInit {
    * Quando recebido, envia o arquivo único para checagem
    */
   initAttributesDrop() : void {
-    const element: HTMLElement = <HTMLSelectElement>document.getElementsByName("uploadFoto").item(this.typeForm);
+    const element: HTMLElement = <HTMLSelectElement>document.getElementById("uploadFoto");
 
     element.ondragover = (event) => { event.preventDefault(); }
     element.ondrop = (event) => {
@@ -96,7 +98,7 @@ export class FormMemberComponent implements OnInit {
    * Define limites mínimo e máximo para a data de nascimento
    */
   initAttributesDate() : void {
-    const dateElement: Element = document.getElementsByName("dataNascimento").item(this.typeForm);
+    const dateElement: Element = document.getElementById("dataNascimento");
     const today: Date = new Date();
     const month: string = "-" + this.fixDate((today.getMonth() + 1)%12) + "-";
 
@@ -163,7 +165,7 @@ export class FormMemberComponent implements OnInit {
    * @param path - imagem a ser mostrada pelo elemento
    */
   changeImage(classChange: string, path: string) {
-    const elementImage: Element = document.getElementsByName("uploadFoto").item(this.typeForm).firstElementChild.firstElementChild;
+    const elementImage: Element = document.getElementById("uploadFoto").firstElementChild.firstElementChild;
 
     elementImage.setAttribute("class", classChange);
     elementImage.setAttribute("src", path);
@@ -213,7 +215,7 @@ export class FormMemberComponent implements OnInit {
    * Faz a transição da label da data de nascimento para cima e muda sua cor
    */
   labelUp(): void {
-    const elementDateLabel: HTMLElement = document.getElementsByName("labelDataNascimento").item(this.typeForm);
+    const elementDateLabel: HTMLElement = document.getElementById("labelDataNascimento");
 
     elementDateLabel.style.transform = "translateY(-22px)";
     elementDateLabel.style.color = "#7C8D93";
@@ -224,7 +226,7 @@ export class FormMemberComponent implements OnInit {
    * @returns void
    */
   onChange(): void {
-    const birthday: string = (<HTMLSelectElement>document.getElementsByName("dataNascimento").item(this.typeForm)).value;
+    const birthday: string = (<HTMLSelectElement>document.getElementById("dataNascimento")).value;
     if(birthday) {
       const year = parseInt(birthday.substring(0, 4));
       const month = parseInt(birthday.substring(5, 7));
@@ -264,12 +266,12 @@ export class FormMemberComponent implements OnInit {
    * Máscara para manter o valor da mesada na formatação correta de valor
    */
   mask(): void{
-    let value: string = (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value;
+    let value: string = (<HTMLSelectElement>document.getElementById("valorMesada")).value;
 
     value = value.replace(/\D/g, "");                 //Remove tudo o que não é dígito
     value = value.replace(/(\d)(\d\d$)/, "$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
 
-    (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value = "R$ " + value;
+    (<HTMLSelectElement>document.getElementById("valorMesada")).value = "R$ " + value;
   }
 
   /**
@@ -290,7 +292,7 @@ export class FormMemberComponent implements OnInit {
     }
 
     if(this.form.controls['valorMesada'].dirty) {
-      body.set("allowance", (<HTMLSelectElement>document.getElementsByName("valorMesada").item(this.typeForm)).value.substring(3).replace(",", "."));
+      body.set("allowance", (<HTMLSelectElement>document.getElementById("valorMesada")).value.substring(3).replace(",", "."));
     }
 
     if(this.fileTemp && this.fileTemp.name != "File name") {
@@ -344,11 +346,11 @@ console.log(body)
   editarMembro(formData: FormData) {
     this.service.editMember(formData, `${environment.API}member/${this.memberId}`).subscribe(
       complete => {
-        dialogBoxComponent.showDialogbox("divFormulario2", "sucessMsgFormulario2")
+        dialogBoxComponent.showDialogbox("divFormulario", "sucessMsgFormulario")
       },
       error => {
         this.error = dialogBoxComponent.formatError(error.error.error);
-        dialogBoxComponent.showDialogbox("divFormulario2", "errorMsgFormulario2");
+        dialogBoxComponent.showDialogbox("divFormulario", "errorMsgFormulario");
       }
     );
   }
@@ -376,13 +378,15 @@ console.log(body)
   }
 
   /**
-   * Aguarda um tempo para o modal fechar e redireciona para a página de listas
+   * Aguarda um tempo para o modal fechar e redireciona para a página de listas, ou reinicia a lista de membros
    */
   redirectLists() {
     if(this.typeForm == 0) {
       setTimeout(() => {
         this.router.navigate(['/pages/lists']);
       }, 200);
+    } else {
+      this.callParent.emit(null);
     }
   }
 

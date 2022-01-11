@@ -36,7 +36,7 @@
   </app-list-full>
 
   <app-modal customId="cadastrarMembro" customTitle="Cadastrar novo membro">
-    <ng-template #content>
+    <ng-template #content *ngIf="callIsShowed('cadastrarMembro') === true">
       <app-form-member typeForm="0"></app-form-member>
     </ng-template>
   </app-modal>
@@ -63,9 +63,9 @@
     </ng-template>
   </app-modal>
 
-  <app-modal customId="editarMembro" customTitle="Editar membro">
-    <ng-template #content *ngIf="modalEditShowed">
-      <app-form-member typeForm="1" memberId="{{ this.idSelected }}"></app-form-member>
+  <app-modal customId="editarMembro" customTitle="Editar membro" (callParent)="this.getMembers()">
+    <ng-template #content *ngIf="modalEditShowed && (callIsShowed('editarMembro') === true)">
+      <app-form-member typeForm="1" memberId="{{ this.idSelected }}" (callParent)="this.getMembers()"></app-form-member>
     </ng-template>
   </app-modal>
 </div>
