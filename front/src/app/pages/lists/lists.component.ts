@@ -15,13 +15,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalComponent } from 'src/app/@theme/components/modal/modal.component';
 
-interface ListToCreate {
+interface CreateList {
   name: string;
   member: number;
-  tasks: TaskToCreate[];
+  tasks: CreateTask[];
 }
 
-interface TaskToCreate {
+interface EditList {
+  name: string;
+  state: string;
+  tasks: CreateTask[];
+}
+
+interface CreateTask {
   task: number;
   value: number;
 }
@@ -40,6 +46,7 @@ export class ListsComponent implements OnInit {
   public listManage: Lists;
   public listManageData: List;
   public allTasks: TaskMinimum[];
+  public allEditTasks: TaskMinimum[];
   public tasks: Task[];
   public tasksCreate: Task[];
   public tasksManage: Task[];
@@ -47,9 +54,13 @@ export class ListsComponent implements OnInit {
   public lacks: number = 0;
   public statesList = {"STARTED": "Em andamento", "ONHOLD": "Em espera"};
   public form: FormGroup;
-  public tasksToCreate: TaskToCreate[];
+  public formToEdit: FormGroup;
+  public tasksToCreate: CreateTask[];
+  public tasksToEdit: Task[];
+  public editedTasks: CreateTask[];
   public visibleTasks: Boolean = true;
   public error: string;
+  public editListIsVisible: Boolean = false;
 
   constructor(
     private memberService: MemberService,
@@ -63,6 +74,14 @@ export class ListsComponent implements OnInit {
         Validators.required
       ])]
     });
+    this.formToEdit = this.fb.group({
+      listId: ['', Validators.compose([
+        Validators.required
+      ])],
+      name: ['', Validators.compose([
+        Validators.required
+      ])]
+    })
   }
 
   ngOnInit(): void {
@@ -121,6 +140,8 @@ export class ListsComponent implements OnInit {
   }
 
   getTaskListForManage(memberId: number): void {
+    const userId = this.localStorageService.getItem("riott:userId");
+
     this.listService.List(`${environment.API}member/${memberId}/lists`).subscribe(
       lists => {
         this.listManage = new Lists();
@@ -132,21 +153,39 @@ export class ListsComponent implements OnInit {
         const statesList = ["STARTED", "ONHOLD"];
         this.listManageData = lists?.data?.find(list => statesList.includes(list.state));
 
-        // if (this.listManageData) {
-        //   //show the no-list div
-        //   const list = document.getElementById('no-list-container-display');
-          
-        //   if (list) {
-        //     list.style.display = "";
-        //   }
-        // }
-        // else {
-        //   const list = document.getElementById('no-list-container-display');
-        //   list.style.display = "none"
-        // }
+        //Set the name of the list
+        this.formToEdit.controls['name'].setValue(lists?.data?.find(list => statesList.includes(list.state))?.name);
+        this.formToEdit.controls['listId'].setValue(lists?.data?.find(list => statesList.includes(list.state))?.id);
+
+        const listOnHold = ["ONHOLD"];
+        this.tasksToEdit = lists?.data?.find(list => listOnHold.includes(list.state))?.tasks;
+
+        this.editedTasks = [];
+        lists?.data?.find(list => listOnHold.includes(list.state))?.tasks.map(task => {
+          this.editedTasks?.push({ task: task.content.id, value: Number(task.value) })
+        });
+
+        this.taskService.List(`${environment.API}user/${userId}/tasks`).subscribe(
+          tasks => {
+            tasks?.data?.createdTasks?.map((task: TaskMinimum) => {
+              this.allEditTasks?.push({
+                id: task.id,
+                value: Number(lists?.data?.find(list => listOnHold.includes(list.state))?.tasks.find(taskToEdit => taskToEdit.content.id == task.id)?.value),
+                description: task.description,
+                createdAt: task.createdAt,
+                updatedAt: task.updatedAt,
+                checked: lists?.data?.find(list => listOnHold.includes(list.state))?.tasks.find(taskToEdit => taskToEdit.content.id == task.id) ? true: false
+              });
+
+              lists?.data?.find(list => listOnHold.includes(list.state))?.tasks;
+            })
+          }
+        )
+    
+        this.tasksToCreate = [];
       
-        if (statesList.includes(this.listManageData?.state)) {
-          this.tasksManage = lists?.data?.find(list => statesList.includes(list.state))?.tasks;
+        if (statesList?.includes(this.listManageData?.state)) {
+          this.tasksManage = lists?.data?.find(list => statesList?.includes(list.state))?.tasks;
         }
       }
     )
@@ -210,9 +249,12 @@ export class ListsComponent implements OnInit {
       selected.item(0)?.classList.toggle('selected-in-manage-list');
     }
 
+    // Reset the array of edit tasks
+    this.allEditTasks = [];
+
     //get the tasklist of the selected user
     if (selectedId?.replace("manage", "") != member.id.toString())
-      this.getTaskListForManage(member.id);
+      this.getTaskListForManage(member.id)
 
     //set the new selected user
     const newSelected: HTMLElement = document.getElementById(member.id + 'manage');
@@ -253,12 +295,6 @@ export class ListsComponent implements OnInit {
       }
     );
   }
-  
-  OpenManageListsModal(): void {
-    document.getElementById("filtro").style.display = "block";
-    document.getElementById("manageLists").style.display = "flex";
-    document.getElementById("manageLists").setAttribute("class", "modal up");
-  }
 
   removeList(id: number) {
     this.listService.Remove(`${environment.API}list/${id}`).subscribe(
@@ -290,16 +326,13 @@ export class ListsComponent implements OnInit {
     
     this.getTasksValues(this.tasksToCreate);
     
-    const list: ListToCreate = {
+    const list: CreateList = {
       name,
       member: this.currentMemberManage.id,
       tasks: this.tasksToCreate
     };
 
     const validation = this.tasksToCreate.every(task => task.value.toString().length > 0);
-    this.tasksToCreate.map((task) => {
-      console.log(`${task.task}, ${task.value}`)
-    })
     
     if (validation) {
       this.listService.Create(`${environment.API}list`, list).subscribe(
@@ -311,25 +344,67 @@ export class ListsComponent implements OnInit {
           dialogBoxComponent.showDialogbox("contentCreateList", "errorMsgCreateList");
         }
       );
-
-      this.tasksToCreate = [];
     }
     else {
       alert('Alguma atividade está sem o valor de desconto. Para prosseguir, preencha o campo!');
     }
   }
 
-  onCheckChange(event, id: number) {
+  saveList(): void {
+    const name = this.formToEdit.controls['name'].value;
+    const listId = this.formToEdit.controls['listId'].value;
+    
+    const list: EditList = {
+      name,
+      state: "ONHOLD",
+      tasks: []
+    };
+
+    this.editedTasks.map((task: CreateTask) => {
+      list.tasks.push({ task: task.task, value: Number(task.value) });
+    });
+
+    this.getTasksEditedValues(list.tasks);
+    
+    this.listService.patch(`${environment.API}list/${listId}`, list).subscribe(
+      result => {
+      },
+      error => {
+        this.error = dialogBoxComponent.formatError(error.error.error);
+        dialogBoxComponent.showDialogbox("contentCreateList", "errorMsgCreateList");
+      }
+    );
+  }
+
+  getTasksValues(tasks: CreateTask[]): void {
+    tasks.map((task: CreateTask) => {
+      const value: HTMLInputElement = document.getElementById(`${task.task}task-create-modal`) as HTMLInputElement;
+
+      if (Number(value.value)) {
+        task.value = Number(value.value);
+      }
+    })
+  }
+
+  getTasksEditedValues(tasks: CreateTask[]): void {
+    tasks.map((task: CreateTask) => {
+      const value: HTMLInputElement = document.getElementById(`${task.task}task-edit-modal`) as HTMLInputElement;
+
+      task.value = Number(value.value);
+    })
+  }
+
+  onCheckChange(event, taskId: number) {
     if(event.target.checked){
-      const task: TaskToCreate = {
-        task: id,
+      const task: CreateTask = {
+        task: taskId,
         value: 0
       }
 
       this.tasksToCreate.push(task);
     }
     else {
-      const selected = this.tasksToCreate.find((task: TaskToCreate) => task.task == id);
+      const selected = this.tasksToCreate.find((task: CreateTask) => task.task == taskId);
 
       if (selected) {
         const index = this.tasksToCreate.findIndex(task => task.task == selected.task);
@@ -339,18 +414,54 @@ export class ListsComponent implements OnInit {
     }
   }
 
-  existsTaskInArray(id: number): TaskToCreate {
-    return this.tasksToCreate.find(task => task.task == id);
+  onCheckChangeEdit(event, taskId: number) {
+    if(event.target.checked){
+      const task: CreateTask = {
+        task: taskId,
+        value: 0
+      }
+
+      this.editedTasks.push(task);
+    }
+    else {
+      const selected = this.editedTasks.find((task: CreateTask) => task.task == taskId);
+
+      if (selected) {
+        const index = this.editedTasks.findIndex(task => task.task == selected.task);
+        
+        this.editedTasks.splice(index, 1);
+      }
+    }
   }
 
-  getTasksValues(tasks: TaskToCreate[]): void {
-    tasks.map((task: TaskToCreate) => {
-      const value: HTMLInputElement = document.getElementById(`${task.task}task-create-modal`) as HTMLInputElement;
+  existsTaskInArray(taskId: number): CreateTask {
+    return this.tasksToCreate.find(task => task.task == taskId);
+  }
 
-      if (Number(value.value)) {
-        task.value = Number(value.value);
-      }
-    })
+  existsTaskInArrayToEdit(taskId: number): CreateTask {
+    return this.editedTasks?.find(task => task.task == taskId);
+  }
+
+  mask(): void{
+    let value: string = (<HTMLSelectElement>document.getElementsByName("input-task-value").item(0)).value;
+
+    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
+    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+
+    (<HTMLSelectElement>document.getElementsByName("input-task-value").item(0)).value = value;
+  }
+
+  maskEdit(): void{
+    let value: string = (<HTMLSelectElement>document.getElementsByName("input-task-value-edit").item(0)).value;
+
+    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
+    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+
+    (<HTMLSelectElement>document.getElementsByName("input-task-value-edit").item(0)).value = value;
+  }
+
+  everyTaskHasValue(): Boolean {
+    return this.tasksToCreate.every(task => task.value == 1);
   }
 
   OpenFinalizeListModal(): void {
@@ -359,7 +470,14 @@ export class ListsComponent implements OnInit {
     document.getElementById("finalize-list").setAttribute("class", "modal up");
   }
 
+  OpenManageListsModal(): void {
+    document.getElementById("filtro").style.display = "block";
+    document.getElementById("manageLists").style.display = "flex";
+    document.getElementById("manageLists").setAttribute("class", "modal up");
+  }
+
   showCreateList() {
+    this.form.controls["name"].setValue("");
     document.getElementById("createList").style.zIndex = "4";
     document.getElementById("createList").style.position = "initial";
     document.getElementById("createList").style.display = "flex";
