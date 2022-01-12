@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalStorageService } from 'src/app/@core/services/local-storage.service';
 import { TaskService } from 'src/app/@core/services/task.service';
 import { dialogBoxComponent } from 'src/app/@theme/components/dialog-box/dialog-box.component';
 import { ModalComponent } from 'src/app/@theme/components/modal/modal.component';
@@ -15,7 +16,10 @@ export class TasksComponent implements OnInit {
   public idSelected: number;
   public modalEditShowed: boolean = false;
 
-  constructor(private service: TaskService) {
+  constructor(
+    private taskService: TaskService,
+    private localStorageService: LocalStorageService) {
+    //do nothing
   }
 
   ngOnInit() {
@@ -23,12 +27,14 @@ export class TasksComponent implements OnInit {
   }
 
   /**
-   * Faz requisição de todas as atividades do usuário e as insere no array tasks
+   * Method that fetches all tasks of a user in the database.
+   * 
+   * @returns void
    */
-  getTasks() {
-    const id = localStorage.getItem("riott:userId");
+  getTasks(): void {
+    const userId = this.localStorageService.getItem("riott:userId");
 
-    this.service.List(`${environment.API}user/${id}/tasks`)
+    this.taskService.List(`${environment.API}user/${userId}/tasks`)
       .subscribe(
         complete => {
           this.tasks = complete.data.createdTasks;
@@ -37,18 +43,24 @@ export class TasksComponent implements OnInit {
   }
 
   /**
-   * Salva o id da atividade selecionada para edição/exclusão na variável idSelected
-   * @param id - id selecionado
+   * Save the id of the activity selected for editing/deletion in the idSelected 
+   * variable.
+   * 
+   * @param id - activityId
+   * @returns void
    */
-  saveId(id: number) : void {
-    this.idSelected = id;
+  saveId(activityId: number): void {
+    this.idSelected = activityId;
   }
 
   /**
-   * Salva o id e muda a variável modalEditShowed para true, o que faz o componente form-task ser carregado no modo edição
+   * Save the id and change the modalEditShowed variable to true, which causes the 
+   * form-task component to be loaded in edit mode.
+   * 
    * @param id - id da atividade selecionada
+   * @returns void
    */
-  callEdit(id: number) : void {
+  callEdit(id: number): void {
     this.saveId(id);
     setTimeout(() => {
       this.modalEditShowed = true;
@@ -56,10 +68,13 @@ export class TasksComponent implements OnInit {
   }
 
   /**
-   * Faz requisição de exclusão, atualiza a tabela de atividades e redireciona para o dialog-box adequado
+   * Method that does the deletion, updates the activity table and redirects to the 
+   * appropriate dialog-box.
+   * 
+   * @returns void
    */
   removerAtividade(): void {
-    this.service.Remove(`${environment.API}task/${this.idSelected}`).subscribe(
+    this.taskService.Remove(`${environment.API}task/${this.idSelected}`).subscribe(
       complete => {
         this.getTasks();
         dialogBoxComponent.showDialogbox("warningMsgDeleteTask", "sucessMsgDeleteTask")
@@ -67,12 +82,13 @@ export class TasksComponent implements OnInit {
     );
   }
 
-    /**
-   * Chama a função que verifica se o modal está visível
-   * @param idModal - id do modal a ser verificado
-   * @returns booleano dizendo se está visível ou não
+  /**
+   * Method that calls the function that checks if the modal is visible
+   * 
+   * @param idModal - id of the modal to check
+   * @returns a boolean saying whether it is visible or not
    */
-     callIsShowed(idModal: string) : boolean {
-      return ModalComponent.isShowed(idModal);
-    }
+  callIsShowed(idModal: string): boolean {
+    return ModalComponent.isShowed(idModal);
+  }
 }
