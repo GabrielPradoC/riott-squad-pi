@@ -41,7 +41,7 @@
       </div>
 
       <div *ngIf="members?.length > 0" id="button">
-        <app-my-button customClass="light-green lists-page" text="Gerenciar listas" (click)="OpenManageListsModal()">
+        <app-my-button customClass="light-green lists-page" text="Gerenciar listas" customValue="manageLists" (click)="onLoadManageLists()">
         </app-my-button>
       </div>
     </div>
@@ -195,7 +195,7 @@
 
   <app-modal customId="manageLists" customTitle="Gerenciar listas">
     <ng-template #content *ngIf="callIsShowed('manageLists') === true">
-      <div class="container-manage-lists">
+      <div class="container-manage-lists" id="container-manage-lists">
         <h2>Membros ativos</h2>
         <div *ngIf="members" class="members">
           <div *ngFor="let member of members" id="{{ member.id }}manage" class="member"
@@ -240,7 +240,7 @@
           </div>
         </div>
 
-        <div *ngIf="!listManageData" id="no-list-container-display" class="no-list-container">
+        <div *ngIf="!listManageData && !visibleTasks" id="no-list-container-display" class="no-list-container">
           <div class="no-list">
             <div>
               <div class="warning-image">
@@ -251,7 +251,7 @@
               <p>Este membro não possui lista configurada</p>
             </div>
 
-            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showCreateList()"></app-my-button>
+            <app-my-button id="button" customClass="green login-page" text="Criar lista" (click)="showList('createList')"></app-my-button>
           </div>
         </div>
 
@@ -263,11 +263,11 @@
             </div>
 
             <div class="list-actions">
-              <app-my-button customClass="orange members-page" text="Excluir" (click)="removeList(listManageData.id)" ></app-my-button>
+              <app-my-button customClass="orange members-page" text="Excluir" (click)="callRemoveList(listManageData.id)" ></app-my-button>
               <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="light-green members-page"
-                text="Editar" (click)="showEditList()"></app-my-button>
+                text="Editar" (click)="showList('editList')"></app-my-button>
               <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="green members-page"
-                text="Iniciar lista" (click)="startList(listManageData.id)"></app-my-button>
+                text="Iniciar lista" (click)="callStartList(listManageData.id)"></app-my-button>
             </div>
           </div>
 
@@ -295,11 +295,11 @@
 
       <div id="warningMsgInitList">
         <app-dialog-box
-            (callParent)="confirmInit($event)"
+            (callParent)="startList($event)"
             customClassWarning="showElement"
             text="Deseja realmente iniciar essa lista?"
             textButton="Confirmar e iniciar a lista"
-            closeAll="false">
+            closeAll="true">
         </app-dialog-box>
       </div>
 
@@ -317,18 +317,18 @@
             text="Algo deu errado"
             closeAll="true"
             divAtual="errorMsgInitList"
-            divPrincipal="contentInitList"
+            divPrincipal="warningMsgInitList"
             textError="{{ error }}">
         </app-dialog-box>
       </div>
 
       <div id="warningMsgDeleteList">
         <app-dialog-box
-            (callParent)="confirmDelete($event)"
+            (callParent)="removeList()"
             customClassWarning="showElement"
             text="Deseja realmente excluir essa lista?"
             textButton="Confirmar e excluir a lista"
-            closeAll="false">
+            closeAll="true">
         </app-dialog-box>
       </div>
 
@@ -346,7 +346,7 @@
             text="Algo deu errado"
             closeAll="true"
             divAtual="errorMsgDeleteList"
-            divPrincipal="contentDeleteList"
+            divPrincipal="warningMsgDeleteList"
             textError="{{ error }}">
         </app-dialog-box>
       </div>
@@ -354,7 +354,7 @@
   </app-modal>
 
   <app-modal customId="createList" customTitle="Criar nova lista">
-    <ng-template #content>
+    <ng-template #content *ngIf="callIsShowed('createList') === true">
       <div id="contentCreateList">
         <div class="shadow">
           <div class="container-create-list" [ngClass]="{'visible-create-list-button': (tasksToCreate?.length && form.controls['name'].value != '')}">
@@ -410,7 +410,7 @@
                         id="{{ task.id }}task-create-modal"
                         name="input-task-value"
                         placeholder=" "
-                        (keyup)="mask()"
+                        (keyup)="mask(task.id)"
                       >
                       <label for="{{ task.id }}task-create-modal">Valor do desconto:</label>
                     </div>
@@ -471,7 +471,7 @@
   </app-modal>
 
   <app-modal customId="editList" customTitle="Editar lista">
-    <ng-template #content>
+    <ng-template #content *ngIf="callIsShowed('editList') === true">
       <div id="contentEditList">
         <div class="shadow">
           <div class="container-create-list" [ngClass]="{'visible-create-list-button': (allEditTasks && formToEdit.controls['name'].value != '')}">
@@ -529,9 +529,9 @@
                         type="string"
                         id="{{ task.id }}task-edit-modal"
                         name="input-task-value-edit"
-                        value="{{ task.value || null }}"
+                        value="{{ putMask(task.value) }}"
                         placeholder=" "
-                        (keyup)="maskEdit()"
+                        (keyup)="maskEdit(task.id)"
                       >
                       <label for="{{ task.id }}task-edit-modal">Valor do desconto:</label>
                     </div>
@@ -575,6 +575,17 @@
             customClassSucess="showElement"
             text="Lista salva com sucesso!"
             closeAll="true">
+        </app-dialog-box>
+      </div>
+
+      <div id="errorMsgEditList">
+        <app-dialog-box
+            customClassError="showElement"
+            text="Algo deu errado"
+            closeAll="true"
+            divAtual="errorMsgEditList"
+            divPrincipal="contentEditList"
+            textError="{{ error }}">
         </app-dialog-box>
       </div>
     </ng-template>

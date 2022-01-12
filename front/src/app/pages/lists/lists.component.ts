@@ -61,6 +61,7 @@ export class ListsComponent implements OnInit {
   public visibleTasks: Boolean = true;
   public error: string;
   public editListIsVisible: Boolean = false;
+  public idListSelected: number;
 
   constructor(
     private memberService: MemberService,
@@ -296,26 +297,54 @@ export class ListsComponent implements OnInit {
     );
   }
 
-  removeList(id: number) {
-    this.listService.Remove(`${environment.API}list/${id}`).subscribe(
-      result => this.getTaskListForManage(this.currentMemberManage.id),
+  /**
+   * Chama o dialog-box de warning e salva o id da lista
+   * @param id - id da lista
+   */
+  callRemoveList(id: number) {
+    dialogBoxComponent.showDialogbox("container-manage-lists", "warningMsgDeleteList");
+    this.saveId(id);
+  }
+
+  /**
+   * Salva o id da lista do membro selecionado
+   * @param id - id selecionado
+   */
+  saveId(id: number) : void {
+    this.idListSelected = id;
+  }
+
+  removeList() {
+    this.listService.Remove(`${environment.API}list/${this.idListSelected}`).subscribe(
+      result => {
+        this.getTaskListForManage(this.currentMemberManage.id);
+        dialogBoxComponent.showDialogbox("warningMsgDeleteList", "sucessMsgDeleteList");
+      },
       error => {
         this.error = dialogBoxComponent.formatError(error.error.error);
-        dialogBoxComponent.showDialogbox("contentDeleteList", "errorMsgDeleteList");
+        dialogBoxComponent.showDialogbox("warningMsgDeleteList", "errorMsgDeleteList");
       }
     )
   }
 
-  startList(listId: number) {
+  callStartList(listId: number) {
+    dialogBoxComponent.showDialogbox("container-manage-lists", "warningMsgInitList");
+    this.saveId(listId);
+  }
+
+  startList() {
     const body = {
       state: "STARTED"
     };
 
-    this.listService.patch(`${environment.API}list/${listId}`, body).subscribe(
-      result => this.getTaskListForManage(this.currentMemberManage.id),
+    this.listService.patch(`${environment.API}list/${this.idListSelected}`, body).subscribe(
+      result => {
+        this.getTaskListForManage(this.currentMemberManage.id);
+        dialogBoxComponent.showDialogbox("warningMsgInitList", "sucessMsgInitList");
+      },
       error => {
         this.error = dialogBoxComponent.formatError(error.error.error);
-        dialogBoxComponent.showDialogbox("contentInitList", "errorMsgInitList");
+        dialogBoxComponent.showDialogbox("warningMsgInitList", "errorMsgInitList");
       }
     )
   }
@@ -337,6 +366,7 @@ export class ListsComponent implements OnInit {
     if (validation) {
       this.listService.Create(`${environment.API}list`, list).subscribe(
         result => {
+          dialogBoxComponent.showDialogbox("contentCreateList", "sucessMsgCreateList");
           this.tasksToCreate = [];
         },
         error => {
@@ -364,14 +394,15 @@ export class ListsComponent implements OnInit {
       list.tasks.push({ task: task.task, value: Number(task.value) });
     });
 
-    this.getTasksEditedValues(list.tasks);
-    
+    this.getTasksEditedValues(list.tasks)
+
     this.listService.patch(`${environment.API}list/${listId}`, list).subscribe(
       result => {
+        dialogBoxComponent.showDialogbox("contentEditList", "sucessMsgEditList");
       },
       error => {
         this.error = dialogBoxComponent.formatError(error.error.error);
-        dialogBoxComponent.showDialogbox("contentCreateList", "errorMsgCreateList");
+        dialogBoxComponent.showDialogbox("contentEditList", "errorMsgEditList");
       }
     );
   }
@@ -379,18 +410,14 @@ export class ListsComponent implements OnInit {
   getTasksValues(tasks: CreateTask[]): void {
     tasks.map((task: CreateTask) => {
       const value: HTMLInputElement = document.getElementById(`${task.task}task-create-modal`) as HTMLInputElement;
-
-      if (Number(value.value)) {
-        task.value = Number(value.value);
-      }
+      task.value = Number(value.value.substring(3).replace(",", "."));
     })
   }
 
   getTasksEditedValues(tasks: CreateTask[]): void {
     tasks.map((task: CreateTask) => {
       const value: HTMLInputElement = document.getElementById(`${task.task}task-edit-modal`) as HTMLInputElement;
-
-      task.value = Number(value.value);
+      task.value = Number(value.value.substring(3).replace(",", "."));
     })
   }
 
@@ -442,53 +469,51 @@ export class ListsComponent implements OnInit {
     return this.editedTasks?.find(task => task.task == taskId);
   }
 
-  mask(): void{
-    let value: string = (<HTMLSelectElement>document.getElementsByName("input-task-value").item(0)).value;
+  mask(id: number): void{
+    setTimeout(() => {
+      let value: string = (<HTMLSelectElement>document.getElementById(id + "task-create-modal")).value;
 
-    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
-    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+      value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
+      value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
 
-    (<HTMLSelectElement>document.getElementsByName("input-task-value").item(0)).value = value;
+      (<HTMLSelectElement>document.getElementById(id + "task-create-modal")).value = "R$ " + value;
+    }, 100);
   }
 
-  maskEdit(): void{
-    let value: string = (<HTMLSelectElement>document.getElementsByName("input-task-value-edit").item(0)).value;
+  maskEdit(id: number): void{
+    setTimeout(() => {
+      let value: string = (<HTMLSelectElement>document.getElementById(id + "task-edit-modal")).value;
 
-    value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
-    value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
+      value = value.replace(/\D/g,"");                 //Remove tudo o que não é dígito
+      value = value.replace(/(\d)(\d\d$)/,"$1,$2");    //Coloca vírgula entre o penúltimo e antepenúltimo dígitos
 
-    (<HTMLSelectElement>document.getElementsByName("input-task-value-edit").item(0)).value = value;
+      (<HTMLSelectElement>document.getElementById(id + "task-edit-modal")).value = "R$ " + value;
+    }, 100);
+  }
+
+  putMask(value: number) : string {
+    if(!value) {
+      return "R$ ";
+    }
+    return "R$ " + value.toString().replace(".", ",");
   }
 
   everyTaskHasValue(): Boolean {
     return this.tasksToCreate.every(task => task.value == 1);
   }
 
-  OpenFinalizeListModal(): void {
-    document.getElementById("filtro").style.display = "block";
-    document.getElementById("finalize-list").style.display = "flex";
-    document.getElementById("finalize-list").setAttribute("class", "modal up");
+  onLoadManageLists() {
+    this.visibleTasks = true;
   }
 
-  OpenManageListsModal(): void {
-    document.getElementById("filtro").style.display = "block";
-    document.getElementById("manageLists").style.display = "flex";
-    document.getElementById("manageLists").setAttribute("class", "modal up");
-  }
-
-  showCreateList() {
-    this.form.controls["name"].setValue("");
-    document.getElementById("createList").style.zIndex = "4";
-    document.getElementById("createList").style.position = "initial";
-    document.getElementById("createList").style.display = "flex";
-    document.getElementById("createList").setAttribute("class", "modal subModal");
-  }
-
-  showEditList() {
-    document.getElementById("editList").style.zIndex = "4";
-    document.getElementById("editList").style.position = "initial";
-    document.getElementById("editList").style.display = "flex";
-    document.getElementById("editList").setAttribute("class", "modal subModal");
+  showList(idList: string) {
+    if(idList === "createList") {
+      this.form.controls["name"].setValue("");
+    }
+    document.getElementById(idList).style.zIndex = "4";
+    document.getElementById(idList).style.position = "initial";
+    document.getElementById(idList).style.display = "flex";
+    document.getElementById(idList).setAttribute("class", "modal subModal");
   }
 
   /**

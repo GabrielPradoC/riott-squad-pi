@@ -509,7 +509,7 @@
 
 .container-manage-lists {
   width: 100%;
-  display: block !important;
+  display: block;
   margin: 0 3.6rem;
   padding: 0 3.4rem;
 
@@ -1179,7 +1179,7 @@
 }
 
 #warningMsgInitList, #sucessMsgInitList, #errorMsgInitList,
-#sucessMsgCreateList, #errorMsgCreateList, #sucessMsgEditList,
+#sucessMsgCreateList, #errorMsgCreateList, #sucessMsgEditList, #errorMsgEditList,
 #warningMsgDeleteList, #sucessMsgDeleteList, #errorMsgDeleteList,
 #sucessMsgFinalizeList {
   width: 272px;
