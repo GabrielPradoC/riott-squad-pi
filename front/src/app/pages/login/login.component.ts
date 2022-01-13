@@ -32,7 +32,8 @@ export class LoginComponent {
   }
 
   /**
-   * Method that fetches typed information and calls the authentication method
+   * Method that fetches typed information and calls the authentication method.
+   * 
    * @returns void
    */
   login(): void {
@@ -43,7 +44,8 @@ export class LoginComponent {
   }
 
   /**
-   * Method that authenticates the user
+   * Method that authenticates the user.
+   * 
    * @param email - User entered email
    * @param password - Password entered by user
    * @returns void
