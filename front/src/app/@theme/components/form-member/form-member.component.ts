@@ -298,7 +298,7 @@ export class FormMemberComponent implements OnInit {
     if(this.fileTemp && this.fileTemp.name != "File name") {
       body.set("photo", this.fileTemp)
     }
-console.log(body)
+
     formData = this.createFormData(body);
 
     if(this.typeForm == 0) {

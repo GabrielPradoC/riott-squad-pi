@@ -559,7 +559,7 @@ export class ListsComponent implements OnInit {
    * 
    * @returns void
    */
-   mask(id: number): void{
+   mask(id: number): void {
     setTimeout(() => {
       let value: string = (<HTMLSelectElement>document.getElementById(id + "task-create-modal")).value;
 
