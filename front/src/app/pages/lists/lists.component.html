@@ -411,7 +411,7 @@
                         placeholder=" "
                         (keyup)="mask()"
                       >
-                      <label for="tasks">Valor do desconto:</label>
+                      <label for="{{ task.id }}task-create-modal">Valor do desconto:</label>
                     </div>
                   </div>
                 </div>
@@ -528,11 +528,11 @@
                         type="string"
                         id="{{ task.id }}task-edit-modal"
                         name="input-task-value-edit"
-                        placeholder=" "
                         value="{{ task.value || null }}"
+                        placeholder=" "
                         (keyup)="maskEdit()"
                       >
-                      <label for="tasks">Valor do desconto:</label>
+                      <label for="{{ task.id }}task-edit-modal">Valor do desconto:</label>
                     </div>
                   </div>
                 </div>
