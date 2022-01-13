@@ -345,9 +345,10 @@ export class ListsComponent implements OnInit {
   saveId(id: number) : void {
     this.idListSelected = id;
   }
-
+  
   /**
    * Method that deletes a to-do list.
+   * 
    * @returns void
    */
   removeList() : void {
@@ -535,7 +536,6 @@ export class ListsComponent implements OnInit {
    * list creation modal.
    * 
    * @param taskId - task Id
-   * 
    * @returns CreateTask
    */
   existsTaskInArray(taskId: number): CreateTask {
@@ -547,7 +547,6 @@ export class ListsComponent implements OnInit {
    * list edit modal.
    * 
    * @param taskId - task Id
-   * 
    * @returns CreateTask
    */
   existsTaskInArrayToEdit(taskId: number): CreateTask {
@@ -577,6 +576,7 @@ export class ListsComponent implements OnInit {
    * 
    * @returns void
    */
+
    maskEdit(id: number): void{
     setTimeout(() => {
       let value: string = (<HTMLSelectElement>document.getElementById(id + "task-edit-modal")).value;
