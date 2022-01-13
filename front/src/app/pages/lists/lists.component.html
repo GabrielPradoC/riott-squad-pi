@@ -194,7 +194,7 @@
   </app-modal>
 
   <app-modal customId="manageLists" customTitle="Gerenciar listas">
-    <ng-template #content>
+    <ng-template #content *ngIf="callIsShowed('manageLists') === true">
       <div class="container-manage-lists">
         <h2>Membros ativos</h2>
         <div *ngIf="members" class="members">
@@ -265,7 +265,7 @@
             <div class="list-actions">
               <app-my-button customClass="orange members-page" text="Excluir" (click)="removeList(listManageData.id)" ></app-my-button>
               <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="light-green members-page"
-                text="Editar"></app-my-button>
+                text="Editar" (click)="showEditList()"></app-my-button>
               <app-my-button *ngIf="listManageData.state == 'ONHOLD'" customClass="green members-page"
                 text="Iniciar lista" (click)="startList(listManageData.id)"></app-my-button>
             </div>
@@ -361,10 +361,10 @@
             <form [formGroup]="form">
               <div class="field">
                 <input
-                    type="string"
-                    id="name"
-                    placeholder=" "
-                    formControlName="name"
+                  type="string"
+                  id="name"
+                  placeholder=" "
+                  formControlName="name"
                 >
                 
                 <label for="name">Nome da lista <span class="required">*</span></label>
@@ -375,8 +375,7 @@
               </div>
               
               <div class="member-container">
-                <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member"
-                  (click)="selectInCreateList(currentMemberManage)">
+                <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member">
                   <div class="member-photo">
                     <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
                   </div>
@@ -408,9 +407,11 @@
                       <input
                         type="string"
                         id="{{ task.id }}task-create-modal"
+                        name="input-task-value"
                         placeholder=" "
+                        (keyup)="mask()"
                       >
-                      <label for="tasks">Valor do desconto:</label>
+                      <label for="{{ task.id }}task-create-modal">Valor do desconto:</label>
                     </div>
                   </div>
                 </div>
@@ -471,7 +472,101 @@
   <app-modal customId="editList" customTitle="Editar lista">
     <ng-template #content>
       <div id="contentEditList">
+        <div class="shadow">
+          <div class="container-create-list" [ngClass]="{'visible-create-list-button': (allEditTasks && formToEdit.controls['name'].value != '')}">
+            <form [formGroup]="formToEdit">
+              <div class="field">
+                <input
+                  type="string"
+                  id="name"
+                  placeholder=" "
+                  formControlName="name"
+                >
+                
+                <input *ngIf="listManageData" type="text" value="{{ listManageData.id }}" formControlName="listId" hidden>
 
+                <label for="name">Nome da lista <span class="required">*</span></label>
+
+                <small class="danger" *ngIf="formToEdit.controls.name.invalid">
+                  Este campo é obrigatório.<br>
+                </small>
+              </div>
+              
+              <div class="member-container">
+                <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}create" class="member"
+                  (click)="selectInCreateList(currentMemberManage)">
+                  <div class="member-photo">
+                    <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
+                  </div>
+
+                  <div class="member-info">
+                    <label>Membro:</label>
+                    <span>{{ currentMemberManage.name }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="activities-container">
+                <h2>Selecione as atividades e defina seus valores:</h2>
+
+                <div *ngIf="allEditTasks" class="activities">
+                  <div *ngFor="let task of allEditTasks" class="activity" id="{{ task.id }}">
+                    <div>
+                      <div class="checkbox">
+                        <input type="checkbox" id="taskToEdit" name="task" (change)="onCheckChangeEdit($event, task.id)"
+                          [checked]="task.checked">
+                      </div>
+
+                      <div class="description">
+                        <label>Descrição da atividade:</label>
+                        <span>{{ task.description }}</span>
+                      </div>
+                    </div>
+
+                    <div *ngIf="existsTaskInArrayToEdit(task.id)" class="field-discount-value">
+                      <input
+                        type="string"
+                        id="{{ task.id }}task-edit-modal"
+                        name="input-task-value-edit"
+                        value="{{ task.value || null }}"
+                        placeholder=" "
+                        (keyup)="maskEdit()"
+                      >
+                      <label for="{{ task.id }}task-edit-modal">Valor do desconto:</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <app-shadow></app-shadow>
+        </div>
+
+        <div *ngIf="formToEdit.controls['name'].value != ''" class="card-create-list">
+          <div class="information-container">
+            <div *ngIf="currentMemberManage" id="{{ currentMemberManage.id }}" class="member">
+              <div class="member-photo">
+                <img width="40px" src="data:image/png;base64,{{ currentMemberManage.photo }}" alt="Member photo">
+              </div>
+
+              <div class="member-info">
+                <label>Membro:</label>
+                <span>{{ currentMemberManage.name }}</span>
+              </div>
+            </div>
+
+            <div class="gap"></div>
+
+            <div class="lacks">
+              <label>Total de atividades na lista:</label>
+              <span>{{ tasksToEdit?.length }}</span>
+            </div>
+          </div>
+
+          <app-my-button customClass="light-green lists-page" text="Salvar lista"
+            (click)="saveList()">
+          </app-my-button>
+        </div>
       </div>
 
       <div id="sucessMsgEditList">

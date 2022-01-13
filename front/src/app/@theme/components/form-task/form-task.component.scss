@@ -1,4 +1,4 @@
-.divFormTask, .sucessMsgFormTask, .errorMsgFormTask {
+#divFormTask, #sucessMsgFormTask, #errorMsgFormTask {
   width: 272px;
   height: calc(78vh - 96px);
   display: none;
@@ -7,11 +7,11 @@
   margin-bottom: 96px;
 }
 
-.divFormTask {
+#divFormTask {
   display: flex;
 }
 
-.divFormTask p {
+#divFormTask p {
   color: #3B4244;
 }
 

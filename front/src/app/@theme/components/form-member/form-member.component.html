@@ -1,4 +1,4 @@
-<div id="divFormulario{{ completeEdit() }}" name="divFormulario">
+<div id="divFormulario">
     <p *ngIf="typeForm == 0; else textEdit">
         Insira os dados abaixo para cadastrar um novo membro ao RIOTT.
     </p>
@@ -12,12 +12,11 @@
         <div class="field">
             <input
                 type="file"
-                id="foto{{ completeEdit() }}"
-                name="foto"
+                id="foto"
                 formControlName="foto"
                 (change)="fileChangeEvent($event)"
             >
-            <div name="uploadFoto">
+            <div id="uploadFoto">
                 <div>
                     <img src="../../../assets/file.ico" class="default">
                 </div>
@@ -26,7 +25,7 @@
                 </p>
                 <ng-template #textDropzoneEdit>
                     <p>
-                        Arraste ou <label for="foto2">clique aqui</label> para trocar a <b>foto do usuário</b>
+                        Arraste ou <label for="foto">clique aqui</label> para trocar a <b>foto do usuário</b>
                     </p>
                 </ng-template>
             </div>
@@ -35,36 +34,34 @@
         <div class="field">
             <input
                 type="string"
-                id="nome{{ completeEdit() }}"
+                id="nome"
                 placeholder=" "
                 formControlName="nome"
             >
-            <label for="nome{{ completeEdit() }}">Nome do membro</label>
+            <label for="nome">Nome do membro</label>
         </div>
 
         <div class="field">
             <input
                 type="date"
-                id="dataNascimento{{ completeEdit() }}"
-                name="dataNascimento"
+                id="dataNascimento"
                 placeholder=" "
                 formControlName="dataNascimento"
                 (click)="labelUp()"
                 (blur)="onChange()"
             >
-            <label name="labelDataNascimento" for="dataNascimento{{ completeEdit() }}">Data de nascimento</label>
+            <label id="labelDataNascimento" for="dataNascimento">Data de nascimento</label>
         </div>
 
         <div class="field">
             <input
                 type="string"
-                id="valorMesada{{ completeEdit() }}"
-                name="valorMesada"
+                id="valorMesada"
                 placeholder=" "
                 formControlName="valorMesada"
                 (keyup)="mask()"
             >
-            <label for="valorMesada{{ completeEdit() }}">Valor da mesada</label>
+            <label for="valorMesada">Valor da mesada</label>
         </div>
 
         <ng-template [ngIf]="typeForm == 0" [ngIfElse]="buttonEdit">
@@ -88,7 +85,7 @@
     <app-my-button customClass="orange members-page" text="Cancelar" (click)="cancelar()"></app-my-button>
 </div>
 
-<div id="sucessMsgFormulario{{ completeEdit() }}" name="sucessMsgFormulario">
+<div id="sucessMsgFormulario">
     <app-dialog-box
         customClassSucess="showElement"
         text="{{ textSucess() }}"
@@ -97,13 +94,13 @@
     </app-dialog-box>
 </div>
 
-<div id="errorMsgFormulario{{ completeEdit() }}" name="errorMsgFormulario">
+<div id="errorMsgFormulario">
     <app-dialog-box
         customClassError="showElement"
         text="Algo deu errado"
         closeAll="true"
-        divAtual="errorMsgFormulario{{ completeEdit() }}"
-        divPrincipal="divFormulario{{ completeEdit() }}"
+        divAtual="errorMsgFormulario"
+        divPrincipal="divFormulario"
         textError="{{ error }}">
     </app-dialog-box>
 </div>
